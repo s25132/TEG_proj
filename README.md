@@ -1,19 +1,23 @@
 ## TEG_proj
-# Katalog generate_data
+# Skrypt generate_data -> katalog generate_data
 Służy do generowania cv programistów, rfps i pliku projects.json z obecnie toczącymi się projektami.  
 
-Pliki sa generowane do katalgu generate_data/data  
+Pliki sa generowane do katalgu /data w gałęzi głownej
 
 
 Uruchomienie:  
 
-docker-compose_example.yml zmień na docker-compose.yml  
+generate_data_docker_example.yml zmień na generate_data_docker.yml
 
-uzupełnij OPENAI_API_KEY w docker-compose.yml  
+uzupełnij OPENAI_API_KEY w generate_data_docker.yml 
 
-będąc w katalogu generate_data  
+będąc w katalogu głownym:
 
-docker compose build  
+docker compose -f generate_data_docker.yml build 
+
+docker compose -f generate_data_docker.yml up
+
+Istniejące dane zostaną usunięte
 
 
 

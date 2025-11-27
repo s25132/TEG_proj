@@ -206,3 +206,4 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 docker-compose.yml
+generate_data_docker.yml

@@ -1,11 +1,14 @@
 version: "3.9"
 
 services:
-  graphrag-gen:
-    build: .
+  generate_data:
+    build:
+      context: ./generate_data
+      dockerfile: Dockerfile
     container_name: data_generator
+
     environment:
-      OPENAI_API_KEY: "Twój klucz API tutaj"
+      OPENAI_API_KEY: "TwojKlucz"
 
       # Skills
       SKILL_PROFICIENCY_LEVELS: "Beginner,Intermediate,Advanced,Expert"
