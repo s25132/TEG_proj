@@ -5,7 +5,7 @@ Służy do generowania cv programistów, rfps i pliku projects.json z obecnie to
 Pliki sa generowane do katalgu generate_data/data  
 
 
-Uruchamienie:  
+Uruchomienie:  
 
 docker-compose_example.yml zmień na docker-compose.yml  
 
