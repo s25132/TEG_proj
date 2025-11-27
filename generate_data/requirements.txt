@@ -1,0 +1,5 @@
+python-dotenv>=1.1.0
+Faker>=37.8.0
+markdown>=3.9
+weasyprint>=66.0
+langchain-openai==0.3.11
