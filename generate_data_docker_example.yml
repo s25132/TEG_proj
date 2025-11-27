@@ -8,7 +8,7 @@ services:
     container_name: data_generator
 
     environment:
-      OPENAI_API_KEY: "TwojKlucz"
+      OPENAI_API_KEY: "klucz"
 
       # Skills
       SKILL_PROFICIENCY_LEVELS: "Beginner,Intermediate,Advanced,Expert"
@@ -20,7 +20,7 @@ services:
       PROJECT_REQ_MANDATORY_PROB: "0.3"
 
       # Assignment
-      ASSIGN_PROB: "0.8"
+      ASSIGN_PROB: "1"
       ASSIGN_END_MIN: "5"
       ASSIGN_END_MAX: "30"
 
@@ -30,8 +30,8 @@ services:
       OUTPUT_RFPS: "data/rfps"
 
       # Generation
-      GEN_NUM_PROGRAMMERS: "10"
-      GEN_NUM_PROJECTS: "20"
+      GEN_NUM_PROGRAMMERS: "30"
+      GEN_NUM_PROJECTS: "10"
       GEN_NUM_RFPS: "3"
 
     volumes:
