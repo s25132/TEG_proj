@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  graphrag-gen:
+    build: .
+    container_name: data_generator
+    environment:
+      OPENAI_API_KEY: "Twój klucz API tutaj"
+
+      # Skills
+      SKILL_PROFICIENCY_LEVELS: "Beginner,Intermediate,Advanced,Expert"
+      SKILL_PROFICIENCY_WEIGHTS: "1,2,3,2"
+
+      # Project requirements
+      PROJECT_REQ_MIN: "3"
+      PROJECT_REQ_MAX: "8"
+      PROJECT_REQ_MANDATORY_PROB: "0.7"
+
+      # Assignment
+      ASSIGN_PROB: "0.8"
+      ASSIGN_END_MIN: "5"
+      ASSIGN_END_MAX: "30"
+
+      # Output dirs
+      OUTPUT_PROGRAMMERS: "data/programmers"
+      OUTPUT_PROJECTS: "data/projects"
+      OUTPUT_RFPS: "data/rfps"
+
+      # Generation
+      GEN_NUM_PROGRAMMERS: "10"
+      GEN_NUM_PROJECTS: "20"
+      GEN_NUM_RFPS: "3"
+
+    volumes:
+      - ./data:/app/data

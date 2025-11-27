@@ -1,0 +1,183 @@
+[
+  {
+    "id": "RFP-001",
+    "title": "Cloud Migration Project Development",
+    "client": "Education Network",
+    "description": "Seeking experienced development team for enterprise web application",
+    "project_type": "Cloud Migration Project",
+    "duration_months": 10,
+    "team_size": 3,
+    "budget_range": "$250K - $500K",
+    "start_date": "2025-11-27",
+    "requirements": [
+      {
+        "skill_name": "JavaScript",
+        "min_proficiency": "Advanced",
+        "is_mandatory": true,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "Django",
+        "min_proficiency": "Expert",
+        "is_mandatory": true,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "Docker",
+        "min_proficiency": "Expert",
+        "is_mandatory": true,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "TypeScript",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false,
+        "preferred_certifications": [
+          "AWS Certified Solutions Architect",
+          "Certified Kubernetes Administrator"
+        ]
+      },
+      {
+        "skill_name": "Microservices",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": true,
+        "preferred_certifications": [
+          "Certified Kubernetes Administrator"
+        ]
+      },
+      {
+        "skill_name": "Machine Learning",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "Node.js",
+        "min_proficiency": "Advanced",
+        "is_mandatory": true,
+        "preferred_certifications": [
+          "AWS Certified Solutions Architect",
+          "Google Cloud Professional"
+        ]
+      }
+    ],
+    "location": "South Justin",
+    "remote_allowed": true
+  },
+  {
+    "id": "RFP-002",
+    "title": "Security Enhancement Development",
+    "client": "Energy Systems Co",
+    "description": "Seeking experienced development team for api integration platform",
+    "project_type": "Machine Learning Implementation",
+    "duration_months": 20,
+    "team_size": 12,
+    "budget_range": "$1M - $2M",
+    "start_date": "2025-11-27",
+    "requirements": [
+      {
+        "skill_name": "Node.js",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "PostgreSQL",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": true,
+        "preferred_certifications": [
+          "Certified Kubernetes Administrator",
+          "Google Cloud Professional"
+        ]
+      },
+      {
+        "skill_name": "MongoDB",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false,
+        "preferred_certifications": [
+          "Certified Kubernetes Administrator"
+        ]
+      },
+      {
+        "skill_name": "Python",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": true,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "JavaScript",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false,
+        "preferred_certifications": [
+          "Google Cloud Professional",
+          "AWS Certified Solutions Architect"
+        ]
+      },
+      {
+        "skill_name": "Django",
+        "min_proficiency": "Expert",
+        "is_mandatory": true,
+        "preferred_certifications": [
+          "Google Cloud Professional",
+          "Certified Kubernetes Administrator"
+        ]
+      },
+      {
+        "skill_name": "DevOps",
+        "min_proficiency": "Advanced",
+        "is_mandatory": true,
+        "preferred_certifications": [
+          "AWS Certified Solutions Architect",
+          "Certified Kubernetes Administrator"
+        ]
+      }
+    ],
+    "location": "West Patriciabury",
+    "remote_allowed": false
+  },
+  {
+    "id": "RFP-003",
+    "title": "Mobile App Development Development",
+    "client": "Energy Systems Co",
+    "description": "Seeking experienced development team for api integration platform",
+    "project_type": "Enterprise Web Application",
+    "duration_months": 14,
+    "team_size": 12,
+    "budget_range": "$100K - $250K",
+    "start_date": "2025-11-27",
+    "requirements": [
+      {
+        "skill_name": "Angular",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false,
+        "preferred_certifications": [
+          "Certified Kubernetes Administrator",
+          "Google Cloud Professional"
+        ]
+      },
+      {
+        "skill_name": "Machine Learning",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "Kubernetes",
+        "min_proficiency": "Advanced",
+        "is_mandatory": true,
+        "preferred_certifications": []
+      },
+      {
+        "skill_name": "MongoDB",
+        "min_proficiency": "Expert",
+        "is_mandatory": true,
+        "preferred_certifications": [
+          "AWS Certified Solutions Architect",
+          "Google Cloud Professional"
+        ]
+      }
+    ],
+    "location": "East Shawnton",
+    "remote_allowed": false
+  }
+]
