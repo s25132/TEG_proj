@@ -1,79 +1,197 @@
 [
   {
     "id": "PRJ-001",
-    "name": "Web Application for BioTech Labs",
-    "client": "HealthTech Partners",
-    "description": "Development of inventory management with focus on scalability and performance",
-    "start_date": "2024-05-12",
-    "end_date": null,
-    "estimated_duration_months": 11,
-    "budget": null,
-    "status": "planned",
-    "team_size": 3,
+    "name": "API Gateway Implementation for DataSystems Inc",
+    "client": "GreenEnergy Co",
+    "description": "Development of cloud migration with focus on scalability and performance",
+    "start_date": "2025-05-30",
+    "end_date": "2026-08-23",
+    "estimated_duration_months": 15,
+    "budget": 66834,
+    "status": "completed",
+    "team_size": 5,
     "requirements": [
       {
-        "skill_name": "DevOps",
-        "min_proficiency": "Advanced",
+        "skill_name": "Rust",
+        "min_proficiency": "Expert",
+        "is_mandatory": true
+      },
+      {
+        "skill_name": "JavaScript",
+        "min_proficiency": "Beginner",
         "is_mandatory": false
       },
       {
-        "skill_name": "Rust",
+        "skill_name": "AWS",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "Teresa Jimenez",
+        "programmer_id": 7,
+        "assignment_start_date": "2025-05-30",
+        "assignment_end_date": "2026-08-10"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-002",
+    "name": "API Gateway Implementation for BioTech Labs",
+    "client": "DataSystems Inc",
+    "description": "Development of inventory management with focus on scalability and performance",
+    "start_date": "2023-12-31",
+    "end_date": "2024-08-27",
+    "estimated_duration_months": 8,
+    "budget": 92775,
+    "status": "completed",
+    "team_size": 5,
+    "requirements": [
+      {
+        "skill_name": "Jenkins",
         "min_proficiency": "Intermediate",
         "is_mandatory": false
       },
       {
-        "skill_name": "PostgreSQL",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Data Science",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "MySQL",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-002",
-    "name": "Mobile App Development for EduTech Solutions",
-    "client": "EduTech Solutions",
-    "description": "Development of data analytics dashboard with focus on scalability and performance",
-    "start_date": "2025-01-30",
-    "end_date": "2025-10-27",
-    "estimated_duration_months": 9,
-    "budget": null,
-    "status": "completed",
-    "team_size": 3,
-    "requirements": [
-      {
-        "skill_name": "MongoDB",
+        "skill_name": "Redis",
         "min_proficiency": "Expert",
         "is_mandatory": false
       },
       {
-        "skill_name": "Django",
+        "skill_name": "Machine Learning",
         "min_proficiency": "Expert",
-        "is_mandatory": true
+        "is_mandatory": false
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "Kaitlyn Hunt DVM",
+        "programmer_id": 10,
+        "assignment_start_date": "2023-12-31",
+        "assignment_end_date": "2024-08-12"
       },
       {
-        "skill_name": "Java",
+        "programmer_name": "Teresa Jimenez",
+        "programmer_id": 7,
+        "assignment_start_date": "2023-12-31",
+        "assignment_end_date": "2024-07-29"
+      },
+      {
+        "programmer_name": "Dr. Blake Jackson",
+        "programmer_id": 5,
+        "assignment_start_date": "2023-12-31",
+        "assignment_end_date": "2024-08-21"
+      },
+      {
+        "programmer_name": "Elizabeth Burns",
+        "programmer_id": 8,
+        "assignment_start_date": "2023-12-31",
+        "assignment_end_date": "2024-07-31"
+      },
+      {
+        "programmer_name": "Kristen Mitchell",
+        "programmer_id": 6,
+        "assignment_start_date": "2023-12-31",
+        "assignment_end_date": "2024-08-16"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-003",
+    "name": "Cloud Migration for FinTech Innovations",
+    "client": "GreenEnergy Co",
+    "description": "Development of devops automation with focus on scalability and performance",
+    "start_date": "2025-11-24",
+    "end_date": null,
+    "estimated_duration_months": 4,
+    "budget": null,
+    "status": "active",
+    "team_size": 5,
+    "requirements": [
+      {
+        "skill_name": "Go",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Git",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Rust",
         "min_proficiency": "Beginner",
         "is_mandatory": true
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "Matthew Salinas",
+        "programmer_id": 9,
+        "assignment_start_date": "2025-11-24",
+        "assignment_end_date": "2026-03-14"
       },
       {
-        "skill_name": "FastAPI",
+        "programmer_name": "Kaitlyn Hunt DVM",
+        "programmer_id": 10,
+        "assignment_start_date": "2025-11-24",
+        "assignment_end_date": "2026-02-26"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-004",
+    "name": "API Gateway Implementation for FinTech Innovations",
+    "client": "FinTech Innovations",
+    "description": "Development of devops automation with focus on scalability and performance",
+    "start_date": "2024-01-20",
+    "end_date": null,
+    "estimated_duration_months": 18,
+    "budget": null,
+    "status": "active",
+    "team_size": 2,
+    "requirements": [
+      {
+        "skill_name": "MongoDB",
         "min_proficiency": "Expert",
         "is_mandatory": true
       },
       {
-        "skill_name": "Data Science",
+        "skill_name": "Go",
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Git",
         "min_proficiency": "Expert",
+        "is_mandatory": false
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "Lisa Gomez",
+        "programmer_id": 3,
+        "assignment_start_date": "2024-01-20",
+        "assignment_end_date": "2025-06-22"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-005",
+    "name": "Mobile App Development for FinTech Innovations",
+    "client": "EduTech Solutions",
+    "description": "Development of payment processing system with focus on scalability and performance",
+    "start_date": "2024-05-07",
+    "end_date": "2024-10-04",
+    "estimated_duration_months": 5,
+    "budget": null,
+    "status": "completed",
+    "team_size": 2,
+    "requirements": [
+      {
+        "skill_name": "React",
+        "min_proficiency": "Intermediate",
         "is_mandatory": true
       },
       {
@@ -82,173 +200,53 @@
         "is_mandatory": false
       },
       {
-        "skill_name": "Go",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Git",
+        "skill_name": "Python",
         "min_proficiency": "Advanced",
-        "is_mandatory": false
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-003",
-    "name": "Machine Learning Pipeline for EduTech Solutions",
-    "client": "FinTech Innovations",
-    "description": "Development of mobile app development with focus on scalability and performance",
-    "start_date": "2025-07-21",
-    "end_date": null,
-    "estimated_duration_months": 7,
-    "budget": 116179,
-    "status": "active",
-    "team_size": 6,
-    "requirements": [
-      {
-        "skill_name": "Java",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "DevOps",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "MongoDB",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "TypeScript",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Django",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-004",
-    "name": "Real-time Chat System for MediaStream",
-    "client": "RetailMax",
-    "description": "Development of security audit system with focus on scalability and performance",
-    "start_date": "2025-05-29",
-    "end_date": "2025-09-26",
-    "estimated_duration_months": 4,
-    "budget": null,
-    "status": "completed",
-    "team_size": 4,
-    "requirements": [
-      {
-        "skill_name": "Git",
-        "min_proficiency": "Expert",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "DevOps",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Java",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Redis",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Kubernetes",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Jenkins",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "PostgreSQL",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-005",
-    "name": "Web Application for HealthTech Partners",
-    "client": "CloudNative Solutions",
-    "description": "Development of devops automation with focus on scalability and performance",
-    "start_date": "2024-11-03",
-    "end_date": null,
-    "estimated_duration_months": 9,
-    "budget": 458770,
-    "status": "planned",
-    "team_size": 3,
-    "requirements": [
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Java",
-        "min_proficiency": "Intermediate",
         "is_mandatory": true
       },
       {
         "skill_name": "Microservices",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Django",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
       }
     ],
     "assigned_programmers": []
   },
   {
     "id": "PRJ-006",
-    "name": "Content Management System for TechCorp",
-    "client": "HealthTech Partners",
-    "description": "Development of data analytics dashboard with focus on scalability and performance",
-    "start_date": "2025-04-28",
-    "end_date": null,
-    "estimated_duration_months": 17,
+    "name": "Customer Portal for BioTech Labs",
+    "client": "LogisticsPro",
+    "description": "Development of mobile app development with focus on scalability and performance",
+    "start_date": "2025-10-03",
+    "end_date": "2027-03-27",
+    "estimated_duration_months": 18,
     "budget": null,
-    "status": "on_hold",
-    "team_size": 6,
+    "status": "completed",
+    "team_size": 7,
     "requirements": [
       {
-        "skill_name": "Python",
+        "skill_name": "Flask",
         "min_proficiency": "Beginner",
         "is_mandatory": true
       },
       {
-        "skill_name": "Microservices",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": false
+        "skill_name": "Node.js",
+        "min_proficiency": "Advanced",
+        "is_mandatory": true
       },
       {
-        "skill_name": "DevOps",
+        "skill_name": "Jenkins",
         "min_proficiency": "Intermediate",
         "is_mandatory": true
       },
       {
-        "skill_name": "Machine Learning",
-        "min_proficiency": "Intermediate",
+        "skill_name": "Python",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Microservices",
+        "min_proficiency": "Advanced",
         "is_mandatory": false
       }
     ],
@@ -256,259 +254,194 @@
   },
   {
     "id": "PRJ-007",
-    "name": "Customer Portal for MediaStream",
-    "client": "DataSystems Inc",
-    "description": "Development of microservices architecture with focus on scalability and performance",
-    "start_date": "2025-06-19",
+    "name": "Web Application for FinTech Innovations",
+    "client": "LogisticsPro",
+    "description": "Development of machine learning pipeline with focus on scalability and performance",
+    "start_date": "2024-04-20",
     "end_date": null,
-    "estimated_duration_months": 18,
+    "estimated_duration_months": 17,
     "budget": null,
-    "status": "on_hold",
-    "team_size": 4,
+    "status": "active",
+    "team_size": 3,
     "requirements": [
-      {
-        "skill_name": "MySQL",
-        "min_proficiency": "Advanced",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "FastAPI",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "TypeScript",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "DevOps",
-        "min_proficiency": "Advanced",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "C++",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-008",
-    "name": "Security Audit System for CloudNative Solutions",
-    "client": "RetailMax",
-    "description": "Development of web application with focus on scalability and performance",
-    "start_date": "2025-03-17",
-    "end_date": null,
-    "estimated_duration_months": 12,
-    "budget": null,
-    "status": "on_hold",
-    "team_size": 2,
-    "requirements": [
-      {
-        "skill_name": "Docker",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Rust",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
       {
         "skill_name": "Python",
         "min_proficiency": "Expert",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "JavaScript",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Docker",
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Redis",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "David May",
+        "programmer_id": 1,
+        "assignment_start_date": "2024-04-20",
+        "assignment_end_date": "2025-08-27"
+      },
+      {
+        "programmer_name": "Peggy Marshall MD",
+        "programmer_id": 4,
+        "assignment_start_date": "2024-04-20",
+        "assignment_end_date": "2025-09-02"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-008",
+    "name": "Customer Portal for BioTech Labs",
+    "client": "GreenEnergy Co",
+    "description": "Development of api gateway implementation with focus on scalability and performance",
+    "start_date": "2023-12-01",
+    "end_date": "2025-04-24",
+    "estimated_duration_months": 17,
+    "budget": 103170,
+    "status": "completed",
+    "team_size": 4,
+    "requirements": [
+      {
+        "skill_name": "Kubernetes",
+        "min_proficiency": "Intermediate",
         "is_mandatory": true
       },
       {
-        "skill_name": "C++",
+        "skill_name": "Docker",
         "min_proficiency": "Intermediate",
         "is_mandatory": false
+      },
+      {
+        "skill_name": "React",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Flask",
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "AWS",
+        "min_proficiency": "Beginner",
+        "is_mandatory": true
       }
     ],
     "assigned_programmers": []
   },
   {
     "id": "PRJ-009",
-    "name": "DevOps Automation for DataSystems Inc",
-    "client": "LogisticsPro",
-    "description": "Development of api gateway implementation with focus on scalability and performance",
-    "start_date": "2025-07-03",
-    "end_date": "2026-07-28",
+    "name": "Payment Processing System for FinTech Innovations",
+    "client": "GreenEnergy Co",
+    "description": "Development of data analytics dashboard with focus on scalability and performance",
+    "start_date": "2024-07-25",
+    "end_date": "2025-08-19",
     "estimated_duration_months": 13,
-    "budget": 312548,
+    "budget": 69649,
     "status": "completed",
-    "team_size": 6,
+    "team_size": 4,
     "requirements": [
       {
-        "skill_name": "Redis",
+        "skill_name": "Angular",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Kubernetes",
         "min_proficiency": "Expert",
         "is_mandatory": true
       },
       {
-        "skill_name": "Java",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Docker",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "FastAPI",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
+        "skill_name": "Go",
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
       }
     ],
-    "assigned_programmers": []
+    "assigned_programmers": [
+      {
+        "programmer_name": "Elizabeth Mcgrath",
+        "programmer_id": 2,
+        "assignment_start_date": "2024-07-25",
+        "assignment_end_date": "2025-07-25"
+      }
+    ]
   },
   {
     "id": "PRJ-010",
-    "name": "API Gateway Implementation for HealthTech Partners",
-    "client": "LogisticsPro",
-    "description": "Development of customer portal with focus on scalability and performance",
-    "start_date": "2025-08-28",
+    "name": "Cloud Migration for SmartCity Initiative",
+    "client": "EduTech Solutions",
+    "description": "Development of inventory management with focus on scalability and performance",
+    "start_date": "2024-05-09",
     "end_date": null,
-    "estimated_duration_months": 3,
-    "budget": null,
-    "status": "on_hold",
-    "team_size": 6,
+    "estimated_duration_months": 13,
+    "budget": 204080,
+    "status": "planned",
+    "team_size": 8,
     "requirements": [
-      {
-        "skill_name": "Django",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Jenkins",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Machine Learning",
-        "min_proficiency": "Expert",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Data Science",
-        "min_proficiency": "Expert",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "DevOps",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-011",
-    "name": "API Gateway Implementation for TechCorp",
-    "client": "DataSystems Inc",
-    "description": "Development of real-time chat system with focus on scalability and performance",
-    "start_date": "2024-01-26",
-    "end_date": "2024-07-24",
-    "estimated_duration_months": 6,
-    "budget": null,
-    "status": "completed",
-    "team_size": 4,
-    "requirements": [
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "MySQL",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Angular",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
       {
         "skill_name": "Git",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "DevOps",
-        "min_proficiency": "Beginner",
+        "min_proficiency": "Advanced",
         "is_mandatory": true
       },
       {
-        "skill_name": "Data Science",
+        "skill_name": "Microservices",
         "min_proficiency": "Expert",
         "is_mandatory": false
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-012",
-    "name": "Content Management System for BioTech Labs",
-    "client": "FinTech Innovations",
-    "description": "Development of cloud migration with focus on scalability and performance",
-    "start_date": "2024-07-15",
-    "end_date": null,
-    "estimated_duration_months": 18,
-    "budget": 450949,
-    "status": "active",
-    "team_size": 4,
-    "requirements": [
+      },
       {
         "skill_name": "Kubernetes",
         "min_proficiency": "Advanced",
         "is_mandatory": true
       },
       {
-        "skill_name": "Vue.js",
+        "skill_name": "Redis",
         "min_proficiency": "Intermediate",
         "is_mandatory": false
       },
       {
-        "skill_name": "PostgreSQL",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "C++",
+        "skill_name": "TypeScript",
         "min_proficiency": "Advanced",
-        "is_mandatory": true
+        "is_mandatory": false
       },
       {
-        "skill_name": "FastAPI",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
+        "skill_name": "Flask",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
       }
     ],
     "assigned_programmers": []
   },
   {
-    "id": "PRJ-013",
-    "name": "Mobile App Development for FinTech Innovations",
-    "client": "CloudNative Solutions",
-    "description": "Development of machine learning pipeline with focus on scalability and performance",
-    "start_date": "2025-04-14",
-    "end_date": "2025-09-11",
-    "estimated_duration_months": 5,
-    "budget": 223442,
-    "status": "completed",
-    "team_size": 7,
+    "id": "PRJ-011",
+    "name": "Real-time Chat System for MediaStream",
+    "client": "RetailMax",
+    "description": "Development of customer portal with focus on scalability and performance",
+    "start_date": "2025-09-26",
+    "end_date": null,
+    "estimated_duration_months": 8,
+    "budget": 481932,
+    "status": "active",
+    "team_size": 3,
     "requirements": [
       {
-        "skill_name": "FastAPI",
-        "min_proficiency": "Beginner",
+        "skill_name": "Jenkins",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Machine Learning",
+        "min_proficiency": "Expert",
         "is_mandatory": true
       },
       {
@@ -517,98 +450,151 @@
         "is_mandatory": true
       },
       {
-        "skill_name": "Node.js",
+        "skill_name": "Redis",
         "min_proficiency": "Intermediate",
+        "is_mandatory": false
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "David May",
+        "programmer_id": 1,
+        "assignment_start_date": "2025-09-26",
+        "assignment_end_date": "2026-05-16"
+      },
+      {
+        "programmer_name": "Elizabeth Burns",
+        "programmer_id": 8,
+        "assignment_start_date": "2025-09-26",
+        "assignment_end_date": "2026-05-05"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-012",
+    "name": "Web Application for FinTech Innovations",
+    "client": "DataSystems Inc",
+    "description": "Development of api gateway implementation with focus on scalability and performance",
+    "start_date": "2024-04-07",
+    "end_date": null,
+    "estimated_duration_months": 10,
+    "budget": null,
+    "status": "active",
+    "team_size": 5,
+    "requirements": [
+      {
+        "skill_name": "MySQL",
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "TypeScript",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "DevOps",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Kubernetes",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
+      }
+    ],
+    "assigned_programmers": []
+  },
+  {
+    "id": "PRJ-013",
+    "name": "Mobile App Development for TechCorp",
+    "client": "EduTech Solutions",
+    "description": "Development of web application with focus on scalability and performance",
+    "start_date": "2023-12-11",
+    "end_date": null,
+    "estimated_duration_months": 9,
+    "budget": 113616,
+    "status": "active",
+    "team_size": 6,
+    "requirements": [
+      {
+        "skill_name": "Go",
+        "min_proficiency": "Beginner",
         "is_mandatory": true
+      },
+      {
+        "skill_name": "Data Science",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Java",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
       }
     ],
     "assigned_programmers": []
   },
   {
     "id": "PRJ-014",
-    "name": "Security Audit System for RetailMax",
-    "client": "RetailMax",
-    "description": "Development of machine learning pipeline with focus on scalability and performance",
-    "start_date": "2024-07-13",
-    "end_date": "2025-01-09",
-    "estimated_duration_months": 6,
-    "budget": null,
+    "name": "Microservices Architecture for CloudNative Solutions",
+    "client": "HealthTech Partners",
+    "description": "Development of inventory management with focus on scalability and performance",
+    "start_date": "2024-04-16",
+    "end_date": "2025-04-11",
+    "estimated_duration_months": 12,
+    "budget": 52822,
     "status": "completed",
-    "team_size": 6,
+    "team_size": 4,
     "requirements": [
       {
-        "skill_name": "Go",
-        "min_proficiency": "Advanced",
+        "skill_name": "PostgreSQL",
+        "min_proficiency": "Intermediate",
         "is_mandatory": false
       },
       {
-        "skill_name": "Docker",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Machine Learning",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Expert",
+        "skill_name": "Jenkins",
+        "min_proficiency": "Advanced",
         "is_mandatory": true
       },
       {
         "skill_name": "TypeScript",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "MongoDB",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Microservices",
-        "min_proficiency": "Beginner",
+        "min_proficiency": "Intermediate",
         "is_mandatory": false
       },
       {
-        "skill_name": "Kubernetes",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
+        "skill_name": "Microservices",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
       }
     ],
     "assigned_programmers": []
   },
   {
     "id": "PRJ-015",
-    "name": "Inventory Management for DataSystems Inc",
-    "client": "FinTech Innovations",
-    "description": "Development of customer portal with focus on scalability and performance",
-    "start_date": "2024-04-24",
-    "end_date": "2025-03-20",
-    "estimated_duration_months": 11,
-    "budget": null,
-    "status": "completed",
+    "name": "API Gateway Implementation for RetailMax",
+    "client": "CloudNative Solutions",
+    "description": "Development of payment processing system with focus on scalability and performance",
+    "start_date": "2024-02-18",
+    "end_date": null,
+    "estimated_duration_months": 10,
+    "budget": 121943,
+    "status": "active",
     "team_size": 6,
     "requirements": [
       {
-        "skill_name": "Docker",
+        "skill_name": "Go",
         "min_proficiency": "Intermediate",
         "is_mandatory": true
       },
       {
-        "skill_name": "Java",
+        "skill_name": "Docker",
         "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
+        "is_mandatory": false
       },
       {
         "skill_name": "Node.js",
-        "min_proficiency": "Intermediate",
+        "min_proficiency": "Beginner",
         "is_mandatory": true
       }
     ],
@@ -616,183 +602,180 @@
   },
   {
     "id": "PRJ-016",
-    "name": "Payment Processing System for RetailMax",
-    "client": "SmartCity Initiative",
-    "description": "Development of microservices architecture with focus on scalability and performance",
-    "start_date": "2024-12-08",
-    "end_date": null,
-    "estimated_duration_months": 12,
+    "name": "Content Management System for RetailMax",
+    "client": "RetailMax",
+    "description": "Development of mobile app development with focus on scalability and performance",
+    "start_date": "2025-10-31",
+    "end_date": "2027-01-24",
+    "estimated_duration_months": 15,
     "budget": null,
-    "status": "active",
-    "team_size": 2,
+    "status": "completed",
+    "team_size": 4,
     "requirements": [
       {
         "skill_name": "Data Science",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "DevOps",
-        "min_proficiency": "Intermediate",
+        "min_proficiency": "Advanced",
         "is_mandatory": true
       },
       {
         "skill_name": "MongoDB",
+        "min_proficiency": "Beginner",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Node.js",
         "min_proficiency": "Expert",
         "is_mandatory": true
       },
-      {
-        "skill_name": "Docker",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-017",
-    "name": "Cloud Migration for CloudNative Solutions",
-    "client": "HealthTech Partners",
-    "description": "Development of customer portal with focus on scalability and performance",
-    "start_date": "2024-09-13",
-    "end_date": "2025-11-07",
-    "estimated_duration_months": 14,
-    "budget": 52454,
-    "status": "completed",
-    "team_size": 4,
-    "requirements": [
       {
         "skill_name": "Microservices",
         "min_proficiency": "Expert",
         "is_mandatory": false
       },
       {
-        "skill_name": "Python",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Node.js",
+        "skill_name": "Kubernetes",
         "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Data Science",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Redis",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      }
-    ],
-    "assigned_programmers": []
-  },
-  {
-    "id": "PRJ-018",
-    "name": "Web Application for GreenEnergy Co",
-    "client": "DataSystems Inc",
-    "description": "Development of api gateway implementation with focus on scalability and performance",
-    "start_date": "2024-04-12",
-    "end_date": null,
-    "estimated_duration_months": 3,
-    "budget": null,
-    "status": "on_hold",
-    "team_size": 2,
-    "requirements": [
-      {
-        "skill_name": "Redis",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "MongoDB",
-        "min_proficiency": "Advanced",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "C++",
-        "min_proficiency": "Advanced",
         "is_mandatory": true
       },
       {
         "skill_name": "TypeScript",
         "min_proficiency": "Expert",
-        "is_mandatory": true
+        "is_mandatory": false
       },
       {
         "skill_name": "JavaScript",
-        "min_proficiency": "Intermediate",
+        "min_proficiency": "Beginner",
         "is_mandatory": true
+      }
+    ],
+    "assigned_programmers": [
+      {
+        "programmer_name": "Elizabeth Mcgrath",
+        "programmer_id": 2,
+        "assignment_start_date": "2025-10-31",
+        "assignment_end_date": "2027-01-19"
+      },
+      {
+        "programmer_name": "Peggy Marshall MD",
+        "programmer_id": 4,
+        "assignment_start_date": "2025-10-31",
+        "assignment_end_date": "2027-01-18"
+      },
+      {
+        "programmer_name": "Dr. Blake Jackson",
+        "programmer_id": 5,
+        "assignment_start_date": "2025-10-31",
+        "assignment_end_date": "2027-01-11"
+      },
+      {
+        "programmer_name": "Kristen Mitchell",
+        "programmer_id": 6,
+        "assignment_start_date": "2025-10-31",
+        "assignment_end_date": "2027-01-17"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-017",
+    "name": "DevOps Automation for EduTech Solutions",
+    "client": "RetailMax",
+    "description": "Development of data analytics dashboard with focus on scalability and performance",
+    "start_date": "2024-07-29",
+    "end_date": "2024-10-27",
+    "estimated_duration_months": 3,
+    "budget": null,
+    "status": "completed",
+    "team_size": 7,
+    "requirements": [
+      {
+        "skill_name": "FastAPI",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false
       },
       {
         "skill_name": "Go",
+        "min_proficiency": "Expert",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Jenkins",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Microservices",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Angular",
         "min_proficiency": "Intermediate",
         "is_mandatory": true
-      },
+      }
+    ],
+    "assigned_programmers": [
       {
-        "skill_name": "Vue.js",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
+        "programmer_name": "Matthew Salinas",
+        "programmer_id": 9,
+        "assignment_start_date": "2024-07-29",
+        "assignment_end_date": "2024-10-21"
+      }
+    ]
+  },
+  {
+    "id": "PRJ-018",
+    "name": "Inventory Management for CloudNative Solutions",
+    "client": "DataSystems Inc",
+    "description": "Development of customer portal with focus on scalability and performance",
+    "start_date": "2024-10-13",
+    "end_date": null,
+    "estimated_duration_months": 3,
+    "budget": null,
+    "status": "active",
+    "team_size": 7,
+    "requirements": [
       {
-        "skill_name": "Flask",
+        "skill_name": "Java",
         "min_proficiency": "Advanced",
-        "is_mandatory": true
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Jenkins",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
+      },
+      {
+        "skill_name": "Django",
+        "min_proficiency": "Intermediate",
+        "is_mandatory": false
       }
     ],
     "assigned_programmers": []
   },
   {
     "id": "PRJ-019",
-    "name": "Customer Portal for FinTech Innovations",
-    "client": "MediaStream",
-    "description": "Development of inventory management with focus on scalability and performance",
-    "start_date": "2024-04-22",
+    "name": "Security Audit System for EduTech Solutions",
+    "client": "BioTech Labs",
+    "description": "Development of payment processing system with focus on scalability and performance",
+    "start_date": "2024-10-02",
     "end_date": null,
-    "estimated_duration_months": 17,
-    "budget": 164481,
-    "status": "active",
+    "estimated_duration_months": 16,
+    "budget": 438658,
+    "status": "on_hold",
     "team_size": 6,
     "requirements": [
       {
-        "skill_name": "TypeScript",
-        "min_proficiency": "Expert",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "MySQL",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Microservices",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Kubernetes",
+        "skill_name": "MongoDB",
         "min_proficiency": "Advanced",
         "is_mandatory": true
       },
       {
-        "skill_name": "Git",
-        "min_proficiency": "Expert",
-        "is_mandatory": false
+        "skill_name": "Redis",
+        "min_proficiency": "Advanced",
+        "is_mandatory": true
       },
       {
-        "skill_name": "Machine Learning",
+        "skill_name": "Node.js",
         "min_proficiency": "Intermediate",
         "is_mandatory": true
       }
@@ -801,52 +784,39 @@
   },
   {
     "id": "PRJ-020",
-    "name": "Content Management System for LogisticsPro",
-    "client": "GreenEnergy Co",
-    "description": "Development of mobile app development with focus on scalability and performance",
-    "start_date": "2025-10-04",
-    "end_date": null,
-    "estimated_duration_months": 12,
-    "budget": 319857,
-    "status": "active",
-    "team_size": 8,
+    "name": "Real-time Chat System for FinTech Innovations",
+    "client": "CloudNative Solutions",
+    "description": "Development of microservices architecture with focus on scalability and performance",
+    "start_date": "2025-06-23",
+    "end_date": "2026-10-16",
+    "estimated_duration_months": 16,
+    "budget": 81375,
+    "status": "completed",
+    "team_size": 6,
     "requirements": [
       {
         "skill_name": "MongoDB",
-        "min_proficiency": "Beginner",
-        "is_mandatory": false
-      },
-      {
-        "skill_name": "Angular",
-        "min_proficiency": "Intermediate",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Redis",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "JavaScript",
-        "min_proficiency": "Beginner",
-        "is_mandatory": true
-      },
-      {
-        "skill_name": "Go",
         "min_proficiency": "Advanced",
         "is_mandatory": false
       },
       {
-        "skill_name": "Jenkins",
-        "min_proficiency": "Expert",
-        "is_mandatory": true
+        "skill_name": "C++",
+        "min_proficiency": "Advanced",
+        "is_mandatory": false
       },
       {
-        "skill_name": "Rust",
+        "skill_name": "PostgreSQL",
         "min_proficiency": "Beginner",
-        "is_mandatory": true
+        "is_mandatory": false
       }
     ],
-    "assigned_programmers": []
+    "assigned_programmers": [
+      {
+        "programmer_name": "Lisa Gomez",
+        "programmer_id": 3,
+        "assignment_start_date": "2025-06-23",
+        "assignment_end_date": "2026-09-25"
+      }
+    ]
   }
 ]

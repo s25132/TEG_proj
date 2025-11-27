@@ -134,7 +134,7 @@ class GraphRAGDataGenerator:
 
         skills_with_proficiency = []
         for skill in selected_skills:
-                            # Weight proficiency levels from config
+            # Weight proficiency levels from config
             proficiency = random.choices(
                 proficiency_levels, weights=self.config["skills"]["proficiency_weights"]
             )[0]
@@ -391,6 +391,16 @@ class GraphRAGDataGenerator:
                         return False
             return True
 
+        # Helper: score ile wymagań spełnia programista
+        def match_score(programmer, requirements):
+            score = 0
+            for req in requirements:
+                if has_skill_requirement(
+                    programmer, req["skill_name"], req["min_proficiency"]
+                ):
+                    score += 1
+            return score
+
         # Process only active and completed projects for assignments
         assignable_projects = [
             p for p in projects if p["status"] in ["active", "completed"]
@@ -403,7 +413,6 @@ class GraphRAGDataGenerator:
             if random.random() > assignment_probability:
                 continue  # Skip this project to leave programmers available
 
-            assigned_count = 0
             max_assignments = min(project["team_size"], len(programmer_profiles))
 
             # Get mandatory requirements
@@ -411,23 +420,64 @@ class GraphRAGDataGenerator:
                 req for req in project["requirements"] if req["is_mandatory"]
             ]
 
-            # Try to find programmers matching mandatory skills
             eligible_programmers = []
-            for programmer in programmer_profiles:
-                matches_mandatory = True
-                for req in mandatory_requirements:
-                    if not has_skill_requirement(
-                        programmer, req["skill_name"], req["min_proficiency"]
+
+            if mandatory_requirements:
+                # 1) twarde kryterium: spełnia wszystkie mandatory
+                for programmer in programmer_profiles:
+                    if not is_available(
+                        programmer["id"], project["start_date"], project["end_date"]
                     ):
-                        matches_mandatory = False
-                        break
+                        continue
 
-                if matches_mandatory and is_available(
-                    programmer["id"], project["start_date"], project["end_date"]
-                ):
-                    eligible_programmers.append(programmer)
+                    if all(
+                        has_skill_requirement(
+                            programmer,
+                            req["skill_name"],
+                            req["min_proficiency"],
+                        )
+                        for req in mandatory_requirements
+                    ):
+                        eligible_programmers.append(programmer)
 
-            # Randomly select from eligible programmers
+                # 2) fallback: jeśli nikt nie spełnia wszystkich,
+                #    wybierz tych, którzy spełniają chociaż część wymagań
+                if not eligible_programmers:
+                    scored = []
+                    for programmer in programmer_profiles:
+                        if not is_available(
+                            programmer["id"],
+                            project["start_date"],
+                            project["end_date"],
+                        ):
+                            continue
+                        score = match_score(programmer, mandatory_requirements)
+                        if score > 0:
+                            scored.append((score, programmer))
+
+                    # sortujemy po score malejąco
+                    scored.sort(key=lambda x: x[0], reverse=True)
+                    eligible_programmers = [p for _, p in scored]
+
+            else:
+                # brak mandatory -> każdy z jakąś umiejętnością z requirements się nada
+                requirement_skills = {req["skill_name"] for req in project["requirements"]}
+                for programmer in programmer_profiles:
+                    if not is_available(
+                        programmer["id"], project["start_date"], project["end_date"]
+                    ):
+                        continue
+                    if any(
+                        skill["name"] in requirement_skills
+                        for skill in programmer["skills"]
+                    ):
+                        eligible_programmers.append(programmer)
+
+            # jeśli nadal nikt nie pasuje – zostawiamy projekt bez przydziału
+            if not eligible_programmers:
+                continue
+
+            # losowy wybór z puli kandydatów
             selected_programmers = random.sample(
                 eligible_programmers, min(max_assignments, len(eligible_programmers))
             )
@@ -445,14 +495,19 @@ class GraphRAGDataGenerator:
                     project_duration = (project_end - project_start).days
 
                     # Assignment ends configurable days before project end (but at least 1 day after start)
-                    days_before_end = min(
-                        random.randint(
-                            self.config["assignment"]["assignment_end_days_before_min"],
-                            self.config["assignment"]["assignment_end_days_before_max"],
-                        ),
-                        max(1, project_duration - 1),
-                    )
-                    assignment_end_date = project_end - timedelta(days=days_before_end)
+                    if project_duration <= 1:
+                        assignment_end_date = project_end
+                    else:
+                        days_before_end = min(
+                            random.randint(
+                                self.config["assignment"]["assignment_end_days_before_min"],
+                                self.config["assignment"]["assignment_end_days_before_max"],
+                            ),
+                            max(1, project_duration - 1),
+                        )
+                        assignment_end_date = project_end - timedelta(
+                            days=days_before_end
+                        )
                     assignment_end = assignment_end_date.isoformat()
 
                 elif project["status"] == "active":
@@ -480,20 +535,23 @@ class GraphRAGDataGenerator:
                             project["start_date"]
                         ).date()
                         project_duration = (project_end - project_start).days
-                        days_before_end = min(
-                            random.randint(
-                                self.config["assignment"][
-                                    "assignment_end_days_before_min"
-                                ],
-                                self.config["assignment"][
-                                    "assignment_end_days_before_max"
-                                ],
-                            ),
-                            max(1, project_duration - 1),
-                        )
-                        assignment_end_date = project_end - timedelta(
-                            days=days_before_end
-                        )
+                        if project_duration <= 1:
+                            assignment_end_date = project_end
+                        else:
+                            days_before_end = min(
+                                random.randint(
+                                    self.config["assignment"][
+                                        "assignment_end_days_before_min"
+                                    ],
+                                    self.config["assignment"][
+                                        "assignment_end_days_before_max"
+                                    ],
+                                ),
+                                max(1, project_duration - 1),
+                            )
+                            assignment_end_date = project_end - timedelta(
+                                days=days_before_end
+                            )
                         assignment_end = assignment_end_date.isoformat()
                     else:
                         # Fallback: use estimated duration
@@ -521,7 +579,6 @@ class GraphRAGDataGenerator:
 
                 project["assigned_programmers"].append(assignment)
                 programmer_assignments[programmer["id"]].append(assignment)
-                assigned_count += 1
 
         return projects
 

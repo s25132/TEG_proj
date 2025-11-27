@@ -17,7 +17,7 @@ services:
       # Project requirements
       PROJECT_REQ_MIN: "3"
       PROJECT_REQ_MAX: "8"
-      PROJECT_REQ_MANDATORY_PROB: "0.7"
+      PROJECT_REQ_MANDATORY_PROB: "0.3"
 
       # Assignment
       ASSIGN_PROB: "0.8"
