@@ -5,6 +5,8 @@ from chromadb.api.models.Collection import Collection
 from pypdf import PdfReader
 from io import BytesIO
 from uuid import uuid4
+from langsmith.run_helpers import traceable
+
 
 def build_context_from_chroma( openai_client: OpenAI, collection: Collection, question: str, top_k: int):
 
@@ -27,6 +29,7 @@ def build_context_from_chroma( openai_client: OpenAI, collection: Collection, qu
     }
 
 
+@traceable
 def call_llm_with_rag( openai_client: OpenAI, question: str, context_docs: List[str], metadatas: List[dict]) -> str:
     """Buduje prompt z kontekstu i wywołuje LLM."""
     if not context_docs:

@@ -11,3 +11,4 @@ numpy==1.26.4          # wymagane przez chroma/pyarrow
 pydantic==2.7.4        # stabilne z fastapi
 python-multipart==0.0.6
 pypdf==4.2.0
+langsmith>=0.3.x
