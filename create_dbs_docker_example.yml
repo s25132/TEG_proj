@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  create_dbs:
+    build:
+      context: ./create_dbs
+      dockerfile: Dockerfile
+    container_name: create_dbs
+
+    environment:
+      OPENAI_API_KEY: "klucz"
+
+      PROJECTS_FILE: "data/projects/projects.json"
+      PROGRAMMERS_DIR: "data/programmers"
+      CHROMA_COLLECTION_NAME: "talenrApp"
+      CHROMA_DIR: "data/chroma"
+
+    volumes:
+      - ./data:/app/data
