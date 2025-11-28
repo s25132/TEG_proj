@@ -21,7 +21,7 @@ Istniejące dane zostaną usunięte
 
 
 ## Skrypt create_chroma -> katalog create_dbs
-Służy do stworzenia chromadb na podstaawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.  
+Służy do stworzenia chromadb na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.  
 
 Pliki sa generowane do katalgu /data w gałęzi głownej.  
 
