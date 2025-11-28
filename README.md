@@ -23,7 +23,7 @@ Istniejące dane zostaną usunięte
 ## Skrypt create_chroma -> katalog create_dbs
 Służy do stworzenia chromadb na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.  
 
-Wymaga odpalenia generate_data.  
+Wymaga danych z generate_data (katalog data tam to powinno być).  
 
 Pliki sa generowane do katalgu /data w gałęzi głownej.  
 
@@ -49,7 +49,7 @@ Backend wystawia post /add_rfp do dodawania nowege /add_rfp do chromadb.
 
 Frontend wystawia proste GUI wysyła zapytanie do backend za pomocą /ask_rag oraz umożliwia wysyłanie nowego rfp.
 
-Wymaga odpalenia generate_data i create_chroma.  
+Wymaga danych z generate_data i create_chroma (katalog data tam to powinno być).
 
 Uruchomienie:  
 
