@@ -45,7 +45,9 @@ Istniejąca chromadb zostaną usunięte
 
 Backend wystawia post /ask_rag do odpytywania się rag pochodzącego z chromadb.  
 
-Frontend wystawia proste GUI wysyła zapytanie do backend za pomocą /ask_rag.
+Backend wystawia post /add_rfp do dodawania nowege /add_rfp do chromadb.  
+
+Frontend wystawia proste GUI wysyła zapytanie do backend za pomocą /ask_rag oraz umożliwia wysyłanie nowego rfp.
 
 Wymaga odpalenia generate_data i create_chroma.  
 

@@ -2,6 +2,9 @@ from typing import List
 
 from openai import OpenAI
 from chromadb.api.models.Collection import Collection
+from pypdf import PdfReader
+from io import BytesIO
+from uuid import uuid4
 
 def build_context_from_chroma( openai_client: OpenAI, collection: Collection, question: str, top_k: int):
 
@@ -60,3 +63,46 @@ def call_llm_with_rag( openai_client: OpenAI, question: str, context_docs: List[
     )
 
     return completion.choices[0].message.content
+
+def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
+    reader = PdfReader(BytesIO(pdf_bytes))
+    texts = []
+    for page in reader.pages:
+        page_text = page.extract_text() or ""
+        texts.append(page_text)
+    return "\n".join(texts).strip()
+
+
+def load_rfps_into_collection(
+    pdf_bytes: bytes,
+    filename: str,
+    collection: Collection,
+    openai_client: OpenAI,
+) -> None:
+    """Ekstrahuje tekst z PDF i zapisuje jako RFP w kolekcji Chroma."""
+    full_text = extract_text_from_pdf_bytes(pdf_bytes)
+
+    if not full_text:
+        print(f"[RFP] Brak tekstu w pliku: {filename}, pomijam.")
+        return
+
+    # unikalne ID dla RFP
+    rfp_id = f"rfp_{uuid4()}"
+
+    embedding = openai_client.embeddings.create(
+        model="text-embedding-3-small",
+        input=full_text,
+    ).data[0].embedding
+
+    # UWAGA: wszystko musi być listą
+    collection.add(
+        ids=[rfp_id],
+        documents=[full_text],
+        embeddings=[embedding],
+        metadatas=[{
+            "kind": "rfp",
+            "filename": filename,
+        }],
+    )
+
+    print(f"[RFP] Załadowano 1 RFP do kolekcji z pliku: {filename}")

@@ -2,11 +2,11 @@ import os
 
 import chromadb
 from chromadb import PersistentClient
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from openai import OpenAI
 from dotenv import load_dotenv
 from schemas import ChatRequest, ChatResponse
-from chroma import build_context_from_chroma, call_llm_with_rag
+from chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 
 load_dotenv(override=True)
 
@@ -56,3 +56,24 @@ def chat_rag(request: ChatRequest):
         answer=answer,
         context_documents=docs,
     )
+
+@app.post("/add_rfp")
+async def add_rfp(file: UploadFile = File(...)):
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Plik musi być PDF.")
+
+    try:
+        content = await file.read()
+
+        # tu indeksujemy RFP w Chroma
+        load_rfps_into_collection(
+            pdf_bytes=content,
+            filename=file.filename,
+            collection=collection,
+            openai_client=openai_client,
+        )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Nie udało się przetworzyć pliku: {e}")
+
+    return {"status": "OK", "filename": file.filename}
