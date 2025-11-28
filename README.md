@@ -1,5 +1,5 @@
-## TEG_proj
-# Skrypt generate_data -> katalog generate_data
+# TEG_proj
+## Skrypt generate_data -> katalog generate_data
 Służy do generowania cv programistów, rfps i pliku projects.json z obecnie toczącymi się projektami.  
 
 Pliki sa generowane do katalgu /data w gałęzi głownej

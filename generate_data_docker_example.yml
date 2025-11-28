@@ -15,9 +15,9 @@ services:
       SKILL_PROFICIENCY_WEIGHTS: "1,2,3,2"
 
       # Project requirements
-      PROJECT_REQ_MIN: "3"
-      PROJECT_REQ_MAX: "8"
-      PROJECT_REQ_MANDATORY_PROB: "0.3"
+      PROJECT_REQ_MIN: "1"
+      PROJECT_REQ_MAX: "3"
+      PROJECT_REQ_MANDATORY_PROB: "0.2"
 
       # Assignment
       ASSIGN_PROB: "1"
@@ -30,9 +30,9 @@ services:
       OUTPUT_RFPS: "data/rfps"
 
       # Generation
-      GEN_NUM_PROGRAMMERS: "30"
+      GEN_NUM_PROGRAMMERS: "65"
       GEN_NUM_PROJECTS: "10"
-      GEN_NUM_RFPS: "3"
+      GEN_NUM_RFPS: "20"
 
     volumes:
       - ./data:/app/data

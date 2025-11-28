@@ -260,7 +260,7 @@ class GraphRAGDataGenerator:
             duration_months = random.randint(3, 18)
 
             # Some projects are completed, some ongoing, some planned
-            status_weights = [50, 30, 15, 5]  # completed, active, planned, on_hold
+            status_weights = [70, 40, 1, 1]  # completed, active, planned, on_hold
             status = random.choices(
                 ["completed", "active", "planned", "on_hold"], weights=status_weights
             )[0]
