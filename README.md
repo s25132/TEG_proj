@@ -41,23 +41,27 @@ docker compose -f create_dbs_docker.yml up
 
 Istniejąca chromadb zostaną usunięte
 
-## Aplikacja -> backend
+## Aplikacja
 
 Backend wystawia post /ask_rag do odpytywania się rag pochodzącego z chromadb.  
+
+Frontend wystawia proste GUI wysyła zapytanie do backend za pomocą /ask_rag.
 
 Wymaga odpalenia generate_data i create_chroma.  
 
 Uruchomienie:  
 
-backend_docker_example.yml zmień na backend_docker.yml
+talent_ai_docker_example.yml zmień na talent_ai_docker.yml
 
-uzupełnij OPENAI_API_KEY w backend_docker.yml 
+uzupełnij OPENAI_API_KEY w talent_ai_docker.yml 
 
 będąc w katalogu głownym:
 
-docker compose -f backend_docker.yml build 
+docker compose -f talent_ai_docker.yml build 
 
-docker compose -f backend_docker.yml up
+docker compose -f talent_ai_docker.yml up
 
-http://localhost:8000/docs
+http://localhost:8501/
+
+![GUI](gui.png)
 

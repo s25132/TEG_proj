@@ -209,3 +209,5 @@ docker-compose.yml
 generate_data_docker.yml
 create_dbs_docker.yml
 backend_docker.yml
+frontend_docker.yml
+talent_ai_docker.yml

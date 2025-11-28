@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  api_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: api_backend
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: "klucz"
+      CHROMA_COLLECTION_NAME: "talenrApp"
+      CHROMA_DIR: "/app/data/chroma"
+    volumes:
+      - ./data/chroma:/app/data/chroma
+
+  api_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: api_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      # wewnątrz sieci compose nazwa serwisu działa jako host
+      BACKEND_URL: "http://api_backend:8000"
+    depends_on:
+      - api_backend

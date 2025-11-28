@@ -1,0 +1,10 @@
+services:
+  api_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    container_name: api_frontend
+    environment:
+      BACKEND_URL: "http://api_backend:8000"
