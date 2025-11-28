@@ -43,7 +43,7 @@ def call_llm_with_rag( openai_client: OpenAI, question: str, context_docs: List[
 
     system_msg = (
         "You are an assistant that answers questions using ONLY the provided context. "
-        "The context comes from two types of documents: projects and programmers' CVs. "
+        "The context comes from three types of documents: projects, programmers' CVs, and RFPs. "
         "If you are not sure or the answer is not present in the context, say that "
         "you don't know and do not hallucinate."
     )
