@@ -12,6 +12,11 @@ services:
       OPENAI_API_KEY: "klucz"
       CHROMA_COLLECTION_NAME: "talenrApp"
       CHROMA_DIR: "/app/data/chroma"
+
+      LANGSMITH_TRACING: false
+      LANGSMITH_API_KEY: "klucz"
+      LANGCHAIN_PROJECT: "TalentAI"
+
     volumes:
       - ./data/chroma:/app/data/chroma
 
