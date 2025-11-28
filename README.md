@@ -23,6 +23,8 @@ Istniejące dane zostaną usunięte
 ## Skrypt create_chroma -> katalog create_dbs
 Służy do stworzenia chromadb na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.  
 
+Wymaga odpalenia generate_data.  
+
 Pliki sa generowane do katalgu /data w gałęzi głownej.  
 
 Uruchomienie:  
@@ -37,8 +39,25 @@ docker compose -f create_dbs_docker.yml build
 
 docker compose -f create_dbs_docker.yml up
 
-Istniejące dane zostaną usunięte
+Istniejąca chromadb zostaną usunięte
 
+## Aplikacja -> backend
 
+Backend wystawia post /ask_rag do odpytywania się rag pochodzącego z chromadb.  
 
+Wymaga odpalenia generate_data i create_chroma.  
+
+Uruchomienie:  
+
+backend_docker_example.yml zmień na backend_docker.yml
+
+uzupełnij OPENAI_API_KEY w backend_docker.yml 
+
+będąc w katalogu głownym:
+
+docker compose -f backend_docker.yml build 
+
+docker compose -f backend_docker.yml up
+
+http://localhost:8000/docs
 
