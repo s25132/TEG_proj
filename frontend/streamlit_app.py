@@ -22,8 +22,8 @@ def ask_backend(question: str, top_k: int = 5):
 
 
 def upload_rfp(file) -> str:
-    """Wysyła plik PDF do backendu /add_rfps i zwraca status."""
-    url = f"{BACKEND_URL}/add_rfps"
+    """Wysyła plik PDF do backendu /add_rfp i zwraca status."""
+    url = f"{BACKEND_URL}/add_rfp"
     files = {
         "file": (file.name, file.getvalue(), "application/pdf")
     }
