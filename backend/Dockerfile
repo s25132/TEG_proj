@@ -13,13 +13,12 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Kopiujemy kod aplikacji
-COPY api.py ./
-COPY chroma.py ./
-COPY schemas.py ./
+COPY app/ ./app/
 
 # Jeśli używasz .env wewnątrz kontenera i chcesz go kopiować:
 # COPY .env ./
 
 ENV PYTHONUNBUFFERED=1
+EXPOSE 8000
 
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -5,8 +5,8 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from chromadb import PersistentClient
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from dotenv import load_dotenv
-from schemas import ChatRequest, ChatResponse
-from chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
+from app.schemas import ChatRequest, ChatResponse
+from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 
 load_dotenv(override=True)
 
