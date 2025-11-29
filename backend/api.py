@@ -1,9 +1,9 @@
 import os
 
 import chromadb
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from chromadb import PersistentClient
 from fastapi import FastAPI, HTTPException, UploadFile, File
-from openai import OpenAI
 from dotenv import load_dotenv
 from schemas import ChatRequest, ChatResponse
 from chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
@@ -19,8 +19,9 @@ if not OPENAI_API_KEY:
 CHROMA_DIR = os.getenv("CHROMA_DIR", "./chroma_db")
 CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "projects_and_cvs")
 
-# Klient OpenAI
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
+# ---------- Inicjalizacja klientów ----------
+llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.2)
+emb_model = OpenAIEmbeddings(model="text-embedding-3-small")
 
 # Klient Chroma (Persistent – dane na dysku)
 chroma_client: PersistentClient = chromadb.PersistentClient(path=CHROMA_DIR)
@@ -35,7 +36,7 @@ def chat_rag(request: ChatRequest):
     # 1. Query do Chroma
     try:
        chroma_result = build_context_from_chroma(
-        openai_client=openai_client,
+        emb_model=emb_model,
         collection=collection,
         question=request.question,
         top_k=request.top_k
@@ -48,7 +49,7 @@ def chat_rag(request: ChatRequest):
 
     # 2. Call LLM z kontekstem
     try:
-        answer = call_llm_with_rag(openai_client, request.question, docs, metas)
+        answer = call_llm_with_rag(llm, request.question, docs, metas)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"LLM error: {e}")
 
@@ -70,7 +71,7 @@ async def add_rfp(file: UploadFile = File(...)):
             pdf_bytes=content,
             filename=file.filename,
             collection=collection,
-            openai_client=openai_client,
+            emb_model=emb_model,
         )
 
     except Exception as e:

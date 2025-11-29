@@ -1,5 +1,5 @@
 chromadb==0.5.0
-openai==1.55.0
+langchain-openai==0.3.11
 pypdf==4.2.0
 numpy==1.26.4
 pydantic==2.7.4

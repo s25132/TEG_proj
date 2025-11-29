@@ -1,11 +1,10 @@
 import json
 import glob
 import os
-
 import chromadb
-from openai import OpenAI
 from pypdf import PdfReader
 
+from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -51,7 +50,7 @@ def extract_text_from_pdf(path: str) -> str:
     return "\n".join(texts).strip()
 
 
-def load_projects_into_collection(projects_file: str, collection, openai_client):
+def load_projects_into_collection(projects_file: str, collection, emb_model):
     with open(projects_file, "r", encoding="utf-8") as f:
         projects = json.load(f)
 
@@ -74,11 +73,7 @@ def load_projects_into_collection(projects_file: str, collection, openai_client)
             "status": p.get("status"),
         })
 
-        emb = openai_client.embeddings.create(
-            model="text-embedding-3-small",
-            input=text,
-        ).data[0].embedding
-
+        emb = emb_model.embed_query(text)
         embeddings.append(emb)
 
     if ids:
@@ -92,7 +87,7 @@ def load_projects_into_collection(projects_file: str, collection, openai_client)
     print(f"Załadowano {len(ids)} projektów do kolekcji.")
 
 
-def load_cvs_into_collection(cv_dir: str, collection, openai_client):
+def load_cvs_into_collection(cv_dir: str, collection, emb_model):
     pdf_paths = glob.glob(os.path.join(cv_dir, "*.pdf"))
     if not pdf_paths:
         print(f"Brak plików PDF w katalogu: {cv_dir}")
@@ -121,10 +116,7 @@ def load_cvs_into_collection(cv_dir: str, collection, openai_client):
             "filename": filename,
         })
 
-        emb = openai_client.embeddings.create(
-            model="text-embedding-3-small",
-            input=full_text,
-        ).data[0].embedding
+        emb = emb_model.embed_query(full_text)
 
         embeddings.append(emb)
 
@@ -142,7 +134,8 @@ def load_cvs_into_collection(cv_dir: str, collection, openai_client):
 def main():
     
     # 1. Klient OpenAI (wymaga OPENAI_API_KEY)
-    openai_client = OpenAI()
+    
+    emb_model = OpenAIEmbeddings(model="text-embedding-3-small")
 
     chroma_dir = os.getenv("CHROMA_DIR")
 
@@ -163,14 +156,14 @@ def main():
     projects_file = os.getenv("PROJECTS_FILE")
     # 4. Projekty
     if os.path.exists(projects_file):
-        load_projects_into_collection(projects_file, collection, openai_client)
+        load_projects_into_collection(projects_file, collection, emb_model)
     else:
         print(f"Uwaga: nie znaleziono pliku {projects_file}, pomijam ładowanie projektów.")
 
     cv_dir = os.getenv("PROGRAMMERS_DIR")
     # 5. CV z PDF
     if os.path.isdir(cv_dir):
-        load_cvs_into_collection(cv_dir, collection, openai_client)
+        load_cvs_into_collection(cv_dir, collection, emb_model)
     else:
         print(f"Uwaga: katalog {cv_dir} nie istnieje, pomijam ładowanie CV.")
 

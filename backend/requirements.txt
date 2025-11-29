@@ -1,7 +1,6 @@
 fastapi==0.115.0
 uvicorn==0.30.6
 chromadb==0.5.0
-openai==1.55.3
 httpx==0.27.2          # bardzo ważne — nowe wersje łamią openai client
 python-dotenv==1.0.1
 pypdf==4.2.0
@@ -11,4 +10,6 @@ numpy==1.26.4          # wymagane przez chroma/pyarrow
 pydantic==2.7.4        # stabilne z fastapi
 python-multipart==0.0.6
 pypdf==4.2.0
-langsmith>=0.3.x
+langsmith>=0.1.17,<0.2.0
+langchain-openai==0.3.11
+langchain==0.3.0
