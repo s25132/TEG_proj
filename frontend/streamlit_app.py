@@ -39,11 +39,10 @@ def upload_rfp(file) -> str:
 st.set_page_config(page_title="Talent AI", page_icon="💬", layout="centered")
 st.title("Talent AI")
 
-# Pola konfiguracyjne
+# Pola konfiguracyjne – tylko w sidebarze
 with st.sidebar:
     st.header("Ustawienia")
     backend = st.text_input("Backend URL", value=BACKEND_URL)
-    top_k = st.slider("Liczba dokumentów (top_k)", 1, 10, 5)
 
 # Aktualizujemy BACKEND_URL, jeśli user zmieni w sidebarze
 BACKEND_URL = backend
@@ -54,9 +53,13 @@ tab_chat, tab_rfp = st.tabs(["💬 Chat", "📄 Dodaj RFP (PDF)"])
 # --- Zakładka: Chat ---
 
 with tab_chat:
+    # 🔽 Suwak widoczny tylko w zakładce Chat
+    top_k = st.slider("Liczba dokumentów (top_k)", 1, 10, 5)
+
     # Inicjalizacja historii czatu
     if "messages" not in st.session_state:
-        st.session_state["messages"] = []  # lista dictów: {"role": "user"/"assistant", "content": str}
+        # lista dictów: {"role": "user"/"assistant", "content": str}
+        st.session_state["messages"] = []
 
     # Wyświetl historię
     for msg in st.session_state["messages"]:

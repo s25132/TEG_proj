@@ -62,12 +62,14 @@ def chat_rag(request: ChatRequest):
 async def add_rfp(file: UploadFile = File(...)):
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Plik musi być PDF.")
+    
+    result: str = "OK"
 
     try:
         content = await file.read()
 
         # tu indeksujemy RFP w Chroma
-        load_rfps_into_collection(
+        result = load_rfps_into_collection(
             pdf_bytes=content,
             filename=file.filename,
             collection=collection,
@@ -77,4 +79,4 @@ async def add_rfp(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Nie udało się przetworzyć pliku: {e}")
 
-    return {"status": "OK", "filename": file.filename}
+    return {"status": result, "filename": file.filename}
