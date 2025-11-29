@@ -75,13 +75,23 @@ def load_rfps_into_collection(
     filename: str,
     collection: Collection,
     emb_model: OpenAIEmbeddings
-) -> None:
+) -> str:
+    
+    existing = collection.get(
+        where={"filename": filename},
+        limit=1
+    )
+
+    if existing and existing.get("ids"):
+        # plik już istnieje w kolekcji
+        return f"file {filename} already exists"
+
     """Ekstrahuje tekst z PDF i zapisuje jako RFP w kolekcji Chroma."""
     full_text = extract_text_from_pdf_bytes(pdf_bytes)
 
     if not full_text:
         print(f"[RFP] Brak tekstu w pliku: {filename}, pomijam.")
-        return
+        return "no text"
 
     # unikalne ID dla RFP
     rfp_id = f"rfp_{uuid4()}"
@@ -100,3 +110,5 @@ def load_rfps_into_collection(
     )
 
     print(f"[RFP] Załadowano 1 RFP do kolekcji z pliku: {filename}")
+
+    return "OK"
