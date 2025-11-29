@@ -1,6 +1,8 @@
-from typing import List
 
-from openai import OpenAI
+from typing import List
+from langchain_openai import OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
+from langchain.schema import SystemMessage, HumanMessage
 from chromadb.api.models.Collection import Collection
 from pypdf import PdfReader
 from io import BytesIO
@@ -8,12 +10,9 @@ from uuid import uuid4
 from langsmith.run_helpers import traceable
 
 
-def build_context_from_chroma( openai_client: OpenAI, collection: Collection, question: str, top_k: int):
+def build_context_from_chroma(emb_model: OpenAIEmbeddings, collection: Collection, question: str, top_k: int):
 
-    emb = openai_client.embeddings.create(
-        model="text-embedding-3-small",
-        input=question,
-    ).data[0].embedding
+    emb = emb_model.embed_query(question)
 
     results = collection.query(
         query_embeddings=[emb],
@@ -28,12 +27,11 @@ def build_context_from_chroma( openai_client: OpenAI, collection: Collection, qu
         "metadatas": metas[0] if metas else []
     }
 
-
 @traceable
-def call_llm_with_rag( openai_client: OpenAI, question: str, context_docs: List[str], metadatas: List[dict]) -> str:
-    """Buduje prompt z kontekstu i wywołuje LLM."""
+def call_llm_with_rag(llm: ChatOpenAI, question: str, context_docs: List[str], metadatas: List[dict]) -> str:
+
+    # Budowanie kontekstu – identycznie jak u Ciebie
     if not context_docs:
-        # fallback gdy nic nie znaleziono w Chroma
         context_text = "Brak dopasowanego kontekstu w bazie (Chroma)."
     else:
         chunks = []
@@ -56,16 +54,12 @@ def call_llm_with_rag( openai_client: OpenAI, question: str, context_docs: List[
         f"Context documents:\n{context_text}"
     )
 
-    completion = openai_client.chat.completions.create(
-        model="gpt-4.1-mini",  # lub inny model, który masz dostępny
-        messages=[
-            {"role": "system", "content": system_msg},
-            {"role": "user", "content": user_msg},
-        ],
-        temperature=0.2,
-    )
+    response = llm.invoke([
+        SystemMessage(content=system_msg),
+        HumanMessage(content=user_msg),
+    ])
 
-    return completion.choices[0].message.content
+    return response.content
 
 def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
     reader = PdfReader(BytesIO(pdf_bytes))
@@ -80,7 +74,7 @@ def load_rfps_into_collection(
     pdf_bytes: bytes,
     filename: str,
     collection: Collection,
-    openai_client: OpenAI,
+    emb_model: OpenAIEmbeddings
 ) -> None:
     """Ekstrahuje tekst z PDF i zapisuje jako RFP w kolekcji Chroma."""
     full_text = extract_text_from_pdf_bytes(pdf_bytes)
@@ -92,16 +86,13 @@ def load_rfps_into_collection(
     # unikalne ID dla RFP
     rfp_id = f"rfp_{uuid4()}"
 
-    embedding = openai_client.embeddings.create(
-        model="text-embedding-3-small",
-        input=full_text,
-    ).data[0].embedding
+    emb = emb_model.embed_query(full_text)
 
     # UWAGA: wszystko musi być listą
     collection.add(
         ids=[rfp_id],
         documents=[full_text],
-        embeddings=[embedding],
+        embeddings=[emb],
         metadatas=[{
             "kind": "rfp",
             "filename": filename,
