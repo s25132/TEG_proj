@@ -1,11 +1,11 @@
 version: "3.9"
 
 services:
-  create_dbs:
+  create_chroma:
     build:
-      context: ./create_dbs
+      context: ./create_dbs/chroma
       dockerfile: Dockerfile
-    container_name: create_dbs
+    container_name: create_chroma
 
     environment:
       OPENAI_API_KEY: "klucz"
