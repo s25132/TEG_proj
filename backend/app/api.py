@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from chromadb import PersistentClient
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from dotenv import load_dotenv
-from app.schemas import ChatRequest, ChatResponse
+from app.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagResponse
 from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 
 load_dotenv(override=True)
@@ -31,8 +31,8 @@ collection = chroma_client.get_or_create_collection(CHROMA_COLLECTION_NAME)
 
 app = FastAPI(title="API", version="1.0.0")
 
-@app.post("/ask_rag", response_model=ChatResponse)
-def chat_rag(request: ChatRequest):
+@app.post("/ask_rag", response_model=RagResponse)
+def chat_rag(request: RagRequest):
     # 1. Query do Chroma
     try:
        chroma_result = build_context_from_chroma(
@@ -53,10 +53,20 @@ def chat_rag(request: ChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"LLM error: {e}")
 
-    return ChatResponse(
+    return RagResponse(
         answer=answer,
         context_documents=docs,
     )
+
+
+@app.post("/ask_graph", response_model=GraphRagResponse)
+def chat_graph(request: GraphRagRequest):
+
+    return GraphRagResponse(
+        answer="To be implemented",
+        context_subgraphs=[],
+    )
+
 
 @app.post("/add_rfp")
 async def add_rfp(file: UploadFile = File(...)):
