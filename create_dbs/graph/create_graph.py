@@ -12,7 +12,7 @@ USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 
-def wait_for_neo4j(uri, user, password, timeout=120, interval=5) -> Graph:
+def wait_for_neo4j(uri, user, password, timeout=120, interval=1) -> Graph:
     start = time.time()
     print(f"Czekam na Neo4j pod {uri}...")
 
@@ -57,6 +57,9 @@ def create_example_graph(graph: Graph):
     print(alice)
     print(bob)
     print(charlie)
+
+    count = graph.run("MATCH (n:Person) RETURN count(n)").evaluate()
+    print("Persons:", count)
 
 
 def main():
