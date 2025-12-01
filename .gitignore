@@ -212,3 +212,7 @@ backend_docker.yml
 frontend_docker.yml
 talent_ai_docker.yml
 neo4j_docker.yml
+data/chroma
+data/db
+data/logs
+data/plugins

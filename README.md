@@ -57,7 +57,7 @@ Backend wystawia post /add_rfp do dodawania nowego rfp do chromadb.
 
 Frontend wystawia proste GUI i wysyła zapytanie do backend za pomocą /ask_rag oraz umożliwia wysyłanie nowego rfp.
 
-Wymaga danych z generate_data i create_chroma (katalog data -> tam to powinno być).
+Wymaga danych z generate_data, create_chroma i create_graph.
 
 Uruchomienie:  
 
