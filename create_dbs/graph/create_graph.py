@@ -1,5 +1,4 @@
-from py2neo import Graph, Node, Relationship
-from py2neo.errors import ServiceUnavailable, ConnectionUnavailable
+from langchain_community.graphs import Neo4jGraph
 from dotenv import load_dotenv
 from pypdf import PdfReader
 import os
@@ -7,11 +6,12 @@ import time
 
 load_dotenv(override=True)
 
-URI =  os.getenv("NEO4J_URI", "bolt://localhost:7687")
+URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 PROJECTS_FILE = os.getenv("PROJECTS_FILE")
 PROGRAMMERS_DIR = os.getenv("PROGRAMMERS_DIR")
+
 
 def project_to_text(p: dict) -> str:
     """Zamienia cały obiekt projektu na jeden opisowy tekst."""
@@ -52,53 +52,73 @@ def extract_text_from_pdf(path: str) -> str:
         texts.append(page_text)
     return "\n".join(texts).strip()
 
-def wait_for_neo4j(uri, user, password, timeout=120, interval=1) -> Graph:
+
+def wait_for_neo4j(uri: str, user: str, password: str,
+                   timeout: int = 120, interval: int = 1) -> Neo4jGraph:
+    """Czeka aż Neo4j będzie gotowy, zwraca obiekt Neo4jGraph."""
     start = time.time()
     print(f"Czekam na Neo4j pod {uri}...")
 
     while True:
         try:
-            graph = Graph(uri, auth=(user, password))
-            graph.run("RETURN 1").evaluate()
+            graph = Neo4jGraph(
+                url=uri,
+                username=user,
+                password=password
+            )
+
+            # prosty test połączenia
+            graph.query("RETURN 1 AS ok")
 
             print("Neo4j jest gotowy, lecimy dalej.")
             return graph
 
-        except (ServiceUnavailable, ConnectionUnavailable, Exception) as e:
+        except Exception as e:
             elapsed = time.time() - start
 
             if elapsed >= timeout:
-                raise RuntimeError(f"Neo4j nie wstał w ciągu {timeout} sekund!") from e
+                raise RuntimeError(
+                    f"Neo4j nie wstał w ciągu {timeout} sekund!"
+                ) from e
 
             print(f"Neo4j jeszcze niegotowy ({e}), czekam {interval}s...")
             time.sleep(interval)
 
 
-def create_example_graph(graph: Graph):
+def create_example_graph(graph: Neo4jGraph):
     # wyczyść bazę
-    graph.run("MATCH (n) DETACH DELETE n")
+    graph.query("MATCH (n) DETACH DELETE n")
 
-    # utwórz węzły
-    alice = Node("Person", name="Alice", age=30)
-    bob = Node("Person", name="Bob", age=25)
-    charlie = Node("Person", name="Charlie", age=35)
+    # utwórz węzły i relacje w Cypherze
+    graph.query(
+        """
+        CREATE (alice:Person {name: $alice_name, age: $alice_age})
+        CREATE (bob:Person {name: $bob_name, age: $bob_age})
+        CREATE (charlie:Person {name: $charlie_name, age: $charlie_age})
+        CREATE (alice)-[:FRIEND]->(bob)
+        CREATE (bob)-[:FRIEND]->(charlie)
+        CREATE (alice)-[:FRIEND]->(charlie)
+        """,
+        params={
+            "alice_name": "Alice",
+            "alice_age": 30,
+            "bob_name": "Bob",
+            "bob_age": 25,
+            "charlie_name": "Charlie",
+            "charlie_age": 35,
+        },
+    )
 
-    # dodaj węzły do grafu
-    graph.create(alice)
-    graph.create(bob)
-    graph.create(charlie)
+    print("Graph created.")
 
-    # utwórz relacje
-    graph.create(Relationship(alice, "FRIEND", bob))
-    graph.create(Relationship(bob, "FRIEND", charlie))
-    graph.create(Relationship(alice, "FRIEND", charlie))
+    # wypisz osoby
+    persons = graph.query(
+        "MATCH (p:Person) RETURN p.name AS name, p.age AS age ORDER BY name"
+    )
+    for p in persons:
+        print(f"Person: {p['name']}, age: {p['age']}")
 
-    print("Graph created:")
-    print(alice)
-    print(bob)
-    print(charlie)
-
-    count = graph.run("MATCH (n:Person) RETURN count(n)").evaluate()
+    count = graph.query("MATCH (n:Person) RETURN count(n) AS c")[0]["c"]
     print("Persons:", count)
 
 
