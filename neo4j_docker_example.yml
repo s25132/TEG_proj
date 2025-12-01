@@ -35,8 +35,9 @@ services:
       NEO4J_PASSWORD: "test1234"
       OPENAI_API_KEY: "klucz"
 
-
       PROJECTS_FILE: "data/projects/projects.json"
       PROGRAMMERS_DIR: "data/programmers"
+    volumes:
+      - ./data:/app/data
     depends_on:
       - neo4j

@@ -20,10 +20,12 @@ docker compose -f generate_data_docker.yml up
 Istniejące dane zostaną usunięte
 
 
-## Skrypt create_chroma -> katalog create_dbs
-Służy do stworzenia chromadb na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.  
+## Skrypy create_chroma i create_graph -> katalog create_dbs
+Skrypt create_chroma służy do stworzenia chromadb na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.  
 
-Wymaga danych z generate_data (katalog data tam to powinno być).  
+Skrypt create_graph służy do stworzenia grafu neo4j na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.
+
+Wymaga danych z generate_data (katalog data -> tam to powinno być).  
 
 Pliki sa generowane do katalgu /data w gałęzi głownej.  
 
@@ -41,6 +43,12 @@ docker compose -f create_dbs_docker.yml up
 
 Istniejąca chromadb zostaną usunięte
 
+Genracja grafu potrafi zając jakieś 20-25 minut.  
+
+http://localhost:7474/browser/  
+
+![GRAPH](graph.png)
+
 ## Aplikacja
 
 Backend wystawia post /ask_rag do odpytywania się rag pochodzącego z chromadb.  
@@ -49,7 +57,7 @@ Backend wystawia post /add_rfp do dodawania nowego rfp do chromadb.
 
 Frontend wystawia proste GUI i wysyła zapytanie do backend za pomocą /ask_rag oraz umożliwia wysyłanie nowego rfp.
 
-Wymaga danych z generate_data i create_chroma (katalog data tam to powinno być).
+Wymaga danych z generate_data i create_chroma (katalog data -> tam to powinno być).
 
 Uruchomienie:  
 
