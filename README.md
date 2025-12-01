@@ -53,9 +53,11 @@ http://localhost:7474/browser/
 
 Backend wystawia post /ask_rag do odpytywania się rag pochodzącego z chromadb.  
 
-Backend wystawia post /add_rfp do dodawania nowego rfp do chromadb.  
+Backend wystawia post /ask_graph do odpytywania się grafu.  
 
-Frontend wystawia proste GUI i wysyła zapytanie do backend za pomocą /ask_rag oraz umożliwia wysyłanie nowego rfp.
+Backend wystawia post /add_rfp do dodawania nowego rfp do chromadb i do grafu.  
+
+Frontend wystawia proste GUI i wysyła zapytanie do backend za pomocą /ask_rag i /ask_graph oraz umożliwia wysyłanie nowego rfp.
 
 Wymaga danych z generate_data, create_chroma i create_graph.
 
