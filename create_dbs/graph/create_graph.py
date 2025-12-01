@@ -1,16 +1,56 @@
 from py2neo import Graph, Node, Relationship
 from py2neo.errors import ServiceUnavailable, ConnectionUnavailable
-import time
 from dotenv import load_dotenv
+from pypdf import PdfReader
 import os
-
+import time
 
 load_dotenv(override=True)
 
 URI =  os.getenv("NEO4J_URI", "bolt://localhost:7687")
 USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
+PROJECTS_FILE = os.getenv("PROJECTS_FILE")
+PROGRAMMERS_DIR = os.getenv("PROGRAMMERS_DIR")
 
+def project_to_text(p: dict) -> str:
+    """Zamienia cały obiekt projektu na jeden opisowy tekst."""
+    reqs = ", ".join([
+        f"{r.get('skill_name')} (proficiency: {r.get('min_proficiency')}, "
+        f"mandatory: {r.get('is_mandatory')})"
+        for r in p.get("requirements", [])
+    ])
+
+    programmers = ", ".join([
+        f"{a.get('programmer_name')} (ID {a.get('programmer_id')}, "
+        f"from {a.get('assignment_start_date')} to {a.get('assignment_end_date')})"
+        for a in p.get("assigned_programmers", [])
+    ])
+
+    return (
+        f"Project ID: {p.get('id')}. "
+        f"Name: {p.get('name')}. "
+        f"Client: {p.get('client')}. "
+        f"Description: {p.get('description')}. "
+        f"Start date: {p.get('start_date')}. "
+        f"End date: {p.get('end_date')}. "
+        f"Estimated duration (months): {p.get('estimated_duration_months')}. "
+        f"Budget: {p.get('budget')}. "
+        f"Status: {p.get('status')}. "
+        f"Team size: {p.get('team_size')}. "
+        f"Requirements: {reqs}. "
+        f"Assigned programmers: {programmers}."
+    )
+
+
+def extract_text_from_pdf(path: str) -> str:
+    """Czyta cały tekst z PDF-a (wszystkie strony)."""
+    reader = PdfReader(path)
+    texts = []
+    for page in reader.pages:
+        page_text = page.extract_text() or ""
+        texts.append(page_text)
+    return "\n".join(texts).strip()
 
 def wait_for_neo4j(uri, user, password, timeout=120, interval=1) -> Graph:
     start = time.time()
