@@ -4,10 +4,9 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage
 from chromadb.api.models.Collection import Collection
-from pypdf import PdfReader
-from io import BytesIO
 from uuid import uuid4
 from langsmith.run_helpers import traceable
+from app.utility import extract_text_from_pdf_bytes
 
 
 def build_context_from_chroma(emb_model: OpenAIEmbeddings, collection: Collection, question: str, top_k: int):
@@ -60,15 +59,6 @@ def call_llm_with_rag(llm: ChatOpenAI, question: str, context_docs: List[str], m
     ])
 
     return response.content
-
-def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
-    reader = PdfReader(BytesIO(pdf_bytes))
-    texts = []
-    for page in reader.pages:
-        page_text = page.extract_text() or ""
-        texts.append(page_text)
-    return "\n".join(texts).strip()
-
 
 def load_rfps_into_collection(
     pdf_bytes: bytes,
