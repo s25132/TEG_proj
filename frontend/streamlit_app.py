@@ -17,10 +17,10 @@ def ask_backend(question: str, top_k: int = 5):
     return data["answer"], data.get("context_documents", [])
 
 
-def ask_backend_graph(question: str, top_k: int = 5):
+def ask_backend_graph(question: str):
     """Wysyła pytanie do backendu /ask_graph (Graph RAG) i zwraca odpowiedź + kontekst grafowy."""
     url = f"{BACKEND_URL}/ask_graph"
-    payload = {"question": question, "top_k": top_k}
+    payload = {"question": question}
 
     resp = requests.post(url, json=payload, timeout=60)
     resp.raise_for_status()
@@ -122,8 +122,6 @@ if current_tab_key == "chat":
 if current_tab_key == "graph":
     st.header("🕸️ Graph RAG")
 
-    top_k = st.slider("Liczba elementów grafu (top_k)", 1, 10, 5)
-
     for msg in st.session_state["messages"]:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
@@ -138,7 +136,7 @@ if current_tab_key == "graph":
         try:
             with st.chat_message("assistant"):
                 with st.spinner("Analizuję graf..."):
-                    answer, context_subgraphs = ask_backend_graph(user_input, top_k=top_k)
+                    answer, context_subgraphs = ask_backend_graph(user_input)
                     st.markdown(answer)
 
                     if context_subgraphs:
