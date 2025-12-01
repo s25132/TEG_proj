@@ -47,6 +47,74 @@ def setup_qa_chain(model: ChatOpenAI,  graph: Neo4jGraph) -> GraphCypherQAChain:
         WHERE toLower(s1.id) = toLower("Python") AND toLower(s2.id) = toLower("Django")
         RETURN p.id AS name
 
+        # How many developers are AWS certified?
+        MATCH (p:Person)-[:EARNED]->(c:Certification)
+        WHERE toLower(c.name) CONTAINS toLower("aws")
+        RETURN count(DISTINCT p) AS awsCertifiedDevelopers
+
+        # List all senior developers with React and Python skills
+        MATCH (p:Person)-[:HAS_SKILL]->(s1:Skill), (p)-[:HAS_SKILL]->(s2:Skill)
+        WHERE toLower(s1.name) = toLower("React")
+        AND toLower(s2.name) = toLower("Python")
+        AND toLower(p.level) = "senior"   // albo na Skill: s1.proficiency, s2.proficiency
+        RETURN DISTINCT p
+
+        # Find pairs of people who have worked together on completed projects
+        # Find developers who worked together successfully
+        MATCH (p1:Person)-[:WORKED_ON]->(pr:Project)<-[:WORKED_ON]-(p2:Person)
+        WHERE p1 <> p2
+        AND pr.status = "completed"
+        RETURN DISTINCT p1, p2, pr
+
+        # Identify skills that are a single point of failure (only one person has them)
+        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
+        WITH s, collect(p) AS people
+        WHERE size(people) = 1
+        RETURN s.name AS skill, people[0] AS singlePointOfFailure
+
+        # How many Python developers are available (not assigned to any project) in Q2 2025 in the baseline scenario?
+        # How many Python developers are available in Q2 2025?
+        WITH date("2025-04-01") AS q2Start, date("2025-06-30") AS q2End
+
+        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
+        WHERE toLower(s.name) = toLower("Python")
+
+        OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(pr:Project)
+        WHERE a.scenario_id = "baseline"
+          AND a.start_date <= q2End
+          AND a.end_date   >= q2Start
+        WITH p, collect(a) AS assignmentsInQ2
+        WHERE size(assignmentsInQ2) = 0
+
+        RETURN count(DISTINCT p) AS availablePythonDevelopersQ2  
+
+        # List pairs of developers who have worked together on the highest number of successful (completed) projects
+        # Which pairs of developers most often worked together on successful projects?
+        MATCH (p1:Person)-[:WORKED_ON]->(pr:Project)<-[:WORKED_ON]-(p2:Person)
+        WHERE id(p1) < id(p2)             
+        AND pr.status = "completed"
+        WITH p1, p2, count(DISTINCT pr) AS successfulProjects
+        RETURN p1.name AS developer1, p2.name AS developer2, successfulProjects
+        ORDER BY successfulProjects DESC, developer1, developer2
+
+        # Identify skills that are a single point of failure in mandatory project requirements
+        # On which projects is there only one developer with a mandatory skill?
+        MATCH (pr:Project)-[req:REQUIRES_SKILL]->(s:Skill)
+        WHERE req.is_mandatory = true
+        WITH pr, s
+
+        MATCH (p:Person)-[:HAS_SKILL]->(s)
+        MATCH (p)-[:WORKED_ON]->(pr)
+        WITH pr, s, collect(DISTINCT p) AS people
+        WHERE size(people) = 1
+
+        RETURN pr.name  AS projectName,
+            s.name   AS skill,
+            people[0].name AS singlePointOfFailure
+        ORDER BY projectName, skill
+
+
+
         The question is:
         {question}"""
 
