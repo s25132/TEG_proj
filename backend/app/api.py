@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from app.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagResponse
 from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 from app.utility import wait_for_neo4j
-from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document
+from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, query_graph
 
 load_dotenv(override=True)
 
@@ -30,6 +30,7 @@ llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.2)
 emb_model = OpenAIEmbeddings(model="text-embedding-3-small")
 graf = wait_for_neo4j(URI, USER, PASSWORD)
 llm_transformer = get_llm_transformer(llm)
+graph_cypher_qa_chain = setup_qa_chain(llm, graf)
 
 # Klient Chroma (Persistent – dane na dysku)
 chroma_client: PersistentClient = chromadb.PersistentClient(path=CHROMA_DIR)
@@ -70,8 +71,11 @@ def chat_rag(request: RagRequest):
 @app.post("/ask_graph", response_model=GraphRagResponse)
 def chat_graph(request: GraphRagRequest):
 
+    # tutaj wykonujemy zapytanie do grafu
+    graph_response = query_graph(graph_cypher_qa_chain, request.question)
+
     return GraphRagResponse(
-        answer="To be implemented",
+        answer=graph_response.get("answer", "No answer generated"),
     )
 
 

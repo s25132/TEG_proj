@@ -1,13 +1,131 @@
 
 from langchain_openai import ChatOpenAI
 from langchain_community.graphs import Neo4jGraph
+from langchain_community.chains.graph_qa.cypher import GraphCypherQAChain
 from langchain_experimental.graph_transformers import LLMGraphTransformer
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional, Dict
 from langchain_core.documents import Document
 from langchain_community.graphs.graph_document import GraphDocument
+from langchain_core.prompts.prompt import PromptTemplate
 from langsmith.run_helpers import traceable
 from app.utility import extract_text_from_pdf_bytes
+
+
+def setup_qa_chain(model: ChatOpenAI,  graph: Neo4jGraph) -> GraphCypherQAChain:
+        """Setup the GraphCypherQA chain."""
+
+        # Custom Cypher generation prompt with case-insensitive matching
+        CYPHER_GENERATION_TEMPLATE = """Task: Generate Cypher statement to query a graph database.
+        Instructions:
+        Use only the provided relationship types and properties in the schema.
+        Do not use any other relationship types or properties that are not provided.
+        For skill matching, always use case-insensitive comparison using toLower() function.
+        For count queries, ensure you return meaningful column names.
+
+        Schema:
+        {schema}
+
+        Note: Do not include any explanations or apologies in your responses.
+        Do not respond to any questions that might ask anything else than for you to construct a Cypher statement.
+        Do not include any text except the generated Cypher statement.
+
+        Examples: Here are a few examples of generated Cypher statements for particular questions:
+
+        # How many Python programmers do we have?
+        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
+        WHERE toLower(s.id) = toLower("Python")
+        RETURN count(p) AS pythonProgrammers
+
+        # Who has React skills?
+        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
+        WHERE toLower(s.id) = toLower("React")
+        RETURN p.id AS name
+
+        # Find people with both Python and Django skills
+        MATCH (p:Person)-[:HAS_SKILL]->(s1:Skill), (p)-[:HAS_SKILL]->(s2:Skill)
+        WHERE toLower(s1.id) = toLower("Python") AND toLower(s2.id) = toLower("Django")
+        RETURN p.id AS name
+
+        The question is:
+        {question}"""
+
+        CYPHER_GENERATION_PROMPT = PromptTemplate(
+            input_variables=["schema", "question"],
+            template=CYPHER_GENERATION_TEMPLATE
+        )
+
+        # Custom QA prompt for better handling of numeric results
+        CYPHER_QA_TEMPLATE = """You are an assistant that helps to form nice and human understandable answers.
+        The information part contains the result(s) of a Cypher query that was executed against a knowledge graph.
+        Information is provided as a list of records from the graph database.
+
+        Guidelines :
+        - If the information contains count results or numbers, state the exact count clearly.
+        - For count queries that return 0, say "There are 0 [items]" - this is a valid result, not missing information.
+        - If the information is empty or null, then say you don't know the answer.
+        - Use the provided information to construct a helpful answer.
+        - Be specific and mention actual names, numbers, or details from the information.
+
+        Information:
+        {context}
+
+        Question: {question}
+        Helpful Answer:"""
+
+        CYPHER_QA_PROMPT = PromptTemplate(
+            input_variables=["context", "question"],
+            template=CYPHER_QA_TEMPLATE
+        )
+
+        # Create the GraphCypher QA chain with custom prompts
+        qa_chain = GraphCypherQAChain.from_llm(
+            llm=model,
+            graph=graph,
+            verbose=True,  # Show generated Cypher queries
+            cypher_prompt=CYPHER_GENERATION_PROMPT,
+            qa_prompt=CYPHER_QA_PROMPT,
+            return_intermediate_steps=True,
+            allow_dangerous_requests=True  # Allow DELETE operations for demo
+        )
+
+        return qa_chain
+
+@traceable
+def query_graph(chain: GraphCypherQAChain, question: str) -> Dict[str, Any]:
+        """Execute a natural language query against the graph.
+
+        Args:
+            question: Natural language question
+
+        Returns:
+            Dict containing query results and metadata
+        """
+        try:
+            print(f"Executing query: {question}")
+
+            # Execute the query
+            result = chain.invoke({"query": question})
+
+            # Extract components
+            response = {
+                "question": question,
+                "answer": result.get("result", "No answer generated"),
+                "cypher_query": result.get("intermediate_steps", [{}])[0].get("query", ""),
+                "success": True
+            }
+
+            print(f"✓ Query executed successfully")
+            return response
+
+        except Exception as e:
+            print(f"Query failed: {e}")
+            return {
+                "question": question,
+                "answer": f"Error: {str(e)}",
+                "cypher_query": "",
+                "success": False
+            }
 
 def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
     """Setup LLM and graph transformer with CV-specific schema."""
