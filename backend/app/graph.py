@@ -80,8 +80,7 @@ def setup_qa_chain(model: ChatOpenAI,  graph: Neo4jGraph) -> GraphCypherQAChain:
         WHERE toLower(s.name) = toLower("Python")
 
         OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(pr:Project)
-        WHERE a.scenario_id = "baseline"
-          AND a.start_date <= q2End
+        WHERE a.start_date <= q2End
           AND a.end_date   >= q2Start
         WITH p, collect(a) AS assignmentsInQ2
         WHERE size(assignmentsInQ2) = 0
@@ -198,7 +197,6 @@ def query_graph(chain: GraphCypherQAChain, question: str) -> Dict[str, Any]:
 def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
     """Setup LLM and graph transformer with CV-specific schema."""
 
-
     talent_allowed_nodes = [
             "Person",       # programista
             "Company",      # klient / pracodawca
@@ -222,6 +220,7 @@ def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
             ("Person", "HOLDS_POSITION", "JobTitle"),
             ("Person", "WORKED_ON", "Project"),
             ("Person", "EARNED", "Certification"),
+            ("Person", "ASSIGNED_TO", "Project"),
 
             ("JobTitle", "AT_COMPANY", "Company"),
             ("University", "LOCATED_IN", "Location"),
@@ -249,6 +248,7 @@ def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
             "title",        # dłuższy tytuł (np. RFP title)
             "description",  # opis projektu / RFP
             "source",       # z jakiego JSON-a pochodzi: "profiles" / "projects" / "rfps"
+            "document_type", # typ dokumentu: "cv" / "project" / "rfp"
 
             # --- czasowe ---
             "start_date",       # np. okres zatrudnienia / start projektu / start assignmentu
@@ -333,7 +333,7 @@ def convert_to_graph(
     print(f"Processing: {Path(filename).name}")
 
     # Extract text from PDF
-    text_content = extract_text_from_pdf_bytes(pdf_bytes)
+    text_content = extract_text_from_pdf_bytes(pdf_bytes, doc_type="RFP")
 
     if not text_content.strip():
         print(f"No text extracted from {filename}")

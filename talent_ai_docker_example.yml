@@ -33,7 +33,7 @@ services:
       - "8000:8000"
     environment:
       OPENAI_API_KEY: "klucz"
-      CHROMA_COLLECTION_NAME: "talenrApp"
+      CHROMA_COLLECTION_NAME: "talentApp"
       CHROMA_DIR: "/app/data/chroma"
 
       LANGSMITH_TRACING: false

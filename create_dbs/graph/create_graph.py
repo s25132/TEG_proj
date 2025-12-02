@@ -20,7 +20,7 @@ PROJECTS_FILE = os.getenv("PROJECTS_FILE")
 PROGRAMMERS_DIR = os.getenv("PROGRAMMERS_DIR")
 
 
-def project_to_text(p: dict) -> str:
+def project_to_text(p: dict, document_type: str) -> str:
     """Zamienia cały obiekt projektu na jeden opisowy tekst."""
     reqs = ", ".join([
         f"{r.get('skill_name')} (proficiency: {r.get('min_proficiency')}, "
@@ -47,16 +47,18 @@ def project_to_text(p: dict) -> str:
         f"Team size: {p.get('team_size')}. "
         f"Requirements: {reqs}. "
         f"Assigned programmers: {programmers}."
+        f"[Document type: {document_type}]"
     )
 
 
-def extract_text_from_pdf(path: str) -> str:
+def extract_text_from_pdf(path: str, document_type: str) -> str:
     """Czyta cały tekst z PDF-a (wszystkie strony)."""
     reader = PdfReader(path)
     texts = []
     for page in reader.pages:
         page_text = page.extract_text() or ""
         texts.append(page_text)
+    texts.append(f"[Document type: {document_type}]")
     return "\n".join(texts).strip()
 
 
@@ -123,6 +125,7 @@ def get_llm_transformer() -> LLMGraphTransformer:
             ("Person", "HOLDS_POSITION", "JobTitle"),
             ("Person", "WORKED_ON", "Project"),
             ("Person", "EARNED", "Certification"),
+            ("Person", "ASSIGNED_TO", "Project"),
 
             ("JobTitle", "AT_COMPANY", "Company"),
             ("University", "LOCATED_IN", "Location"),
@@ -150,6 +153,7 @@ def get_llm_transformer() -> LLMGraphTransformer:
             "title",        # dłuższy tytuł (np. RFP title)
             "description",  # opis projektu / RFP
             "source",       # z jakiego JSON-a pochodzi: "profiles" / "projects" / "rfps"
+            "document_type", # typ dokumentu: "cv" / "project" / "rfp"
 
             # --- czasowe ---
             "start_date",       # np. okres zatrudnienia / start projektu / start assignmentu
@@ -198,7 +202,7 @@ def convert_cv_to_graph(llm_transformer: LLMGraphTransformer, pdf_path: str) -> 
         print(f"Processing: {Path(pdf_path).name}")
 
         # Extract text from PDF
-        text_content = extract_text_from_pdf(pdf_path)
+        text_content = extract_text_from_pdf(pdf_path, document_type="cv")
 
         if not text_content.strip():
             print(f"No text extracted from {pdf_path}")
@@ -300,7 +304,7 @@ def process_all_projects(llm_transformer: LLMGraphTransformer, graph: Neo4jGraph
     all_graph_documents = []
 
     for p in projects:
-        text_content = project_to_text(p)
+        text_content = project_to_text(p, document_type="project")
 
         if not text_content.strip():
             print(f"No text extracted from {projects_file}")

@@ -26,7 +26,7 @@ USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 # ---------- Inicjalizacja klientów ----------
-llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.2)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
 emb_model = OpenAIEmbeddings(model="text-embedding-3-small")
 graf = wait_for_neo4j(URI, USER, PASSWORD)
 llm_transformer = get_llm_transformer(llm)

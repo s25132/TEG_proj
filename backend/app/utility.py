@@ -3,12 +3,13 @@ import time
 from pypdf import PdfReader
 from langchain_community.graphs import Neo4jGraph
 
-def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
+def extract_text_from_pdf_bytes(pdf_bytes: bytes, doc_type: str) -> str:
     reader = PdfReader(BytesIO(pdf_bytes))
     texts = []
     for page in reader.pages:
         page_text = page.extract_text() or ""
         texts.append(page_text)
+    texts.append(f"[Document type: {doc_type}]")
     return "\n".join(texts).strip()
 
 
