@@ -56,7 +56,7 @@ def setup_qa_chain(model: ChatOpenAI,  graph: Neo4jGraph) -> GraphCypherQAChain:
         MATCH (p:Person)-[:HAS_SKILL]->(s1:Skill), (p)-[:HAS_SKILL]->(s2:Skill)
         WHERE toLower(s1.name) = toLower("React")
         AND toLower(s2.name) = toLower("Python")
-        AND toLower(p.level) = "senior"   // albo na Skill: s1.proficiency, s2.proficiency
+        AND toLower(p.level) = toLower("senior")
         RETURN DISTINCT p
 
         # Find pairs of people who have worked together on completed projects
