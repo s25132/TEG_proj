@@ -78,7 +78,7 @@ def load_rfps_into_collection(
         return
 
     """Ekstrahuje tekst z PDF i zapisuje jako RFP w kolekcji Chroma."""
-    full_text = extract_text_from_pdf_bytes(pdf_bytes)
+    full_text = extract_text_from_pdf_bytes(pdf_bytes, doc_type="RFP")
 
     if not full_text:
         print(f"[RFP] Brak tekstu w pliku: {filename}, pomijam.")

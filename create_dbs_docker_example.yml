@@ -12,7 +12,7 @@ services:
 
       PROJECTS_FILE: "data/projects/projects.json"
       PROGRAMMERS_DIR: "data/programmers"
-      CHROMA_COLLECTION_NAME: "talenrApp"
+      CHROMA_COLLECTION_NAME: "talentApp"
       CHROMA_DIR: "data/chroma"
 
     volumes:
