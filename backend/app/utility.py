@@ -9,7 +9,11 @@ def extract_text_from_pdf_bytes(pdf_bytes: bytes, doc_type: str) -> str:
     for page in reader.pages:
         page_text = page.extract_text() or ""
         texts.append(page_text)
-    texts.append(f"[Document type: {doc_type}]")
+        
+    texts.append(
+        "\n\n[METADATA]\n"
+        f"document_type: {doc_type}\n"
+    )
     return "\n".join(texts).strip()
 
 
