@@ -71,11 +71,17 @@ def chat_rag(request: RagRequest):
 @app.post("/ask_graph", response_model=GraphRagResponse)
 def chat_graph(request: GraphRagRequest):
 
+    res = "Empty response" 
     # tutaj wykonujemy zapytanie do grafu
-    graph_response = query_graph(graph_cypher_qa_chain, request.question)
+    try:
+        graph_response = query_graph(graph_cypher_qa_chain, request.question)
+        res = graph_response.get("answer", "No answer generated")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Błąd podczas zapytania do grafu: {e}")
 
     return GraphRagResponse(
-        answer=graph_response.get("answer", "No answer generated"),
+        answer=res
     )
 
 

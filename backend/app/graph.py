@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_community.graphs import Neo4jGraph
 from langchain_community.chains.graph_qa.cypher import GraphCypherQAChain
 from langchain_experimental.graph_transformers import LLMGraphTransformer
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate,SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from pathlib import Path
 from typing import Any, Optional, Dict
 from langchain_core.documents import Document
@@ -195,7 +196,6 @@ def query_graph(chain: GraphCypherQAChain, question: str) -> Dict[str, Any]:
             }
 
 def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
-    """Setup LLM and graph transformer with CV-specific schema."""
 
     talent_allowed_nodes = [
             "Person",       # programista
@@ -273,6 +273,45 @@ def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
             # --- Person ---
             "email",            # z programmer_profiles.json
         ]
+    
+
+    SYSTEM_PROMPT = """
+        # Knowledge Graph Instructions
+
+        You extract a knowledge graph from the input text.
+
+        - Nodes represent entities like Person, Company, Project, Skill, etc.
+        - Edges represent relationships between these entities.
+        - You MUST also extract node properties whenever they are explicitly present in the text.
+
+        ## METADATA block
+
+        The input text may contain a block:
+
+        [METADATA]
+        document_type: <VALUE>
+
+        If such a block is present, you MUST:
+        - Set the node property `document_type` on the main document node (e.g. Project, CV, RFP) to that VALUE.
+        - Never ignore this field when it appears.
+
+        Do not hallucinate values that are not explicitly given.
+        """
+
+    FINAL_TIP = HumanMessagePromptTemplate(
+        prompt=PromptTemplate.from_template(
+            "Tip: Make sure to answer in the correct format and do not include any "
+            "explanations. Use the given format to extract information from the "
+            "following input: {input}"
+        )
+    )
+
+    chat_prompt = ChatPromptTemplate.from_messages(
+        [
+            SystemMessagePromptTemplate.from_template(SYSTEM_PROMPT),
+            FINAL_TIP,
+        ]
+    )
 
         # Initialize transformer with strict schema
     llm_transformer = LLMGraphTransformer(
@@ -280,7 +319,8 @@ def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
         allowed_nodes=talent_allowed_nodes,
         allowed_relationships=talent_allowed_relationships,
         node_properties=talent_node_properties,
-        strict_mode=True
+        strict_mode=True,
+        prompt=chat_prompt,
     )
 
     return llm_transformer

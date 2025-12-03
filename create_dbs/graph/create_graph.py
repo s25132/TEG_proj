@@ -6,6 +6,7 @@ from langchain_core.documents import Document
 from langchain_openai import ChatOpenAI
 from langchain_community.graphs import Neo4jGraph
 from langchain_experimental.graph_transformers import LLMGraphTransformer
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate,SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from dotenv import load_dotenv
 from pypdf import PdfReader
 import os
@@ -18,7 +19,6 @@ USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 PROJECTS_FILE = os.getenv("PROJECTS_FILE")
 PROGRAMMERS_DIR = os.getenv("PROGRAMMERS_DIR")
-
 
 def project_to_text(p: dict, document_type: str) -> str:
     """Zamienia cały obiekt projektu na jeden opisowy tekst."""
@@ -34,7 +34,7 @@ def project_to_text(p: dict, document_type: str) -> str:
         for a in p.get("assigned_programmers", [])
     ])
 
-    return (
+    text = (
         f"Project ID: {p.get('id')}. "
         f"Name: {p.get('name')}. "
         f"Client: {p.get('client')}. "
@@ -47,8 +47,15 @@ def project_to_text(p: dict, document_type: str) -> str:
         f"Team size: {p.get('team_size')}. "
         f"Requirements: {reqs}. "
         f"Assigned programmers: {programmers}."
-        f"[Document type: {document_type}]"
     )
+
+    # Bardzo jednoznaczny blok metadanych:
+    text += (
+        "\n\n[METADATA]\n"
+        f"document_type: {document_type}\n"
+    )
+
+    return text
 
 
 def extract_text_from_pdf(path: str, document_type: str) -> str:
@@ -58,7 +65,12 @@ def extract_text_from_pdf(path: str, document_type: str) -> str:
     for page in reader.pages:
         page_text = page.extract_text() or ""
         texts.append(page_text)
-    texts.append(f"[Document type: {document_type}]")
+    
+    # Dodajemy metadane na końcu dokumentu
+    texts.append(
+        "\n\n[METADATA]\n"
+        f"document_type: {document_type}\n"
+    )
     return "\n".join(texts).strip()
 
 
@@ -99,7 +111,7 @@ def get_llm_transformer() -> LLMGraphTransformer:
     model = ChatOpenAI(
         model="gpt-4o-mini",
         temperature=0,
-        api_key=os.getenv("OPENAI_API_KEY")
+        api_key=os.getenv("OPENAI_API_KEY"),
     )
 
     talent_allowed_nodes = [
@@ -178,6 +190,45 @@ def get_llm_transformer() -> LLMGraphTransformer:
             # --- Person ---
             "email",            # z programmer_profiles.json
         ]
+    
+
+    SYSTEM_PROMPT = """
+        # Knowledge Graph Instructions
+
+        You extract a knowledge graph from the input text.
+
+        - Nodes represent entities like Person, Company, Project, Skill, etc.
+        - Edges represent relationships between these entities.
+        - You MUST also extract node properties whenever they are explicitly present in the text.
+
+        ## METADATA block
+
+        The input text may contain a block:
+
+        [METADATA]
+        document_type: <VALUE>
+
+        If such a block is present, you MUST:
+        - Set the node property `document_type` on the main document node (e.g. Project, CV, RFP) to that VALUE.
+        - Never ignore this field when it appears.
+
+        Do not hallucinate values that are not explicitly given.
+        """
+
+    FINAL_TIP = HumanMessagePromptTemplate(
+        prompt=PromptTemplate.from_template(
+            "Tip: Make sure to answer in the correct format and do not include any "
+            "explanations. Use the given format to extract information from the "
+            "following input: {input}"
+        )
+    )
+
+    chat_prompt = ChatPromptTemplate.from_messages(
+        [
+            SystemMessagePromptTemplate.from_template(SYSTEM_PROMPT),
+            FINAL_TIP,
+        ]
+    )
 
         # Initialize transformer with strict schema
     llm_transformer = LLMGraphTransformer(
@@ -185,7 +236,8 @@ def get_llm_transformer() -> LLMGraphTransformer:
         allowed_nodes=talent_allowed_nodes,
         allowed_relationships=talent_allowed_relationships,
         node_properties=talent_node_properties,
-        strict_mode=True
+        strict_mode=True,
+        prompt=chat_prompt,
     )
 
     return llm_transformer
