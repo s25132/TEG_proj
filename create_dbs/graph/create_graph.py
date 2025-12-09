@@ -19,6 +19,7 @@ USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 PROJECTS_FILE = os.getenv("PROJECTS_FILE")
 PROGRAMMERS_DIR = os.getenv("PROGRAMMERS_DIR")
+SCHEMA_DIR = os.getenv("SCHEMA_DIR")
 
 def project_to_text(p: dict, document_type: str) -> str:
     """Zamienia cały obiekt projektu na jeden opisowy tekst."""
@@ -113,107 +114,64 @@ def get_llm_transformer() -> LLMGraphTransformer:
         temperature=0,
         api_key=os.getenv("OPENAI_API_KEY"),
     )
+    
+    # 1. Dozwolone węzły
+    with open(os.path.join(SCHEMA_DIR, "allowed_nodes.json"), "r", encoding="utf-8") as f:
+        talent_allowed_nodes = json.load(f)
 
-    talent_allowed_nodes = [
-            "Person",       # programista
-            "Company",      # klient / pracodawca
-            "University",
-            "Skill",        # umiejętność (np. Java, React)
-            "Technology",   # jeśli chcesz odróżniać od Skill
-            "Project",      # zarówno realny projekt, jak i RFP (odróżniane po 'status' / 'source')
-            "Certification",
-            "Location",
-            "JobTitle",
-            "Industry",
-    ]
-
-        # 2. Dozwolone relacje (z kierunkiem)
-    talent_allowed_relationships = [
-            # --- CV (programmer_profiles.json) ---
-            ("Person", "WORKED_AT", "Company"),
-            ("Person", "STUDIED_AT", "University"),
-            ("Person", "HAS_SKILL", "Skill"),
-            ("Person", "LOCATED_IN", "Location"),
-            ("Person", "HOLDS_POSITION", "JobTitle"),
-            ("Person", "WORKED_ON", "Project"),
-            ("Person", "EARNED", "Certification"),
-            ("Person", "ASSIGNED_TO", "Project"),
-
-            ("JobTitle", "AT_COMPANY", "Company"),
-            ("University", "LOCATED_IN", "Location"),
-
-            # --- Projekty (projects.json) ---
-            ("Project", "USED_TECHNOLOGY", "Technology"),
-            ("Project", "FOR_COMPANY", "Company"),
-            ("Company", "IN_INDUSTRY", "Industry"),
-            ("Skill", "RELATED_TO", "Technology"),
-            ("Certification", "ISSUED_BY", "Company"),
-
-            # --- Rozszerzenie pod projects.json + rfps.json ---
-            # wymagane skille w projekcie / RFP
-            ("Project", "REQUIRES_SKILL", "Skill"),
-            # preferowane certyfikaty
-            ("Project", "PREFERS_CERTIFICATION", "Certification"),
-            # lokalizacja projektu / RFP
-            ("Project", "LOCATED_IN", "Location"),
+    # 2. Dozwolone relacje (z kierunkiem)    
+    with open(os.path.join(SCHEMA_DIR, "allowed_relationships.json"), "r", encoding="utf-8") as f:
+        talent_allowed_relationships = [
+            tuple(r) for r in json.load(f)
         ]
 
-        #3. Jawnie zdefiniowane właściwości węzłów
-    talent_node_properties = [
-            # --- ogólne / techniczne ---
-            "name",         # krótka nazwa (np. "Core Platform Revamp", "Java")
-            "title",        # dłuższy tytuł (np. RFP title)
-            "description",  # opis projektu / RFP
-            "source",       # z jakiego JSON-a pochodzi: "profiles" / "projects" / "rfps"
-            "document_type", # typ dokumentu: "cv" / "project" / "rfp"
-
-            # --- czasowe ---
-            "start_date",       # np. okres zatrudnienia / start projektu / start assignmentu
-            "end_date",
-            "duration_months",  # z rfps.json
-            "years_experience", # dla umiejętności / osoby
-
-            # --- poziomy umiejętności / wymagania ---
-            "level",            # np. "junior", "senior"
-            "proficiency",      # poziom u programisty (np. "Intermediate", "Expert")
-            "min_proficiency",  # minimalny poziom w RFP / projekcie
-            "is_mandatory",     # czy skill jest wymagany (True/False)
-
-            # --- projekty / RFP ---
-            "project_type",     # z rfps.json
-            "team_size",        # z rfps.json lub projects.json
-            "budget_min",       # np. z przetworzonego budget_range
-            "budget_max",
-            "status",           # np. "RFP", "ongoing", "completed"
-            "remote_allowed",   # bool z rfps.json
-
-            # --- Person ---
-            "email",            # z programmer_profiles.json
-        ]
+    # 3. Właściwości węzłów
+    with open(os.path.join(SCHEMA_DIR, "allowed_node_properties.json"), "r", encoding="utf-8") as f:
+        talent_node_properties = json.load(f)
     
 
     SYSTEM_PROMPT = """
-        # Knowledge Graph Instructions
+        # Knowledge Graph Extraction Instructions
 
         You extract a knowledge graph from the input text.
 
-        - Nodes represent entities like Person, Company, Project, Skill, etc.
+        ## Entities & Relationships
+        - Nodes represent entities like Person, Company, Project, Skill, Technology, Location, etc.
         - Edges represent relationships between these entities.
         - You MUST also extract node properties whenever they are explicitly present in the text.
+        - Do not invent any values that are not explicitly present.
 
-        ## METADATA block
-
+        ## METADATA BLOCK
         The input text may contain a block:
 
         [METADATA]
         document_type: <VALUE>
 
         If such a block is present, you MUST:
-        - Set the node property `document_type` on the main document node (e.g. Project, CV, RFP) to that VALUE.
-        - Never ignore this field when it appears.
+        - Set the node property `document_type` on the main document node (e.g., Project, CV, RFP) to that VALUE.
+        - Never ignore this field.
 
-        Do not hallucinate values that are not explicitly given.
+        ## STATUS FIELD
+        If the input text contains a fragment like:
+
+        Status: <VALUE>
+
+        You MUST:
+        - Set the `status` property on the Project (or RFP) node to the exact extracted VALUE.
+        - NEVER ignore or omit the `status` field if it appears.
+        - Do NOT hallucinate a status value if it is missing — only assign it when explicitly provided.
+
+        Examples of valid status extraction:
+        - "Status: ongoing"  → status = "ongoing"
+        - "Status: completed" → status = "completed"
+        - "Status: RFP" → status = "RFP"
+
+        ## GENERAL RULES
+        - Extract all explicit attributes such as start_date, end_date, budget, team_size, requirements, assigned programmers, etc.
+        - Maintain strict adherence to the allowed nodes, allowed relationships, and node properties.
+        - Never include explanations in the output.
         """
+
 
     FINAL_TIP = HumanMessagePromptTemplate(
         prompt=PromptTemplate.from_template(
