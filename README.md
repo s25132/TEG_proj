@@ -25,7 +25,7 @@ Skrypt create_chroma służy do stworzenia chromadb na podstawie cv programistó
 
 Skrypt create_graph służy do stworzenia grafu neo4j na podstawie cv programistów i pliku projects.json z obecnie toczącymi się projektami.
 
-Wymaga danych z generate_data (katalog data -> tam to powinno być).  
+Wymaga danych z generate_data (katalog data -> tam to już powinno być).  
 
 Pliki sa generowane do katalgu /data w gałęzi głownej.  
 
