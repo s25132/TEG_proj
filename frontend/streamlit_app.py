@@ -25,7 +25,7 @@ def ask_backend_graph(question: str):
     resp = requests.post(url, json=payload, timeout=60)
     resp.raise_for_status()
     data = resp.json()
-    return data["answer"], data.get("context_subgraphs", [])
+    return data["answer"], data.get("context_documents", [])
 
 
 def upload_rfp(file) -> str:
@@ -140,9 +140,9 @@ if current_tab_key == "graph":
                     st.markdown(answer)
 
                     if context_subgraphs:
-                        with st.expander("Pokaż użyty kontekst grafowy (podgrafy / ścieżki)"):
+                        with st.expander("Pokaż użyty kontekst grafowy"):
                             for i, sg in enumerate(context_subgraphs, start=1):
-                                st.markdown(f"**Podgraf {i}:**")
+                                st.markdown(f"**Kontekst {i}:**")
                                 st.write(sg)
                                 st.markdown("---")
 

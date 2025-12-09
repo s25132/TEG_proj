@@ -71,17 +71,24 @@ def chat_rag(request: RagRequest):
 @app.post("/ask_graph", response_model=GraphRagResponse)
 def chat_graph(request: GraphRagRequest):
 
-    res = "Empty response" 
-    # tutaj wykonujemy zapytanie do grafu
+    # domyślne wartości
+    answer = "Empty response"
+    context_documents: list[str] = []
+
     try:
+        # wykonujemy zapytanie do grafu
         graph_response = query_graph(graph_cypher_qa_chain, request.question)
-        res = graph_response.get("answer", "No answer generated")
+
+        answer = graph_response.get("answer", "No answer generated")
+        # to jest Twoje retrieved_contexts z query_graph
+        context_documents = graph_response.get("retrieved_contexts", [])
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Błąd podczas zapytania do grafu: {e}")
 
     return GraphRagResponse(
-        answer=res
+        answer=answer,
+        context_documents=context_documents,
     )
 
 

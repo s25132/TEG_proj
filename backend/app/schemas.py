@@ -18,3 +18,4 @@ class GraphRagRequest(BaseModel):
 
 class GraphRagResponse(BaseModel):
     answer: str
+    context_documents: List[str]
