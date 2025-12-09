@@ -54,6 +54,7 @@ services:
 
       PROJECTS_FILE: "data/projects/projects.json"
       PROGRAMMERS_DIR: "data/programmers"
+      SCHEMA_DIR: "data/schema"
     volumes:
       - ./data:/app/data
     depends_on:

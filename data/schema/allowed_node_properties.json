@@ -1,0 +1,21 @@
+[
+  "name",
+  "title",
+  "description",
+  "document_type",
+  "start_date",
+  "end_date",
+  "duration_months",
+  "years_experience",
+  "level",
+  "proficiency",
+  "min_proficiency",
+  "is_mandatory",
+  "project_type",
+  "team_size",
+  "budget_min",
+  "budget_max",
+  "status",
+  "remote_allowed",
+  "email"
+]
