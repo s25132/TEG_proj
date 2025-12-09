@@ -41,7 +41,7 @@ docker compose -f create_dbs_docker.yml build
 
 docker compose -f create_dbs_docker.yml up
 
-Istniejąca chromadb zostaną usunięte
+Istniejące chromadb i graf zostaną usunięte.
 
 Genracja grafu potrafi zając jakieś 20-25 minut.  
 
