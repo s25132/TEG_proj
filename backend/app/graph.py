@@ -162,41 +162,57 @@ def setup_qa_chain(model: ChatOpenAI,  graph: Neo4jGraph) -> GraphCypherQAChain:
 
         return qa_chain
 
+import json
+from typing import Any, Dict, List
+
 @traceable
 def query_graph(chain: GraphCypherQAChain, question: str) -> Dict[str, Any]:
-        """Execute a natural language query against the graph.
+    """Execute a natural language query against the graph."""
 
-        Args:
-            question: Natural language question
+    try:
+        print(f"Executing query: {question}")
 
-        Returns:
-            Dict containing query results and metadata
-        """
-        try:
-            print(f"Executing query: {question}")
+        # Wynik z GraphCypherQAChain
+        result = chain.invoke({"query": question})
 
-            # Execute the query
-            result = chain.invoke({"query": question})
+        intermediate_steps = result.get("intermediate_steps", [])
+        cypher_query = ""
+        raw_context: List[Dict[str, Any]] = []
 
-            # Extract components
-            response = {
-                "question": question,
-                "answer": result.get("result", "No answer generated"),
-                "cypher_query": result.get("intermediate_steps", [{}])[0].get("query", ""),
-                "success": True
-            }
+        if intermediate_steps:
+            # 0: wygenerowany Cypher
+            cypher_query = intermediate_steps[0].get("query", "")
+            # 1: kontekst z bazy (lista rekordów)
+            if len(intermediate_steps) > 1:
+                raw_context = intermediate_steps[1].get("context", [])
 
-            print(f"✓ Query executed successfully")
-            return response
+        retrieved_contexts = [
+            ", ".join(f"{k}={v}" for k, v in record.items())
+            for record in raw_context
+]
 
-        except Exception as e:
-            print(f"Query failed: {e}")
-            return {
-                "question": question,
-                "answer": f"Error: {str(e)}",
-                "cypher_query": "",
-                "success": False
-            }
+        response = {
+            "question": question,
+            "answer": result.get("result", "No answer generated"),
+            "cypher_query": cypher_query,
+            "retrieved_contexts": retrieved_contexts,
+            "raw_context": raw_context,  # opcjonalnie, do debugowania
+            "success": True,
+        }
+
+        return response
+
+    except Exception as e:
+        print(f"Query failed: {e}")
+        return {
+            "question": question,
+            "answer": f"Error: {str(e)}",
+            "cypher_query": "",
+            "retrieved_contexts": [],
+            "raw_context": [],
+            "success": False,
+        }
+
 
 def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
 
