@@ -116,3 +116,13 @@ async def add_rfp(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Nie udało się przetworzyć pliku: {e}")
 
     return {"status": "OK", "filename": file.filename}
+
+
+@app.get("/healthcheck")
+def healthcheck():
+    return {
+        "status": "ok",
+        "services": {
+            "api": "up",
+        }
+    }
