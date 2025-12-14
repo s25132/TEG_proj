@@ -96,6 +96,8 @@ def chat_graph(request: GraphRagRequest):
 async def add_rfp(file: UploadFile = File(...)):
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Plik musi być PDF.")
+    
+    document_saved = False
 
     try:
         content = await file.read()
@@ -110,10 +112,13 @@ async def add_rfp(file: UploadFile = File(...)):
         # oraz konwertujemy do grafu i zapisujemy w Neo4j
         graph_document = convert_to_graph(llm_transformer, content, file.filename)
         if graph_document is not None:
-            store_single_graph_document(graph_document, graf)
+            document_saved = store_single_graph_document(graph_document, graf)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Nie udało się przetworzyć pliku: {e}")
+    
+    if not document_saved:
+         return {"status": "SKIPPED", "filename": file.filename}
 
     return {"status": "OK", "filename": file.filename}
 

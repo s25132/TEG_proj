@@ -16,110 +16,505 @@ import os
 
 SCHEMA_DIR = os.getenv("SCHEMA_DIR")
 
+
+def rfp_title_exists(graph: Neo4jGraph, title: str) -> bool:
+    if not title or not str(title).strip():
+        return False  # brak title -> nie blokujemy (albo możesz zwrócić True i zawsze skipować)
+    
+    print(f"Checking if RFP with title exists: {title}")
+
+    q = """
+    MATCH (r:Rfp)
+    WHERE toLower(r.title) = toLower($title)
+    RETURN count(r) > 0 AS exists
+    """
+    res = graph.query(q, {"title": title.strip()})
+    print(f"RFP title exists result: {res}")
+    return bool(res and res[0].get("exists"))
+
+
+def get_rfp_title_from_graph_document(gd: GraphDocument) -> Optional[str]:
+    for n in gd.nodes:
+        print(f"Node type: {n.type}, properties: {n.properties}")
+        if n.type == "Rfp":
+            print(f"RFP Node properties: {n.properties}")
+            props = n.properties or {}
+            print(f"RFP Node props: {props}")
+            title = props.get("title")
+            print(f"Extracted title: {title}")
+            if title and str(title).strip():
+                return str(title).strip()
+    return None
+
 def setup_qa_chain(model: ChatOpenAI,  graph: Neo4jGraph) -> GraphCypherQAChain:
         """Setup the GraphCypherQA chain."""
 
         # Custom Cypher generation prompt with case-insensitive matching
-        CYPHER_GENERATION_TEMPLATE = """Task: Generate Cypher statement to query a graph database.
-        Instructions:
-        Use only the provided relationship types and properties in the schema.
-        Do not use any other relationship types or properties that are not provided.
-        For skill matching, always use case-insensitive comparison using toLower() function.
-        For count queries, ensure you return meaningful column names.
+        CYPHER_GENERATION_TEMPLATE = """Task: Translate a natural language question into a Cypher query for a Neo4j graph database.
 
-        Schema:
-        {schema}
+You MUST strictly follow the provided schema.
+You are NOT allowed to invent labels, relationship types, or properties.
+Use ONLY what is explicitly defined below.
 
-        Note: Do not include any explanations or apologies in your responses.
-        Do not respond to any questions that might ask anything else than for you to construct a Cypher statement.
-        Do not include any text except the generated Cypher statement.
+If a question cannot be answered using this schema, return an empty Cypher query.
 
-        Examples: Here are a few examples of generated Cypher statements for particular questions:
+---
 
-        # How many Python programmers do we have?
-        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
-        WHERE toLower(s.id) = toLower("Python")
-        RETURN count(p) AS pythonProgrammers
+## GRAPH SCHEMA
 
-        # Who has React skills?
-        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
-        WHERE toLower(s.id) = toLower("React")
-        RETURN p.id AS name
+### NODE TYPES AND PROPERTIES
 
-        # Find people with both Python and Django skills
-        MATCH (p:Person)-[:HAS_SKILL]->(s1:Skill), (p)-[:HAS_SKILL]->(s2:Skill)
-        WHERE toLower(s1.id) = toLower("Python") AND toLower(s2.id) = toLower("Django")
-        RETURN p.id AS name
+(Person {{
+  id,
+  name,
+  location,
+  email,
+  phone,
+  years_experience
+}})
 
-        # How many developers are AWS certified?
-        MATCH (p:Person)-[:EARNED]->(c:Certification)
-        WHERE toLower(c.name) CONTAINS toLower("aws")
-        RETURN count(DISTINCT p) AS awsCertifiedDevelopers
+(Skill {{
+  id,
+  category,
+  subcategory
+}})
 
-        # List all senior developers with React and Python skills
-        MATCH (p:Person)-[:HAS_SKILL]->(s1:Skill), (p)-[:HAS_SKILL]->(s2:Skill)
-        WHERE toLower(s1.name) = toLower("React")
-        AND toLower(s2.name) = toLower("Python")
-        AND toLower(p.level) = toLower("senior")
-        RETURN DISTINCT p
+(Company {{
+  id,
+  name,
+  industry,
+  size,
+  location
+}})
 
-        # Find pairs of people who have worked together on completed projects
-        # Find developers who worked together successfully
-        MATCH (p1:Person)-[:WORKED_ON]->(pr:Project)<-[:WORKED_ON]-(p2:Person)
-        WHERE p1 <> p2
-        AND pr.status = "completed"
-        RETURN DISTINCT p1, p2, pr
+(Project {{
+  id,
+  title,
+  description,
+  start_date,
+  end_date,
+  budget,
+  status,
+  document_type
+}})
 
-        # Identify skills that are a single point of failure (only one person has them)
-        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
-        WITH s, collect(p) AS people
-        WHERE size(people) = 1
-        RETURN s.name AS skill, people[0] AS singlePointOfFailure
+(Certification {{
+  id,
+  name,
+  provider,
+  date_earned,
+  expiry_date
+}})
 
-        # How many Python developers are available (not assigned to any project) in Q2 2025 in the baseline scenario?
-        # How many Python developers are available in Q2 2025?
-        WITH date("2025-04-01") AS q2Start, date("2025-06-30") AS q2End
+(University {{
+  id,
+  name,
+  location,
+  ranking
+}})
 
-        MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
-        WHERE toLower(s.name) = toLower("Python")
+(RFP {{
+  id,
+  title,
+  description,
+  requirements,
+  budget,
+  deadline,
+  document_type
+}})
 
-        OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(pr:Project)
-        WHERE a.start_date <= q2End
-          AND a.end_date   >= q2Start
-        WITH p, collect(a) AS assignmentsInQ2
-        WHERE size(assignmentsInQ2) = 0
+---
 
-        RETURN count(DISTINCT p) AS availablePythonDevelopersQ2  
+### RELATIONSHIP TYPES AND PROPERTIES
 
-        # List pairs of developers who have worked together on the highest number of successful (completed) projects
-        # Which pairs of developers most often worked together on successful projects?
-        MATCH (p1:Person)-[:WORKED_ON]->(pr:Project)<-[:WORKED_ON]-(p2:Person)
-        WHERE id(p1) < id(p2)             
-        AND pr.status = "completed"
-        WITH p1, p2, count(DISTINCT pr) AS successfulProjects
-        RETURN p1.name AS developer1, p2.name AS developer2, successfulProjects
-        ORDER BY successfulProjects DESC, developer1, developer2
+(Person)-[HAS_SKILL {{
+  proficiency,
+  years_experience
+}}]->(Skill)
 
-        # Identify skills that are a single point of failure in mandatory project requirements
-        # On which projects is there only one developer with a mandatory skill?
-        MATCH (pr:Project)-[req:REQUIRES_SKILL]->(s:Skill)
-        WHERE req.is_mandatory = true
-        WITH pr, s
+(Person)-[WORKED_AT {{
+  role,
+  start_date,
+  end_date
+}}]->(Company)
 
-        MATCH (p:Person)-[:HAS_SKILL]->(s)
-        MATCH (p)-[:WORKED_ON]->(pr)
-        WITH pr, s, collect(DISTINCT p) AS people
-        WHERE size(people) = 1
+(Person)-[WORKED_ON {{
+  role,
+  contribution,
+  start_date,
+  end_date
+}}]->(Project)
 
-        RETURN pr.name  AS projectName,
-            s.name   AS skill,
-            people[0].name AS singlePointOfFailure
-        ORDER BY projectName, skill
+(Person)-[ASSIGNED_TO {{
+  allocation_percentage,
+  start_date,
+  end_date
+}}]->(Project)
+
+(Person)-[EARNED {{
+  date,
+  score
+}}]->(Certification)
+
+(Person)-[STUDIED_AT {{
+  degree,
+  graduation_year,
+  gpa
+}}]->(University)
+
+(Project)-[REQUIRES {{
+  minimum_level,
+  preferred_level
+}}]->(Skill)
+
+(RFP)-[NEEDS {{
+  required_count,
+  experience_level
+}}]->(Skill)
+
+---
+
+## QUERY GENERATION RULES (MANDATORY)
+
+1. Use ONLY the node labels, relationship types, and properties defined above.
+2. NEVER invent properties or relationship types.
+3. Use case-insensitive matching for text fields using `toLower()`.
+4. When filtering by dates, use Neo4j `date()` where applicable.
+5. When counting results, return meaningful column names.
+6. If the question asks for something unsupported by the schema, return an empty query.
+7. Do NOT include explanations, comments, or any text outside the Cypher query.
+
+---
+
+## OUTPUT FORMAT
+Return ONLY a valid Cypher query.
+
+Examples:
+# How many Python developers are available next month?
+WITH
+  date() + duration({{months: 1}}) AS startNextMonth,
+  date() + duration({{months: 2}}) AS endNextMonth
+MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
+WHERE toLower(s.id) = toLower("python")
+OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(pr:Project)
+WHERE a.start_date <= endNextMonth
+  AND a.end_date   >= startNextMonth
+WITH p, collect(a) AS assignmentsInNextMonth
+WHERE size(assignmentsInNextMonth) = 0
+RETURN count(DISTINCT p) AS availablePythonDevelopersNextMonth
+
+
+# How many developers have AWS certifications?
+MATCH (p:Person)-[:EARNED]->(c:Certification)
+WHERE toLower(c.name) CONTAINS toLower("aws")
+   OR toLower(c.provider) CONTAINS toLower("aws")
+RETURN count(DISTINCT p) AS awsCertifiedDevelopers
+
+
+# Find all React and Node.js developers with at least 5 years of experience.
+# ind senior developers with React AND Node.js experience
+MATCH (p:Person)-[:HAS_SKILL]->(s1:Skill),
+      (p:Person)-[:HAS_SKILL]->(s2:Skill)
+WHERE toLower(s1.id) = toLower("react")
+  AND (
+        toLower(s2.id) = toLower("node.js")
+     OR toLower(s2.id) = toLower("nodejs")
+     OR toLower(s2.id) = toLower("node")
+  )
+  AND p.years_experience IS NOT NULL
+  AND p.years_experience >= 5
+RETURN DISTINCT p.id   AS id,
+                p.name AS name,
+                p.years_experience AS years_experience
+ORDER BY years_experience DESC, name
 
 
 
-        The question is:
-        {question}"""
+# How many Python developers available Q2?
+WITH
+  date({{year: date().year, month: 4, day: 1}}) AS q2Start,
+  date({{year: date().year, month: 6, day: 30}}) AS q2End
+
+MATCH (p:Person)-[:HAS_SKILL]->(s:Skill)
+WHERE toLower(s.id) = toLower("python")
+
+OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(:Project)
+WHERE a.start_date <= q2End
+  AND a.end_date   >= q2Start
+
+WITH p, collect(a) AS assignmentsInQ2
+WHERE size(assignmentsInQ2) = 0
+
+RETURN count(DISTINCT p) AS availablePythonDevelopersQ2
+
+# What skills are missing candidates for RFP titled "Senior Backend Developer"?
+MATCH (r:RFP)-[:NEEDS]->(s:Skill)
+WHERE toLower(r.title) = toLower($rfpTitle)
+
+OPTIONAL MATCH (p:Person)-[:HAS_SKILL]->(s)
+
+WITH s, collect(p) AS peopleWithSkill
+WHERE size(peopleWithSkill) = 0
+
+RETURN s.id AS missingSkill
+ORDER BY missingSkill
+
+
+# List developers sorted by their next free date
+# Who becomes free when current projects end?
+WITH date() AS today
+
+MATCH (p:Person)-[a:ASSIGNED_TO]->(pr:Project)
+WHERE a.start_date <= today
+  AND a.end_date   >= today
+
+WITH p, max(a.end_date) AS freeDate, collect(DISTINCT pr.title) AS currentProjects
+RETURN
+  p.id   AS personId,
+  p.name AS personName,
+  freeDate,
+  currentProjects
+ORDER BY freeDate ASC, personName ASC
+
+
+# Find pairs of developers who have worked together on completed projects
+# Find developers who worked together successfully
+MATCH (p1:Person)-[:WORKED_ON]->(pr:Project)<-[:WORKED_ON]-(p2:Person)
+WHERE p1 <> p2
+  AND pr.status = "completed"
+
+WITH
+  p1,
+  p2,
+  count(DISTINCT pr) AS completedProjectsTogether,
+  collect(DISTINCT pr.title) AS sharedProjects
+
+RETURN
+  p1.id   AS developer1Id,
+  p1.name AS developer1Name,
+  p2.id   AS developer2Id,
+  p2.name AS developer2Name,
+  completedProjectsTogether,
+  sharedProjects
+ORDER BY completedProjectsTogether DESC, developer1Name, developer2Name
+
+
+# List available developers in Pacific timezone
+MATCH (p:Person)
+WHERE toLower(p.location) CONTAINS toLower("pacific")
+
+OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(pr:Project)
+WHERE a.start_date <= date()
+  AND a.end_date   >= date()
+
+WITH p, collect(a) AS activeAssignments
+WHERE size(activeAssignments) = 0
+
+RETURN p
+
+
+# Average years of experience for machine learning projects
+MATCH (pr:Project)-[:REQUIRES]->(s:Skill)
+WHERE toLower(s.category) = toLower("machine learning")
+
+MATCH (p:Person)-[:WORKED_ON]->(pr)
+
+WHERE p.years_experience IS NOT NULL
+
+RETURN avg(p.years_experience) AS avgYearsExperienceML
+
+
+
+# Total available FTE in Q4 2025
+# Total capacity available for Q4 projects
+WITH date("2025-10-01") AS q4Start, date("2025-12-31") AS q4End
+
+MATCH (p:Person)
+
+OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(:Project)
+WHERE a.start_date <= q4End
+  AND a.end_date   >= q4Start
+  AND a.allocation_percentage IS NOT NULL
+
+WITH p, sum(a.allocation_percentage) AS assignedPct
+
+WITH
+  CASE
+    WHEN (100 - assignedPct) > 0 THEN (100 - assignedPct)
+    ELSE 0
+  END AS availablePct
+
+RETURN
+  sum(availablePct)              AS totalAvailablePct,
+  sum(availablePct) / 100.0      AS totalAvailableFTE
+
+
+
+# Top 5 universities of developers with most completed projects
+# Developers from same university as our top performers
+MATCH (tp:Person)-[:WORKED_ON]->(pr:Project)
+WHERE toLower(pr.status) = toLower("completed")
+WITH tp, count(DISTINCT pr) AS completedProjects
+ORDER BY completedProjects DESC
+LIMIT 5
+
+// 2) Find their universities
+MATCH (tp)-[:STUDIED_AT]->(u:University)
+
+// 3) Find other developers from the same universities
+MATCH (p:Person)-[:STUDIED_AT]->(u)
+WHERE p <> tp
+
+RETURN DISTINCT
+  u.name AS university,
+  p.id   AS developerId
+ORDER BY university, developerId
+
+
+# Who becomes available after current project ends?
+// Find developers who become available after a given project ends
+// A developer is considered available if they have no other assignments
+// starting after the end date of the given project
+
+MATCH (pr:Project)
+WHERE toLower(pr.title) = toLower($projectTitle)
+
+WITH pr, pr.end_date AS projectEndDate
+
+MATCH (p:Person)-[a:ASSIGNED_TO]->(pr)
+WHERE a.end_date = projectEndDate
+
+OPTIONAL MATCH (p)-[a2:ASSIGNED_TO]->(otherPr:Project)
+WHERE a2.start_date > projectEndDate
+
+WITH p, collect(a2) AS futureAssignments
+WHERE size(futureAssignments) = 0
+
+RETURN DISTINCT
+  p.id   AS developerId,
+  p.name AS developerName
+ORDER BY developerName
+
+
+
+# Count of skills by graduation year
+MATCH (p:Person)-[st:STUDIED_AT]->(:University)
+WHERE st.graduation_year IS NOT NULL
+
+MATCH (p)-[:HAS_SKILL]->(s:Skill)
+
+RETURN
+  st.graduation_year AS graduationYear,
+  s.id               AS skill,
+  count(DISTINCT p)  AS peopleCount
+ORDER BY graduationYear ASC, peopleCount DESC, skill ASC
+
+
+# Skills gaps analysis for upcoming project pipeline (next 3 months)
+// Gap = skills required by upcoming projects, but with ZERO available people having them
+// Availability = person has the skill AND has no ASSIGNED_TO overlapping the window
+
+WITH
+  date() AS winStart,
+  date() + duration({{months: 3}}) AS winEnd
+
+// 1) pick upcoming projects intersecting the window
+MATCH (pr:Project)-[req:REQUIRES]->(s:Skill)
+WHERE toLower(pr.status) IN ["upcoming","planned","pipeline"]
+  AND pr.start_date <= winEnd
+  AND pr.end_date   >= winStart
+
+WITH winStart, winEnd, pr, s, req
+
+// 2) count available people with that skill in the window
+OPTIONAL MATCH (p:Person)-[:HAS_SKILL]->(s)
+OPTIONAL MATCH (p)-[a:ASSIGNED_TO]->(:Project)
+WHERE a.start_date <= winEnd
+  AND a.end_date   >= winStart
+
+WITH
+  pr,
+  s,
+  req,
+  p,
+  collect(a) AS overlappingAssignments
+
+WITH
+  pr,
+  s,
+  req,
+  collect(DISTINCT CASE WHEN p IS NOT NULL AND size(overlappingAssignments) = 0 THEN p END) AS availablePeople
+
+WITH
+  pr,
+  s,
+  req,
+  [x IN availablePeople WHERE x IS NOT NULL] AS availablePeopleFiltered
+
+RETURN
+  pr.title AS projectTitle,
+  s.id     AS requiredSkill,
+  req.minimum_level   AS minimumLevel,
+  req.preferred_level AS preferredLevel,
+  size(availablePeopleFiltered) AS availablePeopleCount,
+  CASE WHEN size(availablePeopleFiltered) = 0 THEN true ELSE false END AS isGap
+ORDER BY isGap DESC, availablePeopleCount ASC, projectTitle ASC, requiredSkill ASC
+
+
+
+# Risk assessment: single points of failure for a given project
+// Single point of failure = exactly ONE person in the project has the required skill
+
+MATCH (pr:Project)-[req:REQUIRES]->(s:Skill)
+WHERE toLower(pr.title) = toLower($projectTitle)
+  AND toLower(pr.status) IN ["ongoing", "active"]
+
+// developers working on this project
+MATCH (p:Person)-[:WORKED_ON]->(pr)
+MATCH (p)-[:HAS_SKILL]->(s)
+
+WITH pr, s, collect(DISTINCT p) AS skilledPeople
+WHERE size(skilledPeople) = 1
+
+RETURN
+  pr.title            AS projectTitle,
+  s.id                AS criticalSkill,
+  skilledPeople[0].id AS singlePointOfFailureDeveloper,
+  size(skilledPeople) AS developerCount
+ORDER BY criticalSkill
+
+# Risk assessment: single points of failure across all ongoing projects
+MATCH (pr:Project)-[req:REQUIRES]->(s:Skill)
+WHERE toLower(pr.status) IN ["ongoing", "active"]
+
+MATCH (p:Person)-[:WORKED_ON]->(pr)
+MATCH (p)-[:HAS_SKILL]->(s)
+
+WITH pr, s, collect(DISTINCT p) AS skilledPeople
+WHERE size(skilledPeople) = 1
+
+RETURN
+  pr.title            AS projectTitle,
+  s.id                AS criticalSkill,
+  skilledPeople[0].id AS singlePointOfFailureDeveloper
+ORDER BY projectTitle, criticalSkill
+
+
+# Best 5-person team for e-commerce project?
+MATCH (p:Person)-[a:WORKED_ON]->(pr:Project)                                                                                                                                                               
+WHERE toLower(pr.title) CONTAINS toLower("e-commerce")                                                                                                                                                     
+WITH p, count(a) AS projectCount
+ORDER BY projectCount DESC                                                                                                                                                                                 
+RETURN collect(p.id) AS Team 
+LIMIT 5
+
+---
+
+Question:
+{question}"""
+
+
+# TODO Team Building: "Best 5-person team for e-commerce project?"
 
         CYPHER_GENERATION_PROMPT = PromptTemplate(
             input_variables=["schema", "question"],
@@ -216,62 +611,108 @@ def query_graph(chain: GraphCypherQAChain, question: str) -> Dict[str, Any]:
 
 def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
 
-    # 1. Dozwolone węzły
-    with open(os.path.join(SCHEMA_DIR, "allowed_nodes.json"), "r", encoding="utf-8") as f:
-        talent_allowed_nodes = json.load(f)
+    SYSTEM_PROMPT  = r"""
+# Knowledge Graph Extraction Instructions (STRICT RFP SCHEMA)
 
-    # 2. Dozwolone relacje (z kierunkiem)    
-    with open(os.path.join(SCHEMA_DIR, "allowed_relationships.json"), "r", encoding="utf-8") as f:
-        talent_allowed_relationships = [
-            tuple(r) for r in json.load(f)
-        ]
+You extract a knowledge graph ONLY for RFP documents from the input text.
+The output MUST strictly follow the schema defined below.
+DO NOT create any nodes, relationships, or properties outside this schema.
+If the input is not an RFP, output an empty graph (no nodes, no relationships).
 
-    # 3. Właściwości węzłów
-    with open(os.path.join(SCHEMA_DIR, "allowed_node_properties.json"), "r", encoding="utf-8") as f:
-        talent_node_properties = json.load(f)
-    
+---
 
-    SYSTEM_PROMPT = """
-        # Knowledge Graph Extraction Instructions
+## ID RULE (MANDATORY)
+For RFP.id you MUST create a deterministic unique id based on the title.
+Example:
+- title: "Senior Python Developers" -> id: "rfp_senior_python_developers"
+Rules:
+- lowercase
+- replace spaces and non-alphanumerics with underscores
+- prefix with "rfp_"
+If title is missing, do NOT create any RFP node.
 
-        You extract a knowledge graph from the input text.
+## ALLOWED NODE TYPES AND PROPERTIES (RFP ONLY)
 
-        ## Entities & Relationships
-        - Nodes represent entities like Person, Company, Project, Skill, Technology, Location, etc.
-        - Edges represent relationships between these entities.
-        - You MUST also extract node properties whenever they are explicitly present in the text.
-        - Do not invent any values that are not explicitly present.
+### RFP
+(RFP {{
+  id,
+  title,
+  description,
+  requirements,
+  budget,
+  deadline,
+  document_type
+}})
 
-        ## METADATA BLOCK
-        The input text may contain a block:
+### Skill
+(Skill {{
+  id,
+  category,
+  subcategory
+}})
 
-        [METADATA]
-        document_type: <VALUE>
+---
 
-        If such a block is present, you MUST:
-        - Set the node property `document_type` on the main document node (e.g., Project, CV, RFP) to that VALUE.
-        - Never ignore this field.
+## ALLOWED RELATIONSHIP TYPES AND PROPERTIES (RFP ONLY)
 
-        ## STATUS FIELD
-        If the input text contains a fragment like:
+### RFP → Skill
+(RFP)-[NEEDS {{
+  required_count,
+  experience_level
+}}]->(Skill)
 
-        Status: <VALUE>
+---
 
-        You MUST:
-        - Set the `status` property on the Project (or RFP) node to the exact extracted VALUE.
-        - NEVER ignore or omit the `status` field if it appears.
-        - Do NOT hallucinate a status value if it is missing — only assign it when explicitly provided.
+## RELATIONSHIP PROPERTY EXTRACTION RULES (MANDATORY)
 
-        Examples of valid status extraction:
-        - "Status: ongoing"  → status = "ongoing"
-        - "Status: completed" → status = "completed"
-        - "Status: RFP" → status = "RFP"
+When you create a NEEDS relationship:
 
-        ## GENERAL RULES
-        - Extract all explicit attributes such as start_date, end_date, budget, team_size, requirements, assigned programmers, etc.
-        - Maintain strict adherence to the allowed nodes, allowed relationships, and node properties.
-        - Never include explanations in the output.
-        """
+1) You MUST extract relationship properties ONLY when values are explicitly present in the text.
+2) If a NEEDS relationship exists but no valid property values are explicitly present, create the relationship WITHOUT properties.
+3) NEVER infer, guess, or fabricate values.
+
+### NEEDS
+Extract:
+- required_count only if explicitly present as a number (e.g., "required_count: 3", "need 3 engineers")
+- experience_level only if explicitly present as a clear level label (e.g., "experience_level: senior", "mid", "junior")
+
+---
+
+## METADATA BLOCK (MANDATORY HANDLING)
+
+The input text may contain a block:
+
+[METADATA]
+document_type: <VALUE>
+
+If present, you MUST:
+- Assign `document_type` to the RFP node exactly as provided.
+- NEVER ignore this field.
+- DO NOT infer or hallucinate document_type if missing.
+
+---
+
+## GENERAL EXTRACTION RULES
+
+- Extract ONLY explicitly stated information.
+- DO NOT guess missing values.
+- DO NOT normalize or reinterpret values.
+- DO NOT create placeholder or default values.
+- If a property is not present in the text, omit it.
+- The main node MUST be an RFP if anything is extracted.
+- IDs must be stable and unique per entity (use deterministic IDs if possible).
+- Use consistent entity resolution (same entity -> same node).
+
+---
+
+## OUTPUT RULES (CRITICAL)
+
+- Output ONLY the extracted graph data.
+- DO NOT include explanations, comments, or reasoning.
+- DO NOT include text outside the graph structure.
+- Ensure strict adherence to the defined schema.
+"""
+
 
 
     FINAL_TIP = HumanMessagePromptTemplate(
@@ -289,45 +730,49 @@ def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
         ]
     )
 
-        # Initialize transformer with strict schema
+    # Initialize transformer with strict schema
     llm_transformer = LLMGraphTransformer(
         llm=model,
-        allowed_nodes=talent_allowed_nodes,
-        allowed_relationships=talent_allowed_relationships,
-        node_properties=talent_node_properties,
-        strict_mode=True,
+        allowed_nodes=["RFP", "Skill"],
+        allowed_relationships=[("RFP", "NEEDS", "Skill")],
+        node_properties=True, 
+        relationship_properties=["required_count", "experience_level"],
+        strict_mode=False,
         prompt=chat_prompt,
     )
+
 
     return llm_transformer
 
 
-def store_single_graph_document(graph_document, graph: Neo4jGraph):
-    """Store exactly one graph document in Neo4j.
-
-    Args:
-        graph_document: a single GraphDocument object
-        graph: Neo4jGraph connection
+def store_single_graph_document(graph_document: GraphDocument, graph: Neo4jGraph) -> bool:
+    """Zapisuje 1 GraphDocument, ale SKIP jeśli RFP o tym samym title już istnieje.
+    Zwraca True gdy zapisano, False gdy pominięto.
     """
     try:
-        # Add only one document
+        title = get_rfp_title_from_graph_document(graph_document)
+
+        print(f"Graph document with title: {title}")
+
+        if title and rfp_title_exists(graph, title):
+            print(f"SKIP: RFP with title already exists: {title}")
+            return False
+
         graph.add_graph_documents(
-            [graph_document],        # wrap in list but save only one
+            [graph_document],
             baseEntityLabel=True,
-            include_source=True
+            include_source=False
         )
 
-        # Stats for the single document
-        total_nodes = len(graph_document.nodes)
-        total_relationships = len(graph_document.relationships)
-
         print("✓ Stored 1 document in Neo4j")
-        print(f"✓ Nodes: {total_nodes}")
-        print(f"✓ Relationships: {total_relationships}")
+        print(f"✓ Nodes: {len(graph_document.nodes)}")
+        print(f"✓ Relationships: {len(graph_document.relationships)}")
+        return True
 
     except Exception as e:
         print(f"Failed to store graph document: {e}")
         raise
+
 
 @traceable
 def convert_to_graph(
@@ -376,6 +821,10 @@ def convert_to_graph(
         nodes_count = len(graph_document.nodes)
         relationships_count = len(graph_document.relationships)
         print(f"  - Nodes: {nodes_count}, Relationships: {relationships_count}")
+
+        for rel in graph_document.relationships:
+            if rel.type in ["NEEDS"]:
+                print("REL:", rel.type, "PROPS:", rel.properties)
 
         return graph_document
 

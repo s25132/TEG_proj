@@ -23,17 +23,22 @@ SCHEMA_DIR = os.getenv("SCHEMA_DIR")
 
 def project_to_text(p: dict, document_type: str) -> str:
     """Zamienia cały obiekt projektu na jeden opisowy tekst."""
+
     reqs = ", ".join([
-        f"{r.get('skill_name')} (proficiency: {r.get('min_proficiency')}, "
-        f"mandatory: {r.get('is_mandatory')})"
+        f"{r.get('skill_name')} (minimum_level: {r.get('min_proficiency')})"
         for r in p.get("requirements", [])
     ])
 
     programmers = ", ".join([
         f"{a.get('programmer_name')} (ID {a.get('programmer_id')}, "
-        f"from {a.get('assignment_start_date')} to {a.get('assignment_end_date')})"
+        f"start_date: {a.get('assignment_start_date')}, "
+        f"end_date: {a.get('assignment_end_date')}"
+        + (f", allocation_percentage: {a.get('allocation_percentage')}"
+        if a.get("allocation_percentage") is not None else "")
+        + ")"
         for a in p.get("assigned_programmers", [])
     ])
+
 
     text = (
         f"Project ID: {p.get('id')}. "
@@ -112,8 +117,8 @@ def get_llm_transformer() -> LLMGraphTransformer:
     model = ChatOpenAI(
         model="gpt-4o-mini",
         temperature=0,
-        api_key=os.getenv("OPENAI_API_KEY"),
-    )
+        api_key=os.getenv("OPENAI_API_KEY")
+        )
     
     # 1. Dozwolone węzły
     with open(os.path.join(SCHEMA_DIR, "allowed_nodes.json"), "r", encoding="utf-8") as f:
@@ -130,48 +135,234 @@ def get_llm_transformer() -> LLMGraphTransformer:
         talent_node_properties = json.load(f)
     
 
-    SYSTEM_PROMPT = """
-        # Knowledge Graph Extraction Instructions
+    SYSTEM_PROMPT = r"""
+# Knowledge Graph Extraction Instructions (STRICT SCHEMA)
 
-        You extract a knowledge graph from the input text.
+You extract a knowledge graph from the input text.
+The output MUST strictly follow the schema defined below.
+DO NOT create any nodes, relationships, or properties outside this schema.
 
-        ## Entities & Relationships
-        - Nodes represent entities like Person, Company, Project, Skill, Technology, Location, etc.
-        - Edges represent relationships between these entities.
-        - You MUST also extract node properties whenever they are explicitly present in the text.
-        - Do not invent any values that are not explicitly present.
+---
 
-        ## METADATA BLOCK
-        The input text may contain a block:
+## ALLOWED NODE TYPES AND PROPERTIES (CORE ENTITIES)
 
-        [METADATA]
-        document_type: <VALUE>
+### Person
+(Person {{
+  id,
+  name,
+  location,
+  email,
+  phone,
+  years_experience
+}})
 
-        If such a block is present, you MUST:
-        - Set the node property `document_type` on the main document node (e.g., Project, CV, RFP) to that VALUE.
-        - Never ignore this field.
+### Skill
+(Skill {{
+  id,
+  category,
+  subcategory
+}})
 
-        ## STATUS FIELD
-        If the input text contains a fragment like:
+### Company
+(Company {{
+  id,
+  name,
+  industry,
+  size,
+  location
+}})
 
-        Status: <VALUE>
+### Project
+(Project {{
+  id,
+  title,
+  description,
+  start_date,
+  end_date,
+  budget,
+  status,
+  document_type
+}})
 
-        You MUST:
-        - Set the `status` property on the Project (or RFP) node to the exact extracted VALUE.
-        - NEVER ignore or omit the `status` field if it appears.
-        - Do NOT hallucinate a status value if it is missing — only assign it when explicitly provided.
+### Certification
+(Certification {{
+  id,
+  name,
+  provider,
+  date_earned,
+  expiry_date
+}})
 
-        Examples of valid status extraction:
-        - "Status: ongoing"  → status = "ongoing"
-        - "Status: completed" → status = "completed"
-        - "Status: RFP" → status = "RFP"
+### University
+(University {{
+  id,
+  name,
+  location,
+  ranking
+}})
 
-        ## GENERAL RULES
-        - Extract all explicit attributes such as start_date, end_date, budget, team_size, requirements, assigned programmers, etc.
-        - Maintain strict adherence to the allowed nodes, allowed relationships, and node properties.
-        - Never include explanations in the output.
-        """
+### RFP
+(RFP {{
+  id,
+  title,
+  description,
+  requirements,
+  budget,
+  deadline,
+  document_type
+}})
 
+---
+
+## ALLOWED RELATIONSHIP TYPES AND PROPERTIES
+
+### Person → Skill
+(Person)-[HAS_SKILL {{
+  proficiency,        // integer 1–5
+  years_experience
+}}]->(Skill)
+
+### Person → Company
+(Person)-[WORKED_AT {{
+  role,
+  start_date,
+  end_date
+}}]->(Company)
+
+### Person → Project
+(Person)-[WORKED_ON {{
+  role,
+  contribution,
+  start_date,
+  end_date
+}}]->(Project)
+
+(Person)-[ASSIGNED_TO {{
+  allocation_percentage,
+  start_date,
+  end_date
+}}]->(Project)
+
+### Person → Certification
+(Person)-[EARNED {{
+  date,
+  score
+}}]->(Certification)
+
+### Person → University
+(Person)-[STUDIED_AT {{
+  degree,
+  graduation_year,
+  gpa
+}}]->(University)
+
+### Project → Skill
+(Project)-[REQUIRES {{
+  minimum_level,
+  preferred_level
+}}]->(Skill)
+
+### RFP → Skill
+(RFP)-[NEEDS {{
+  required_count,
+  experience_level
+}}]->(Skill)
+
+---
+
+## RELATIONSHIP PROPERTY EXTRACTION RULES (MANDATORY)
+
+When you create any relationship above:
+
+1) You MUST extract relationship properties ONLY when values are explicitly present in the text.
+2) If a relationship exists but no valid property values are explicitly present, create the relationship WITHOUT properties.
+3) NEVER infer, guess, or fabricate values.
+
+### HAS_SKILL
+Extract:
+- proficiency (int 1–5) if explicitly present as:
+  - "proficiency: <1-5>"
+  - OR "level: <Beginner|Intermediate|Advanced|Expert>" using this mapping ONLY when the level word is present:
+    - Beginner -> 2
+    - Intermediate -> 3
+    - Advanced -> 4
+    - Expert -> 5
+- years_experience if explicitly present as a number of years (e.g., "5 years", "5 yrs", "5 years experience")
+
+### WORKED_AT / WORKED_ON / ASSIGNED_TO
+Extract:
+- role only if explicitly present as a title
+- start_date / end_date only if explicitly present (year or date)
+- allocation_percentage only if explicitly present as a number (e.g., "allocation_percentage: 50" or "50%")
+
+### STUDIED_AT
+Extract:
+- degree only if explicitly present
+- graduation_year only if explicitly present as a year
+- gpa only if explicitly present as a numeric GPA
+
+### EARNED
+Extract:
+- date only if explicitly present
+- score only if explicitly present
+
+### REQUIRES / NEEDS
+Extract:
+- minimum_level / preferred_level / experience_level only if explicitly present with the SAME field name
+- required_count only if explicitly present as a number
+
+---
+
+## METADATA BLOCK (MANDATORY HANDLING)
+
+The input text may contain a block:
+
+[METADATA]
+document_type: <VALUE>
+
+If present, you MUST:
+- Assign `document_type` to the main node:
+  - Project -> document_type
+  - RFP -> document_type
+- NEVER ignore this field
+- DO NOT infer or hallucinate document_type if missing
+
+---
+
+## STATUS FIELD (MANDATORY HANDLING)
+
+If the input text contains:
+
+Status: <VALUE>
+
+You MUST:
+- Assign `status` to Project OR RFP
+- Use the EXACT extracted value
+- NEVER omit `status` if present
+- DO NOT infer status if it is not explicitly provided
+
+---
+
+## GENERAL EXTRACTION RULES
+
+- Extract ONLY explicitly stated information
+- DO NOT guess missing values
+- DO NOT normalize or reinterpret values (EXCEPT the explicit HAS_SKILL level mapping above)
+- DO NOT create placeholder or default values
+- If a property is not present in the text, omit it
+- IDs must be stable and unique per entity (use deterministic IDs if possible)
+- Use consistent entity resolution (same entity -> same node)
+
+---
+
+## OUTPUT RULES (CRITICAL)
+
+- Output ONLY the extracted graph data
+- DO NOT include explanations, comments, or reasoning
+- DO NOT include text outside the graph structure
+- Format the output as structured graph documents
+- Ensure strict adherence to the defined schema
+"""
 
     FINAL_TIP = HumanMessagePromptTemplate(
         prompt=PromptTemplate.from_template(
@@ -194,7 +385,8 @@ def get_llm_transformer() -> LLMGraphTransformer:
         allowed_nodes=talent_allowed_nodes,
         allowed_relationships=talent_allowed_relationships,
         node_properties=talent_node_properties,
-        strict_mode=True,
+        relationship_properties=True, 
+        strict_mode=False,
         prompt=chat_prompt,
     )
 
@@ -251,7 +443,7 @@ def store_graph_documents(graph_documents: List, graph: Neo4jGraph):
             graph.add_graph_documents(
                 graph_documents,
                 baseEntityLabel=True,  # Add base Entity label for indexing
-                include_source=True    # Include source documents for RAG
+                include_source=False    # Include source documents for RAG
             )
 
             # Calculate and log statistics
@@ -289,10 +481,15 @@ def process_all_cvs(llm_transformer: LLMGraphTransformer, graph: Neo4jGraph, cv_
         all_graph_documents = []
 
         # Process each CV
-        for pdf_path in pdf_files:
+        for pdf_path in pdf_files[:10]:
             graph_documents = convert_cv_to_graph(llm_transformer, pdf_path)
 
             if graph_documents:
+                
+                for rel in graph_documents[0].relationships:
+                    if rel.type in ["HAS_SKILL","ASSIGNED_TO","REQUIRES","WORKED_AT","WORKED_ON"]:
+                        print("REL:", rel.type, "PROPS:", rel.properties)
+
                 all_graph_documents.extend(graph_documents)
                 processed_count += 1
             else:
@@ -332,6 +529,10 @@ def process_all_projects(llm_transformer: LLMGraphTransformer, graph: Neo4jGraph
 
         # Log extraction statistics
         if graph_documents:
+            for rel in graph_documents[0].relationships:
+                if rel.type in ["HAS_SKILL","ASSIGNED_TO","REQUIRES","WORKED_AT","WORKED_ON"]:
+                    print("REL:", rel.type, "PROPS:", rel.properties)
+
             nodes_count = len(graph_documents[0].nodes)
             relationships_count = len(graph_documents[0].relationships)
             print(f"  - Nodes: {nodes_count}, Relationships: {relationships_count}")

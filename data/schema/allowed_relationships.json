@@ -2,22 +2,9 @@
   ["Person", "WORKED_AT", "Company"],
   ["Person", "STUDIED_AT", "University"],
   ["Person", "HAS_SKILL", "Skill"],
-  ["Person", "LOCATED_IN", "Location"],
-  ["Person", "HOLDS_POSITION", "JobTitle"],
   ["Person", "WORKED_ON", "Project"],
   ["Person", "EARNED", "Certification"],
   ["Person", "ASSIGNED_TO", "Project"],
-
-  ["JobTitle", "AT_COMPANY", "Company"],
-  ["University", "LOCATED_IN", "Location"],
-
-  ["Project", "USED_TECHNOLOGY", "Technology"],
-  ["Project", "FOR_COMPANY", "Company"],
-  ["Company", "IN_INDUSTRY", "Industry"],
-  ["Skill", "RELATED_TO", "Technology"],
-  ["Certification", "ISSUED_BY", "Company"],
-
-  ["Project", "REQUIRES_SKILL", "Skill"],
-  ["Project", "PREFERS_CERTIFICATION", "Certification"],
-  ["Project", "LOCATED_IN", "Location"]
+  ["Project", "REQUIRES", "Skill"],
+  ["RFP", "NEEDS", "Skill"]
 ]
