@@ -9,6 +9,7 @@ from app.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagRespo
 from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 from app.utility import wait_for_neo4j
 from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, query_graph
+from app.scoring_agent import setup_agent
 
 load_dotenv(override=True)
 
@@ -31,6 +32,7 @@ emb_model = OpenAIEmbeddings(model="text-embedding-3-small")
 graf = wait_for_neo4j(URI, USER, PASSWORD)
 llm_transformer = get_llm_transformer(llm)
 graph_cypher_qa_chain = setup_qa_chain(llm, graf)
+agent = setup_agent(llm, graf, graph_cypher_qa_chain)
 
 # Klient Chroma (Persistent – dane na dysku)
 chroma_client: PersistentClient = chromadb.PersistentClient(path=CHROMA_DIR)
@@ -77,7 +79,7 @@ def chat_graph(request: GraphRagRequest):
 
     try:
         # wykonujemy zapytanie do grafu
-        graph_response = query_graph(graph_cypher_qa_chain, request.question)
+        graph_response = query_graph(agent, request.question)
 
         answer = graph_response.get("answer", "No answer generated")
         # to jest Twoje retrieved_contexts z query_graph
