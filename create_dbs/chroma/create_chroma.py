@@ -12,15 +12,19 @@ load_dotenv(override=True)
 
 def project_to_text(p: dict) -> str:
     """Zamienia cały obiekt projektu na jeden opisowy tekst."""
+
     reqs = ", ".join([
-        f"{r.get('skill_name')} (proficiency: {r.get('min_proficiency')}, "
-        f"mandatory: {r.get('is_mandatory')})"
+        f"{r.get('skill_name')} (minimum_level: {r.get('min_proficiency')})"
         for r in p.get("requirements", [])
     ])
 
     programmers = ", ".join([
         f"{a.get('programmer_name')} (ID {a.get('programmer_id')}, "
-        f"from {a.get('assignment_start_date')} to {a.get('assignment_end_date')})"
+        f"start_date: {a.get('assignment_start_date')}, "
+        f"end_date: {a.get('assignment_end_date')}"
+        + (f", allocation_percentage: {a.get('allocation_percentage')}"
+        if a.get("allocation_percentage") is not None else "")
+        + ")"
         for a in p.get("assigned_programmers", [])
     ])
 
