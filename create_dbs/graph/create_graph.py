@@ -481,7 +481,7 @@ def process_all_cvs(llm_transformer: LLMGraphTransformer, graph: Neo4jGraph, cv_
         all_graph_documents = []
 
         # Process each CV
-        for pdf_path in pdf_files[:10]:
+        for pdf_path in pdf_files:
             graph_documents = convert_cv_to_graph(llm_transformer, pdf_path)
 
             if graph_documents:

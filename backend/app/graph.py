@@ -594,12 +594,12 @@ def _safe_str(x: Any) -> str:
         return repr(x)
 
 @traceable(process_inputs=lambda inputs: {"question": inputs["question"]})
-def query_graph(chain: AgentExecutor, question: str) -> Dict[str, Any]:
+def query_graph(agent: AgentExecutor, question: str) -> Dict[str, Any]:
     """Execute a natural language query using AgentExecutor (tools-enabled). Always returns some contexts for testing."""
     try:
         print(f"Executing query: {question}")
 
-        result = chain.invoke({"input": question})
+        result = agent.invoke({"input": question})
         answer = result.get("output", "No answer generated") if isinstance(result, dict) else str(result)
 
         steps = result.get("intermediate_steps", []) if isinstance(result, dict) else []
