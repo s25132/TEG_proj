@@ -496,35 +496,6 @@ RETURN
   s.id                AS criticalSkill,
   skilledPeople[0].id AS singlePointOfFailureDeveloper
 ORDER BY projectTitle, criticalSkill
-
-
-# Best 5-person team for e-commerce project?
-MATCH (p:Person)-[a:WORKED_ON]->(pr:Project)                                                                                                                                                               
-WHERE toLower(pr.title) CONTAINS toLower("e-commerce")                                                                                                                                                     
-WITH p, count(a) AS projectCount
-ORDER BY projectCount DESC                                                                                                                                                                                 
-RETURN collect(p.id) AS Team 
-LIMIT 5
-
-
-# List developers with their project counts and university rankings
-# Give me best developers based on project counts and university rankings
-MATCH (p:Person)
-
-OPTIONAL MATCH (p)-[:WORKED_ON]->(pr:Project)
-WITH p, count(DISTINCT pr) AS projectCount
-
-OPTIONAL MATCH (p)-[:STUDIED_AT]->(u:University)
-
-RETURN
-  p.id   AS personId,
-  p.name AS name,
-  coalesce(p.years_experience, 0) AS yearsExperience,
-  projectCount,
-  coalesce(u.ranking, 9999) AS universityRanking,
-  u.name AS universityName
-ORDER BY projectCount DESC, yearsExperience DESC;
-
 ---
 
 Question:

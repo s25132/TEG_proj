@@ -8,9 +8,8 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 
 # -------------------------
-# Scoring helpers
+# Scoring helpers (Twoje)
 # -------------------------
-
 def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
     return max(lo, min(hi, x))
 
@@ -43,11 +42,9 @@ def compute_score(row: Dict[str, Any]) -> float:
     return round(score, 4)
 
 def _rank_rows(rows: List[Dict[str, Any]], top_n: int = 5) -> List[Dict[str, Any]]:
-    """Internal (non-tool) ranking: adds score + sorts + returns top_n."""
     for r in rows:
         r["score"] = compute_score(r)
 
-    # stabilne sortowanie (przy remisach)
     rows.sort(
         key=lambda x: (
             x.get("score", 0.0),
@@ -61,15 +58,54 @@ def _rank_rows(rows: List[Dict[str, Any]], top_n: int = 5) -> List[Dict[str, Any
 
 
 # -------------------------
-# Tools
+# Tool 1: graph_qa (Twoje, lekko wpięte)
 # -------------------------
-
-def make_tools(graph: Neo4jGraph):
+def make_graph_qa_tool(qa_chain):
     @tool
-    def fetch_candidates(projectKeyword: Optional[str] = None) -> List[Dict[str, Any]]:
+    def graph_qa(question: str) -> Dict[str, Any]:
         """
-        Fetch developer features needed for ranking.
-        If projectKeyword is provided, restrict to people who worked on projects matching that keyword.
+        Answer a question using GraphCypherQAChain over Neo4j.
+        Returns answer + cypher_query + retrieved_contexts.
+        """
+        res = qa_chain.invoke({"query": question})
+
+        out = {"answer": "", "cypher_query": "", "retrieved_contexts": []}
+
+        if isinstance(res, dict):
+            out["answer"] = res.get("result", "")
+
+            steps = res.get("intermediate_steps", [])
+            if len(steps) > 0 and isinstance(steps[0], dict):
+                out["cypher_query"] = steps[0].get("query", "") or ""
+
+            if len(steps) > 1 and isinstance(steps[1], dict):
+                ctx = steps[1].get("context", [])
+                if isinstance(ctx, list):
+                    out["retrieved_contexts"] = [
+                        ", ".join(f"{k}={v}" for k, v in rec.items()) if isinstance(rec, dict) else str(rec)
+                        for rec in ctx
+                    ]
+        else:
+            out["answer"] = str(res)
+
+        return out
+
+    return graph_qa
+
+
+# -------------------------
+# Tool 2: ranking (score przez _rank_rows)
+# -------------------------
+def make_rank_tool(graph: Neo4jGraph):
+    @tool
+    def rank_best_devs_university(top_n: int = 5, projectKeyword: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Rank developers using score = f(yearsExperience, projectCount, universityRanking).
+        Use ONLY for questions like:
+        # List developers with their project counts and university rankings
+        # Give me best developers based on project counts and university rankings
+        DO NOT use for other types of questions. DO NOT use for only count queries like "How many developers have AWS certifications?" 
+        or "Top 5 universities of developers with most completed projects".
         """
         if projectKeyword and projectKeyword.strip():
             cypher = """
@@ -90,16 +126,14 @@ def make_tools(graph: Neo4jGraph):
               coalesce(u.ranking, 9999) AS universityRanking,
               u.name AS universityName
             """
-            return graph.query(cypher, {"kw": projectKeyword.strip()})
+            rows = graph.query(cypher, {"kw": projectKeyword.strip()})
+            return _rank_rows(rows, top_n=top_n)
 
         cypher = """
         MATCH (p:Person)
-
         OPTIONAL MATCH (p)-[:WORKED_ON]->(pr:Project)
         WITH p, count(DISTINCT pr) AS projectCount
-
         OPTIONAL MATCH (p)-[:STUDIED_AT]->(u:University)
-
         RETURN
           p.id   AS personId,
           p.name AS name,
@@ -108,73 +142,32 @@ def make_tools(graph: Neo4jGraph):
           coalesce(u.ranking, 9999) AS universityRanking,
           u.name AS universityName
         """
-        return graph.query(cypher)
-
-    @tool
-    def recommend_candidates(projectKeyword: Optional[str] = None, top_n: int = 5) -> List[Dict[str, Any]]:
-        """
-        Fetch and rank candidates. Use this for 'top/best/ranking' developer requests.
-        Only use recommend_candidates for questions like "Give me best developers based on project counts and university rankings"
-        This avoids passing `rows` between tools (more reliable).
-        """
-        rows = fetch_candidates.invoke({"projectKeyword": projectKeyword})
+        rows = graph.query(cypher)
         return _rank_rows(rows, top_n=top_n)
 
-    # ✅ celowo NIE zwracamy rank_candidates jako tool
-    return [fetch_candidates, recommend_candidates]
-
-
-def make_graph_qa_tool(qa_chain):
-    @tool
-    def graph_qa(question: str) -> Dict[str, Any]:
-        """
-        Answer a question using GraphCypherQAChain over Neo4j.
-        Returns answer + cypher_query + retrieved_contexts.
-        """
-        res = qa_chain.invoke({"query": question})
-
-        out = {"answer": "", "cypher_query": "", "retrieved_contexts": []}
-
-        if isinstance(res, dict):
-            out["answer"] = res.get("result", "")
-
-            steps = res.get("intermediate_steps", [])
-            # GraphCypherQAChain często: steps[0]={"query":...}, steps[1]={"context":[...]}
-            if len(steps) > 0 and isinstance(steps[0], dict):
-                out["cypher_query"] = steps[0].get("query", "") or ""
-
-            if len(steps) > 1 and isinstance(steps[1], dict):
-                ctx = steps[1].get("context", [])
-                if isinstance(ctx, list):
-                    out["retrieved_contexts"] = [
-                        ", ".join(f"{k}={v}" for k, v in rec.items()) if isinstance(rec, dict) else str(rec)
-                        for rec in ctx
-                    ]
-        else:
-            out["answer"] = str(res)
-
-        return out
-
-    return graph_qa
+    return rank_best_devs_university
 
 
 # -------------------------
-# Agent
+# Agent: zawsze graph_qa, a ranking tylko dla tego jednego typu pytań
 # -------------------------
-
 def setup_agent(model, graph: Neo4jGraph, qa_chain):
-    custom_tools = make_tools(graph)  # [fetch_candidates, recommend_candidates]
     graph_qa_tool = make_graph_qa_tool(qa_chain)
+    rank_tool = make_rank_tool(graph)
 
-    tools = [graph_qa_tool, *custom_tools]
+    tools = [graph_qa_tool, rank_tool]
 
     prompt = ChatPromptTemplate.from_messages([
         ("system",
          "You are a helpful assistant.\n"
-         "Use tools when needed.\n"
-         "- If the user asks for top/best/ranking, call recommend_candidates.Only use recommend_candidates for that. Example: Give me best developers based on project counts and university rankings\n"
-         "- For general graph questions, call graph_qa.\n"
-         "Never call tools with missing required arguments."),
+         "MANDATORY TOOL POLICY:\n"
+         "1) For EVERY user question, you MUST call graph_qa(question) first.\n"
+         "2) After graph_qa, you may call rank_best_devs_university ONLY if the user's input is EXACTLY one of:\n"
+         "   - 'List developers with their project counts and university rankings'\n"
+         "   - 'Give me best developers based on project counts and university rankings'\n"
+         "   (case-insensitive, optional trailing punctuation)\n"
+         "3) Never call rank_best_devs_university for any other question.\n"
+         "4) Respond with a human-friendly final answer.\n"),
         ("human", "{input}"),
         MessagesPlaceholder(variable_name="agent_scratchpad"),
     ])
