@@ -183,6 +183,7 @@ If a question cannot be answered using this schema, return an empty Cypher query
 5. When counting results, return meaningful column names.
 6. If the question asks for something unsupported by the schema, return an empty query.
 7. Do NOT include explanations, comments, or any text outside the Cypher query.
+8. If you search for RFP use Rfp label. Example "MATCH (r:Rfp) WHERE ..."
 
 ---
 
@@ -248,7 +249,7 @@ WHERE size(assignmentsInQ2) = 0
 RETURN count(DISTINCT p) AS availablePythonDevelopersQ2
 
 # What skills are missing candidates for RFP titled "Senior Backend Developer"?
-MATCH (r:RFP)-[:NEEDS]->(s:Skill)
+MATCH (r:Rfp)-[:NEEDS]->(s:Skill)
 WHERE toLower(r.title) = toLower($rfpTitle)
 
 OPTIONAL MATCH (p:Person)-[:HAS_SKILL]->(s)
@@ -313,16 +314,11 @@ WHERE size(activeAssignments) = 0
 RETURN p
 
 
-# Average years of experience for machine learning projects
-MATCH (pr:Project)-[:REQUIRES]->(s:Skill)
-WHERE toLower(s.category) = toLower("machine learning")
-
-MATCH (p:Person)-[:WORKED_ON]->(pr)
-
-WHERE p.years_experience IS NOT NULL
-
-RETURN avg(p.years_experience) AS avgYearsExperienceML
-
+# Number of years of experience for developers
+MATCH (p:Person)
+WITH toFloat(p.years_experience) AS y
+WHERE y IS NOT NULL
+RETURN avg(y) AS avgYearsExperience
 
 
 # Total available FTE in Q4 2025
