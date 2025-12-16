@@ -600,7 +600,7 @@ def invoke_agent(agent: AgentExecutor, question: str) -> Dict[str, Any]:
                     retrieved_contexts.append(_safe_str(observation))
 
             # --- candidate tools ---
-            elif tool_name in ("rank_best_devs_university","match_devs_to_rfp_scored"):
+            elif tool_name in ("rank_best_devs_university","match_devs_to_rfp_scored", "match_devs_to_rfp_scored_whatif", "compare_baseline_vs_whatif_for_rfp"):
                 if isinstance(observation, list):
                     if len(observation) == 0:
                         # ✅ kluczowe: nawet jak pusto, zwróć info (do testów)
