@@ -77,3 +77,6 @@ http://localhost:8501/
 
 ![GUI](gui.png)
 
+## Architektura rozwiązania  
+
+![ARCH](architektura.png)
