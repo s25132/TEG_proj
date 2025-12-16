@@ -600,7 +600,7 @@ def query_graph(agent: AgentExecutor, question: str) -> Dict[str, Any]:
                     retrieved_contexts.append(_safe_str(observation))
 
             # --- candidate tools ---
-            elif tool_name in ("fetch_candidates", "recommend_candidates"):
+            elif tool_name in ("rank_best_devs_university","match_devs_to_rfp_simple"):
                 if isinstance(observation, list):
                     if len(observation) == 0:
                         # ✅ kluczowe: nawet jak pusto, zwróć info (do testów)
