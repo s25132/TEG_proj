@@ -9,7 +9,7 @@ from app.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagRespo
 from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 from app.utility import wait_for_neo4j
 from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, query_graph
-from app.scoring_agent import setup_agent
+from app.agent import setup_agent
 
 load_dotenv(override=True)
 

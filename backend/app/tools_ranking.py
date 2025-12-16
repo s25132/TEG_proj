@@ -3,13 +3,8 @@ import math
 
 from langchain_core.tools import tool
 from langchain_community.graphs import Neo4jGraph
-from langchain.agents import create_openai_tools_agent, AgentExecutor
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 
-# -------------------------
-# Scoring helpers (Twoje)
-# -------------------------
 def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
     return max(lo, min(hi, x))
 
@@ -57,45 +52,6 @@ def _rank_rows(rows: List[Dict[str, Any]], top_n: int = 5) -> List[Dict[str, Any
     return rows[: max(0, int(top_n))]
 
 
-# -------------------------
-# Tool 1: graph_qa (Twoje, lekko wpięte)
-# -------------------------
-def make_graph_qa_tool(qa_chain):
-    @tool
-    def graph_qa(question: str) -> Dict[str, Any]:
-        """
-        Answer a question using GraphCypherQAChain over Neo4j.
-        Returns answer + cypher_query + retrieved_contexts.
-        """
-        res = qa_chain.invoke({"query": question})
-
-        out = {"answer": "", "cypher_query": "", "retrieved_contexts": []}
-
-        if isinstance(res, dict):
-            out["answer"] = res.get("result", "")
-
-            steps = res.get("intermediate_steps", [])
-            if len(steps) > 0 and isinstance(steps[0], dict):
-                out["cypher_query"] = steps[0].get("query", "") or ""
-
-            if len(steps) > 1 and isinstance(steps[1], dict):
-                ctx = steps[1].get("context", [])
-                if isinstance(ctx, list):
-                    out["retrieved_contexts"] = [
-                        ", ".join(f"{k}={v}" for k, v in rec.items()) if isinstance(rec, dict) else str(rec)
-                        for rec in ctx
-                    ]
-        else:
-            out["answer"] = str(res)
-
-        return out
-
-    return graph_qa
-
-
-# -------------------------
-# Tool 2: ranking (score przez _rank_rows)
-# -------------------------
 def make_rank_tool(graph: Neo4jGraph):
     @tool
     def rank_best_devs_university(top_n: int = 5, projectKeyword: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -146,31 +102,3 @@ def make_rank_tool(graph: Neo4jGraph):
         return _rank_rows(rows, top_n=top_n)
 
     return rank_best_devs_university
-
-
-# -------------------------
-# Agent: zawsze graph_qa, a ranking tylko dla tego jednego typu pytań
-# -------------------------
-def setup_agent(model, graph: Neo4jGraph, qa_chain):
-    graph_qa_tool = make_graph_qa_tool(qa_chain)
-    rank_tool = make_rank_tool(graph)
-
-    tools = [graph_qa_tool, rank_tool]
-
-    prompt = ChatPromptTemplate.from_messages([
-        ("system",
-         "You are a helpful assistant.\n"
-         "MANDATORY TOOL POLICY:\n"
-         "1) For EVERY user question, you MUST call graph_qa(question) first.\n"
-         "2) After graph_qa, you may call rank_best_devs_university ONLY if the user's input is EXACTLY one of:\n"
-         "   - 'List developers with their project counts and university rankings'\n"
-         "   - 'Give me best developers based on project counts and university rankings'\n"
-         "   (case-insensitive, optional trailing punctuation)\n"
-         "3) Never call rank_best_devs_university for any other question.\n"
-         "4) Respond with a human-friendly final answer.\n"),
-        ("human", "{input}"),
-        MessagesPlaceholder(variable_name="agent_scratchpad"),
-    ])
-
-    agent = create_openai_tools_agent(llm=model, tools=tools, prompt=prompt)
-    return AgentExecutor(agent=agent, tools=tools, verbose=True, return_intermediate_steps=True)
