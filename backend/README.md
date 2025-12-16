@@ -117,3 +117,237 @@ Project Count: 3
 University: University of Adamsbury  
 
 If you need more information or further assistance, feel free to ask!  
+
+
+## Tool make_whatif_match_tool
+
+Tool służy do dopasowania developerów do wymagań konkretnego RFP
+z wykorzystaniem grafu Neo4j, z możliwością przeprowadzenia analizy
+what-if poprzez dodanie hipotetycznych developerów.
+
+Jak działa
+
+Pobiera wymagania RFP z grafu Neo4j (Rfp → NEEDS → Skill)
+
+Dla każdej wymaganej umiejętności:
+
+pobiera wymaganą liczbę developerów (required_count)
+
+Wyszukuje kandydatów z grafu Neo4j:
+
+developerów posiadających daną umiejętność (HAS_SKILL)
+
+zlicza liczbę projektów (WORKED_ON → Project)
+
+pobiera dane o uczelni (STUDIED_AT → University)
+
+Uwzględnia dodatkowych, hipotetycznych developerów (extra_devs)
+przekazanych w analizie what-if
+
+Oblicza score kandydata na podstawie:
+
+lat doświadczenia (yearsExperience)
+
+liczby projektów
+
+rankingu ukończonej uczelni
+
+Sortuje kandydatów według score i przypisuje najlepszych developerów
+do każdej wymaganej umiejętności
+
+Zwraca przypisania wraz z informacją o brakach kadrowych
+
+
+Pytanie: What if we add two extra developers to the RFP "API Integration Platform Development": 
+W1 (Anna): skills Java,AWS; 7 years; 10 projects; university ranking 80
+W2 (Bartek): skills Python,Docker; 4 years; 6 projects; university ranking 200 Return assignments with scores.
+
+Odp: Here are the assignments with scores for the RFP "API Integration Platform Development" after adding the two extra developers:
+
+Assignments:
+Skill: Java
+
+Developer: Anna (W1)
+Score: 0.7974
+Years Experience: 7
+Project Count: 10
+University Ranking: 80
+Skill: Angular
+
+Developer: Jessica Erickson
+Score: 0.3734
+Years Experience: 5
+Project Count: 2
+University Ranking: Not specified
+Skill: Django
+
+Developer: Lauren Flowers
+Score: 0.1484
+Years Experience: 0
+Project Count: 2
+University Ranking: Not specified
+Skill: Docker
+
+Developer: Darius Villa
+Score: 0.5628
+Years Experience: 7
+Project Count: 4
+University Ranking: 9999
+Skill: Typescript
+
+Developer: Mark Carroll
+Score: 0.428
+Years Experience: 5
+Project Count: 3
+University Ranking: N/A
+Unfilled Skills:
+Angular: Required 3, Filled 1
+Django: Required 2, Filled 1
+Java: Required 2, Filled 1
+Typescript: Required 3, Filled 1
+This summary includes the developers assigned to each skill along with their scores and experience details. Let me know if you need further assistance!
+
+## Tool compare_baseline_vs_whatif_for_rfp
+
+Tool służy do porównania wyników dopasowania developerów do RFP
+pomiędzy scenariuszem bazowym (tylko dane z grafu Neo4j)
+a scenariuszem what-if, w którym uwzględniani są dodatkowi,
+hipotetyczni developerzy.
+
+Jak działa
+
+Uruchamia dopasowanie bazowe do RFP
+
+bez uwzględniania dodatkowych developerów (extra_devs = [])
+
+Uruchamia dopasowanie what-if do RFP
+
+z uwzględnieniem developerów przekazanych w extra_devs
+
+Porównuje przypisania z obu scenariuszy:
+
+identyfikuje nowe przypisania (added_assignments)
+
+identyfikuje usunięte przypisania (removed_assignments)
+
+Analizuje zmiany per umiejętność:
+
+porównuje listy przypisanych developerów w scenariuszu bazowym
+i what-if
+
+Porównuje braki kadrowe:
+
+wskazuje umiejętności, dla których sytuacja uległa poprawie,
+pogorszeniu lub nie uległa zmianie
+
+Zwraca pełne wyniki scenariusza bazowego i what-if
+wraz z podsumowaniem różnic
+
+Pytanie: Compare baseline vs what-if for the RFP "API Integration Platform Development" after adding two extra developers
+W1 (Anna): skills Java,AWS; 7 years; 10 projects; university ranking 80
+W2 (Bartek): skills Python,Docker; 4 years; 6 projects; university ranking 200 Return assignments with scores.
+
+
+Odp: Here's the comparison of the baseline vs. what-if for the RFP "API Integration Platform Development" after adding the two extra developers, Anna and Bartek.
+
+Baseline Assignments
+Skill: Angular
+
+Developer: Jessica Erickson
+Score: 0.3734
+Years Experience: 5
+Project Count: 2
+University Ranking: Not specified
+Skill: Django
+
+Developer: Lauren Flowers
+Score: 0.1484
+Years Experience: 0
+Project Count: 2
+University Ranking: Not specified
+Skill: Docker
+
+Developer: Darius Villa
+Score: 0.5628
+Years Experience: 7
+Project Count: 4
+University Ranking: 9999
+Skill: Typescript
+
+Developer: Mark Carroll
+Score: 0.428
+Years Experience: 5
+Project Count: 3
+University Ranking: N/A
+What-If Assignments
+Skill: Angular
+
+Developer: Jessica Erickson
+Score: 0.3734
+Years Experience: 5
+Project Count: 2
+University Ranking: Not specified
+Skill: Django
+
+Developer: Lauren Flowers
+Score: 0.1484
+Years Experience: 0
+Project Count: 2
+University Ranking: Not specified
+Skill: Docker
+
+Developer: Darius Villa
+Score: 0.5628
+Years Experience: 7
+Project Count: 4
+University Ranking: 9999
+Skill: Java
+
+Developer: Anna (W1)
+Score: 0.7974
+Years Experience: 7
+Project Count: 10
+University Ranking: 80
+Skill: Typescript
+
+Developer: Mark Carroll
+Score: 0.428
+Years Experience: 5
+Project Count: 3
+University Ranking: N/A
+Differences
+Added Assignments:
+
+Skill: Java
+Developer: Anna (W1)
+Score: 0.7974
+Removed Assignments: None
+
+Per Skill Changes:
+
+Skill: Java
+Baseline: No assignments
+What-If: Anna assigned with a score of 0.7974
+Unfilled Skills
+Baseline:
+
+Angular: Required 3, Filled 1
+Django: Required 2, Filled 1
+Java: Required 2, Filled 0
+Typescript: Required 3, Filled 1
+What-If:
+
+Angular: Required 3, Filled 1
+Django: Required 2, Filled 1
+Java: Required 2, Filled 1
+Typescript: Required 3, Filled 1
+Summary of Unfilled Changes
+Improved:
+
+Skill: Java
+Baseline missing: 2
+What-If missing: 1
+Unchanged:
+
+Angular, Django, and Typescript remained the same in terms of filled assignments.
+This analysis shows that adding Anna significantly improved the assignment for the Java skill, while other skills remained unchanged in terms of filled assignments.
