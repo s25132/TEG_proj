@@ -1,7 +1,7 @@
 from typing import Any, Dict, List
 from langchain_core.tools import tool
 from langchain_community.graphs import Neo4jGraph
-from app.rank_utility import _rank_rows
+from app.utilities.rank_utility import _rank_rows
 
 def make_simple_match_tool(graph: Neo4jGraph):
 

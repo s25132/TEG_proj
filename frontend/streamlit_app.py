@@ -43,13 +43,6 @@ def upload_rfp(file) -> str:
 st.set_page_config(page_title="Talent AI", page_icon="💬", layout="centered")
 st.title("Talent AI")
 
-# Sidebar
-with st.sidebar:
-    st.header("Ustawienia")
-    backend = st.text_input("Backend URL", value=BACKEND_URL)
-
-BACKEND_URL = backend
-
 # --- Kontrola aktywnej zakładki ---
 
 TAB_OPTIONS = ["chat", "graph", "rfp"]  # → RFP jako ostatnia

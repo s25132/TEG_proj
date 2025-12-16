@@ -1,10 +1,9 @@
 from langchain_community.graphs import Neo4jGraph
 from langchain.agents import create_openai_tools_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from app.tools_ranking import make_rank_tool
-from app.tools_matching import make_simple_match_tool
-from app.tools_graph import make_graph_qa_tool
-
+from app.tools.tools_ranking import make_rank_tool
+from app.tools.tools_matching import make_simple_match_tool
+from app.tools.tools_graph import make_graph_qa_tool
 
 def setup_agent(model, graph: Neo4jGraph, qa_chain):
     graph_qa_tool = make_graph_qa_tool(qa_chain)

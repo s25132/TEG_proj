@@ -1,4 +1,5 @@
 import json
+import os
 from langchain_openai import ChatOpenAI
 from langchain_community.graphs import Neo4jGraph
 from langchain_community.chains.graph_qa.cypher import GraphCypherQAChain
@@ -10,8 +11,7 @@ from langchain_core.documents import Document
 from langchain_community.graphs.graph_document import GraphDocument
 from langchain_core.prompts.prompt import PromptTemplate
 from langsmith.run_helpers import traceable
-from app.utility import extract_text_from_pdf_bytes
-import os
+from app.utilities.utility import extract_text_from_pdf_bytes
 from langchain.agents import AgentExecutor
 
 SCHEMA_DIR = os.getenv("SCHEMA_DIR")
