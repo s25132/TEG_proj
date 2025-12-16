@@ -45,33 +45,48 @@ liczby projektów (45%) oraz rankingu uczelni (10%). Dane pobierane są z bazy N
 
 Dla każdej osoby wyliczany jest score ∈ [0,1], po czym wyniki są sortowane malejąco i zwracane jako Top N najlepszych developerów.  
 
-Pytanie: Give me best developers based on project counts
+Pytanie: Give me best developers based on project counts  
 
-Opd: Here are the best developers based on project counts:
+Opd: Here are the best developers based on project counts:  
 
-Victor Cook
+Victor Cook  
 
-Years of Experience: 5
-Project Count: 5
-University: University of New Justinville
-Ryan Hopkins
+Years of Experience: 5  
 
-Years of Experience: 5
-Project Count: 5
-University: University of South Brianna
-Darius Villa
+Project Count: 5  
 
-Years of Experience: 7
-Project Count: 4
-University: Not specified
-Mary Hines
+University: University of New Justinville  
 
-Years of Experience: 5
-Project Count: 4
-University: Not specified
-Mark Carroll
+Ryan Hopkins  
 
-Years of Experience: 5
-Project Count: 3
-University: University of Adamsbury
-If you need more information or further assistance, feel free to ask!
+Years of Experience: 5  
+
+Project Count: 5  
+
+University: University of South Brianna  
+
+Darius Villa  
+
+Years of Experience: 7  
+
+Project Count: 4  
+
+University: Not specified  
+
+Mary Hines  
+
+Years of Experience: 5  
+
+Project Count: 4  
+
+University: Not specified  
+
+Mark Carroll  
+
+Years of Experience: 5  
+
+Project Count: 3  
+
+University: University of Adamsbury  
+
+If you need more information or further assistance, feel free to ask!  
