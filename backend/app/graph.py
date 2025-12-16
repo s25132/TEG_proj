@@ -561,7 +561,7 @@ def _safe_str(x: Any) -> str:
         return repr(x)
 
 @traceable(process_inputs=lambda inputs: {"question": inputs["question"]})
-def query_graph(agent: AgentExecutor, question: str) -> Dict[str, Any]:
+def invoke_agent(agent: AgentExecutor, question: str) -> Dict[str, Any]:
     """Execute a natural language query using AgentExecutor (tools-enabled). Always returns some contexts for testing."""
     try:
         print(f"Executing query: {question}")
