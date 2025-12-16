@@ -1,41 +1,44 @@
 from typing import Any, Dict, List
 from langchain_core.tools import tool
 from langchain_community.graphs import Neo4jGraph
-
+from app.rank_utility import _rank_rows
 
 def make_simple_match_tool(graph: Neo4jGraph):
 
     @tool
-    def match_devs_to_rfp_simple(rfpTitle: str, default_required_count: int = 1) -> Dict[str, Any]:
-        """ Match developers to a single RFP in the simplest possible way. Inputs: - rfpTitle: title of the RFP (must exist in the graph) - default_required_count: how many people to assign per skill if NEEDS.required_count is missing Output: - assignments: list of {skill, personId, name} - unfilled: list of skills where not enough people were found """
+    def match_devs_to_rfp_scored(
+        rfpTitle: str,
+        default_required_count: int = 1,
+        per_skill_candidate_limit: int = 50,
+    ) -> Dict[str, Any]:
+        """Match developers to one RFP using scoring and pick best candidates per skill."""
 
         if not rfpTitle or not rfpTitle.strip():
             return {"assignments": [], "unfilled": [{"reason": "missing rfpTitle"}]}
 
-        # 1) Read needs: no label on s (works for :Skill, :__Entity__, or both)
+        title = rfpTitle.strip()
+
         needs_q = """
         MATCH (r:Rfp)-[n:NEEDS]->(s)
         WHERE toLower(r.title) = toLower($title)
         RETURN s.id AS skillId, n.required_count AS required_count
         ORDER BY skillId
         """
-        needs = graph.query(needs_q, {"title": rfpTitle.strip()})
-
+        needs = graph.query(needs_q, {"title": title}) or []
         if not needs:
-            return {"assignments": [], "unfilled": [{"reason": f'no NEEDS found for "{rfpTitle}"'}]}
+            return {"assignments": [], "unfilled": [{"reason": f'no NEEDS found for "{title}"'}]}
 
         used = set()
         assignments: List[Dict[str, Any]] = []
         unfilled: List[Dict[str, Any]] = []
 
         for need in needs:
-            skill = need.get("skillId")  # e.g. "Skill_Java"
-            if not skill:
+            skill = need.get("skillId")
+            if not isinstance(skill, str) or not skill.strip():
                 continue
 
-            normSkill = skill
-            if isinstance(normSkill, str) and normSkill.lower().startswith("skill_"):
-                normSkill = normSkill[6:]  # "Java" (case-insensitive compare anyway)
+            skill = skill.strip()
+            normSkill = skill[6:] if skill.lower().startswith("skill_") else skill
 
             req = need.get("required_count")
             try:
@@ -43,35 +46,53 @@ def make_simple_match_tool(graph: Neo4jGraph):
             except Exception:
                 req_n = int(default_required_count)
 
-            # 2) Find candidates: no label on s, match by both "Skill_Java" and "java"
+            # pobierz kandydatów + atrybuty do scoringu
             cand_q = """
             MATCH (p:Person)-[:HAS_SKILL]->(s)
             WHERE toLower(s.id) = toLower($skill)
                 OR toLower(s.id) = toLower($normSkill)
+
+            OPTIONAL MATCH (p)-[:WORKED_ON]->(pr:Project)
+            WITH p, count(DISTINCT pr) AS projectCount
+
+            OPTIONAL MATCH (p)-[:STUDIED_AT]->(u:University)
+
             RETURN
                 p.id AS personId,
                 p.name AS name,
-                coalesce(p.projectCount, 0) AS projectCount
-            ORDER BY projectCount DESC, personId
-            LIMIT 50
+                coalesce(p.years_experience, 0) AS yearsExperience,
+                projectCount,
+                coalesce(u.ranking, 9999) AS universityRanking
+            LIMIT $limit
             """
-            cands = graph.query(cand_q, {"skill": skill, "normSkill": normSkill}) or []
+            cands = graph.query(
+                cand_q,
+                {"skill": skill, "normSkill": normSkill, "limit": int(per_skill_candidate_limit)},
+            ) or []
 
-            picked = []
-            for c in cands:
-                pid = c.get("personId")
-                if pid and pid not in used:
-                    used.add(pid)
-                    picked.append(c)
-                if len(picked) >= req_n:
-                    break
+            # filtr "used" zanim zrobisz ranking, żeby nie marnować topów
+            cands = [c for c in cands if c.get("personId") and c["personId"] not in used]
 
-            if len(picked) < req_n:
-                unfilled.append({"skill": skill, "required": req_n, "filled": len(picked)})
+            # ranking po score i wybór top req_n
+            ranked = _rank_rows(cands, top_n=req_n)
 
-            for p in picked:
-                assignments.append({"skill": skill, "personId": p["personId"], "name": p["name"], "projectCount": p.get("projectCount", 0)})
+            for c in ranked:
+                used.add(c["personId"])
+                assignments.append(
+                    {
+                        "skill": skill,
+                        "personId": c["personId"],
+                        "name": c.get("name"),
+                        "score": c.get("score"),
+                        "yearsExperience": c.get("yearsExperience"),
+                        "projectCount": c.get("projectCount"),
+                        "universityRanking": c.get("universityRanking"),
+                    }
+                )
 
-        return {"rfpTitle": rfpTitle.strip(), "assignments": assignments, "unfilled": unfilled}
+            if len(ranked) < req_n:
+                unfilled.append({"skill": skill, "required": req_n, "filled": len(ranked)})
 
-    return match_devs_to_rfp_simple
+        return {"rfpTitle": title, "assignments": assignments, "unfilled": unfilled}
+
+    return match_devs_to_rfp_scored
