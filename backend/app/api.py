@@ -5,11 +5,11 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from chromadb import PersistentClient
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from dotenv import load_dotenv
-from app.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagResponse
-from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
-from app.utility import wait_for_neo4j
-from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, invoke_agent
-from app.agent import setup_agent
+from app.schema.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagResponse
+from app.db.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
+from app.utilities.utility import wait_for_neo4j
+from app.db.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, invoke_agent
+from app.agent.agent import setup_agent
 
 load_dotenv(override=True)
 

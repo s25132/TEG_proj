@@ -6,7 +6,7 @@ from langchain.schema import SystemMessage, HumanMessage
 from chromadb.api.models.Collection import Collection
 from uuid import uuid4
 from langsmith.run_helpers import traceable
-from app.utility import extract_text_from_pdf_bytes
+from app.utilities.utility import extract_text_from_pdf_bytes
 
 
 def build_context_from_chroma(emb_model: OpenAIEmbeddings, collection: Collection, question: str, top_k: int):
