@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from app.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagResponse
 from app.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
 from app.utility import wait_for_neo4j
-from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, query_graph
+from app.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, invoke_agent
 from app.agent import setup_agent
 
 load_dotenv(override=True)
@@ -79,7 +79,7 @@ def chat_graph(request: GraphRagRequest):
 
     try:
         # wykonujemy zapytanie do grafu
-        graph_response = query_graph(agent, request.question)
+        graph_response = invoke_agent(agent, request.question)
 
         answer = graph_response.get("answer", "No answer generated")
         # to jest Twoje retrieved_contexts z query_graph

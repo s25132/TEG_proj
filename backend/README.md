@@ -1,3 +1,17 @@
+## Tool graph_qa
+
+Tool umożliwia zadawanie pytań w języku naturalnym do grafowej bazy danych Neo4j
+z wykorzystaniem `GraphCypherQAChain`.
+
+### Jak działa
+1. Przyjmuje pytanie w języku naturalnym
+2. Generuje zapytanie Cypher przy pomocy LLM
+3. Wykonuje zapytanie na bazie Neo4j
+4. Zwraca:
+   - odpowiedź w języku naturalnym
+   - wygenerowane zapytanie Cypher
+   - kontekst danych użyty do odpowiedzi
+
 ## Tool match_devs_to_rfp_scored
 
 Moduł automatycznie dopasowuje developerów do zapytania ofertowego (RFP) na podstawie
