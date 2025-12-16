@@ -1,7 +1,8 @@
-from io import BytesIO
 import time
+import math
 from pypdf import PdfReader
 from langchain_community.graphs import Neo4jGraph
+from io import BytesIO
 
 def extract_text_from_pdf_bytes(pdf_bytes: bytes, doc_type: str) -> str:
     reader = PdfReader(BytesIO(pdf_bytes))
