@@ -6,7 +6,7 @@ wymagane umiejętności (oraz liczbę osób na skill), a następnie wyszukuje w 
 
 developer może zostać przypisany tylko raz. Wynikiem jest lista przypisań {skill, personId, name} oraz lista braków (unfilled) dla  
 
-umiejętności, dla których nie znaleziono wystarczającej liczby osób.
+umiejętności, dla których nie znaleziono wystarczającej liczby osób. Sortuje kandydatów po ilości projektów.
 
 
 
@@ -43,4 +43,35 @@ Narzędzie rank_best_devs_university służy do rankingu developerów na podstaw
 
 liczby projektów (45%) oraz rankingu uczelni (10%). Dane pobierane są z bazy Neo4j, opcjonalnie filtrowane po słowie kluczowym projektu. 
 
-Dla każdej osoby wyliczany jest score ∈ [0,1], po czym wyniki są sortowane malejąco i zwracane jako Top N najlepszych developerów.
+Dla każdej osoby wyliczany jest score ∈ [0,1], po czym wyniki są sortowane malejąco i zwracane jako Top N najlepszych developerów.  
+
+Pytanie: Give me best developers based on project counts
+
+Opd: Here are the best developers based on project counts:
+
+Victor Cook
+
+Years of Experience: 5
+Project Count: 5
+University: University of New Justinville
+Ryan Hopkins
+
+Years of Experience: 5
+Project Count: 5
+University: University of South Brianna
+Darius Villa
+
+Years of Experience: 7
+Project Count: 4
+University: Not specified
+Mary Hines
+
+Years of Experience: 5
+Project Count: 4
+University: Not specified
+Mark Carroll
+
+Years of Experience: 5
+Project Count: 3
+University: University of Adamsbury
+If you need more information or further assistance, feel free to ask!

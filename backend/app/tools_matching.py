@@ -47,8 +47,12 @@ def make_simple_match_tool(graph: Neo4jGraph):
             cand_q = """
             MATCH (p:Person)-[:HAS_SKILL]->(s)
             WHERE toLower(s.id) = toLower($skill)
-               OR toLower(s.id) = toLower($normSkill)
-            RETURN p.id AS personId, p.name AS name
+                OR toLower(s.id) = toLower($normSkill)
+            RETURN
+                p.id AS personId,
+                p.name AS name,
+                coalesce(p.projectCount, 0) AS projectCount
+            ORDER BY projectCount DESC, personId
             LIMIT 50
             """
             cands = graph.query(cand_q, {"skill": skill, "normSkill": normSkill}) or []
@@ -66,7 +70,7 @@ def make_simple_match_tool(graph: Neo4jGraph):
                 unfilled.append({"skill": skill, "required": req_n, "filled": len(picked)})
 
             for p in picked:
-                assignments.append({"skill": skill, "personId": p["personId"], "name": p["name"]})
+                assignments.append({"skill": skill, "personId": p["personId"], "name": p["name"], "projectCount": p.get("projectCount", 0)})
 
         return {"rfpTitle": rfpTitle.strip(), "assignments": assignments, "unfilled": unfilled}
 
