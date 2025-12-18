@@ -1,0 +1,104 @@
+{
+  "ground_truth_answers": [
+    {
+      "question": "List developers with their project counts and university rankings.",
+      "category": "listing",
+      "ground_truth_answer": "Darius Villa: Project Count: 4; University Ranking: Not specified. Victor Cook: Project Count: 5; University Ranking: Not specified (University of New Justinville). Ryan Hopkins: Project Count: 5; University Ranking: Not specified (University of South Brianna). Mary Hines: Project Count: 4; University Ranking: Not specified. Mark Carroll: Project Count: 3; University Ranking: N/A (University of Adamsbury)."
+    },
+    {
+      "question": "Give me best developers based on project counts and university rankings.",
+      "category": "listing",
+      "ground_truth_answer": "Victor Cook (Projects: 5; University: University of New Justinville; Years of Experience: 5). Ryan Hopkins (Projects: 5; University: University of South Brianna; Years of Experience: 5). Darius Villa (Projects: 4; University: Not specified; Years of Experience: 7). Mary Hines (Projects: 4; University: Not specified; Years of Experience: 5). Mark Carroll (Projects: 3; University: University of Adamsbury; Years of Experience: 5)."
+    },
+    {
+      "question": "How many Python developers we have ?",
+      "category": "counting",
+      "ground_truth_answer": "We have 3 Python developers."
+    },
+    {
+      "question": "Find senior developers with React AND Node.js experience",
+      "category": "filtering",
+      "ground_truth_answer": "I'm unable to find specific information about senior developers with React and Node.js experience at the moment."
+    },
+    {
+      "question": "How many Python developers available Q2?",
+      "category": "counting",
+      "ground_truth_answer": "There are 3 Python developers available in Q2."
+    },
+    {
+      "question": "Number of years of experience for developers",
+      "category": "aggregation",
+      "ground_truth_answer": "The average number of years of experience for developers is approximately 5.25 years."
+    },
+    {
+      "question": "Total capacity available for Q4 projects",
+      "category": "aggregation",
+      "ground_truth_answer": "The total capacity available for Q4 projects is 52 full-time equivalents (FTE)."
+    },
+    {
+      "question": "Developers from same university",
+      "category": "listing",
+      "ground_truth_answer": "There are no developers from the same university; each of the six developers is affiliated with a unique university: Jessica Erickson - Calhounhaven University; Mark Carroll - University of Adamsbury; Victor Cook - University of New Justinville; Jeffrey Fisher - University of Pennsylvania; Ryan Hopkins - University of South Brianna; Lauren Flowers - University of Tiffanymouth."
+    },
+    {
+      "question": "Give me one python developer",
+      "category": "listing",
+      "ground_truth_answer": "One Python developer is Mary Hines, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com."
+    },
+    {
+      "question": "Give me titles of all Rfps",
+      "category": "listing",
+      "ground_truth_answer": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development."
+    },
+    {
+      "question": "count available people with that ptyhon skill for today",
+      "category": "counting",
+      "ground_truth_answer": "There are 3 available people with Python skills today."
+    },
+    {
+      "question": "How many rpfs we have ?",
+      "category": "counting",
+      "ground_truth_answer": "We have a total of 3 RFPs."
+    },
+    {
+      "question": "How many Java developers we have ?",
+      "category": "counting",
+      "ground_truth_answer": "We have 1 Java developer."
+    },
+    {
+      "question": "Give me all rpfs titles ?",
+      "category": "listing",
+      "ground_truth_answer": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development."
+    },
+    {
+      "question": "Number of years of experience for python developers",
+      "category": "aggregation",
+      "ground_truth_answer": "The average number of years of experience for Python developers is approximately 5.67 years."
+    },
+    {
+      "question": "List all developers in Pacific timezone",
+      "category": "filtering",
+      "ground_truth_answer": "I'm sorry, but I couldn't find any information about developers in the Pacific timezone."
+    },
+    {
+      "question": "List all skils only name of a skill",
+      "category": "listing",
+      "ground_truth_answer": "Javascript; React; Angular; Microservices; Git; Docker; Fastapi; C++; Jenkins; Python."
+    },
+    {
+      "question": "How many people with docker skill we have ?",
+      "category": "counting",
+      "ground_truth_answer": "We have 5 people with Docker skills."
+    },
+    {
+      "question": "List me one person with python and docker skill",
+      "category": "listing",
+      "ground_truth_answer": "One person with Python and Docker skills is Mary Hines. She has 5 years of experience and is located in Combsburgh. You can reach her at her email: brian16@example.com."
+    },
+    {
+      "question": "Give me university for Mark Carroll",
+      "category": "listing",
+      "ground_truth_answer": "Mark Carroll attended the University of Adamsbury."
+    }
+  ]
+}

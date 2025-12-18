@@ -1,0 +1,694 @@
+{
+  "metadata": {
+    "comparison_date": "2025-12-19T00:32:54.750421",
+    "total_questions": 20,
+    "ground_truth_source": "GPT-5",
+    "systems_compared": [
+      "GraphRAG",
+      "Naive RAG"
+    ]
+  },
+  "results": [
+    {
+      "question_index": 1,
+      "question": "List developers with their project counts and university rankings.",
+      "category": "listing",
+      "ground_truth": "Darius Villa: Project Count: 4; University Ranking: Not specified. Victor Cook: Project Count: 5; University Ranking: Not specified (University of New Justinville). Ryan Hopkins: Project Count: 5; University Ranking: Not specified (University of South Brianna). Mary Hines: Project Count: 4; University Ranking: Not specified. Mark Carroll: Project Count: 3; University Ranking: N/A (University of Adamsbury).",
+      "graphrag": {
+        "answer": "Here are the developers along with their project counts and university rankings:\n\n1. **Darius Villa**\n   - Project Count: 4\n   - University Ranking: 9999\n\n2. **Victor Cook**\n   - Project Count: 5\n   - University Ranking: Not specified (University of New Justinville)\n\n3. **Ryan Hopkins**\n   - Project Count: 5\n   - University Ranking: Not specified (University of South Brianna)\n\n4. **Mary Hines**\n   - Project Count: 4\n   - University Ranking: 9999\n\n5. **Mark Carroll**\n   - Project Count: 3\n   - University Ranking: N/A (University of Adamsbury)\n\nIf you need more information or further assistance, feel free to ask!",
+        "cypher_query": "",
+        "execution_time": 4.228294134140015,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.38095238095238093,
+          "quality_score": 0.38095238095238093
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 2.5091259479522705,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 2,
+      "question": "Give me best developers based on project counts and university rankings.",
+      "category": "listing",
+      "ground_truth": "Victor Cook (Projects: 5; University: University of New Justinville; Years of Experience: 5). Ryan Hopkins (Projects: 5; University: University of South Brianna; Years of Experience: 5). Darius Villa (Projects: 4; University: Not specified; Years of Experience: 7). Mary Hines (Projects: 4; University: Not specified; Years of Experience: 5). Mark Carroll (Projects: 3; University: University of Adamsbury; Years of Experience: 5).",
+      "graphrag": {
+        "answer": "Here are the best developers based on their project counts and university rankings:\n\n1. **Darius Villa**\n   - Years of Experience: 7\n   - Project Count: 4\n   - University Ranking: 9999\n   - University Name: Not specified\n   - Score: 0.5628\n\n2. **Victor Cook**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University Ranking: Not specified\n   - University Name: University of New Justinville\n   - Score: 0.5095\n\n3. **Ryan Hopkins**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University Ranking: Not specified\n   - University Name: University of South Brianna\n   - Score: 0.5095\n\n4. **Mary Hines**\n   - Years of Experience: 5\n   - Project Count: 4\n   - University Ranking: 9999\n   - University Name: Not specified\n   - Score: 0.4728\n\n5. **Mark Carroll**\n   - Years of Experience: 5\n   - Project Count: 3\n   - University Ranking: N/A\n   - University Name: University of Adamsbury\n   - Score: 0.428\n\nIf you need more information or further assistance, feel free to ask!",
+        "cypher_query": "",
+        "execution_time": 6.485501289367676,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.3,
+          "quality_score": 0.3
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.816497802734375,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 3,
+      "question": "How many Python developers we have ?",
+      "category": "counting",
+      "ground_truth": "We have 3 Python developers.",
+      "graphrag": {
+        "answer": "We have 3 Python developers.",
+        "cypher_query": "",
+        "execution_time": 3.252349853515625,
+        "success": true,
+        "evaluation": {
+          "exact_match": true,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know. The context documents do not specify the number of Python developers available.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.3653700351715088,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 4,
+      "question": "Find senior developers with React AND Node.js experience",
+      "category": "filtering",
+      "ground_truth": "I'm unable to find specific information about senior developers with React and Node.js experience at the moment.",
+      "graphrag": {
+        "answer": "I couldn't find the specific answer to your request for senior developers with React and Node.js experience. However, I can help you with a query that searches for developers who have both skills and at least 5 years of experience. Would you like me to run that query for you?",
+        "cypher_query": "",
+        "execution_time": 6.453612804412842,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.6666666666666666,
+          "quality_score": 0.6666666666666666
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.032689094543457,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 5,
+      "question": "How many Python developers available Q2?",
+      "category": "counting",
+      "ground_truth": "There are 3 Python developers available in Q2.",
+      "graphrag": {
+        "answer": "There are 3 Python developers available in Q2.",
+        "cypher_query": "",
+        "execution_time": 5.559088706970215,
+        "success": true,
+        "evaluation": {
+          "exact_match": true,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 0.9029340744018555,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 6,
+      "question": "Number of years of experience for developers",
+      "category": "aggregation",
+      "ground_truth": "The average number of years of experience for developers is approximately 5.25 years.",
+      "graphrag": {
+        "answer": "The average number of years of experience for developers is approximately 5.25 years.",
+        "cypher_query": "",
+        "execution_time": 3.3908450603485107,
+        "success": true,
+        "evaluation": {
+          "exact_match": true,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "The context documents do not specify the number of years of experience required for developers. Therefore, I don't know the answer to your question.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.4418549537658691,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 7,
+      "question": "Total capacity available for Q4 projects",
+      "category": "aggregation",
+      "ground_truth": "The total capacity available for Q4 projects is 52 full-time equivalents (FTE).",
+      "graphrag": {
+        "answer": "The total capacity available for Q4 projects is 52 full-time equivalents (FTE), which represents 5200% of the total available capacity.",
+        "cypher_query": "",
+        "execution_time": 6.189991235733032,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 0.8736560344696045,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 8,
+      "question": "Developers from same university",
+      "category": "listing",
+      "ground_truth": "There are no developers from the same university; each of the six developers is affiliated with a unique university: Jessica Erickson - Calhounhaven University; Mark Carroll - University of Adamsbury; Victor Cook - University of New Justinville; Jeffrey Fisher - University of Pennsylvania; Ryan Hopkins - University of South Brianna; Lauren Flowers - University of Tiffanymouth.",
+      "graphrag": {
+        "answer": "I couldn't find specific information about developers from the same university. If you have a particular university in mind or need information about developers with certain skills or experiences, please let me know!",
+        "cypher_query": "",
+        "execution_time": 4.132047176361084,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 0.9981100559234619,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 9,
+      "question": "Give me one python developer",
+      "category": "listing",
+      "ground_truth": "One Python developer is Mary Hines, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com.",
+      "graphrag": {
+        "answer": "It seems that there are currently no developers available for the role of a Python developer. If you have any specific requirements or if you would like to explore other options, please let me know!",
+        "cypher_query": "",
+        "execution_time": 2.9139721393585205,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.16666666666666666,
+          "quality_score": 0.16666666666666666
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 2.833176612854004,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 10,
+      "question": "Give me titles of all Rfps",
+      "category": "listing",
+      "ground_truth": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
+      "graphrag": {
+        "answer": "The titles of all RFPs are as follows: \n1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
+        "cypher_query": "",
+        "execution_time": 4.370308876037598,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.7777777777777778,
+          "quality_score": 0.7777777777777778
+        }
+      },
+      "naive_rag": {
+        "answer": "The titles of all RFPs are:\n\n1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
+        "chunks_retrieved": 3,
+        "execution_time": 1.423902988433838,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.7777777777777778,
+          "quality_score": 0.7777777777777778
+        }
+      }
+    },
+    {
+      "question_index": 11,
+      "question": "count available people with that ptyhon skill for today",
+      "category": "counting",
+      "ground_truth": "There are 3 available people with Python skills today.",
+      "graphrag": {
+        "answer": "There are 3 available people with Python skill today.",
+        "cypher_query": "",
+        "execution_time": 4.398138999938965,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.0907809734344482,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 12,
+      "question": "How many rpfs we have ?",
+      "category": "counting",
+      "ground_truth": "We have a total of 3 RFPs.",
+      "graphrag": {
+        "answer": "Error: {code: Neo.ClientError.Statement.SyntaxError} {message: Variable `r` not defined (line 1, column 23 (offset: 22))\n\"RETURN count(DISTINCT r) AS totalRFPs\"\n                       ^}",
+        "cypher_query": "",
+        "execution_time": 1.8628489971160889,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": false,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      },
+      "naive_rag": {
+        "answer": "There are three RFPs available.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.5457720756530762,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 13,
+      "question": "How many Java developers we have ?",
+      "category": "counting",
+      "ground_truth": "We have 1 Java developer.",
+      "graphrag": {
+        "answer": "We have 1 Java developer.",
+        "cypher_query": "",
+        "execution_time": 3.5110907554626465,
+        "success": true,
+        "evaluation": {
+          "exact_match": true,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know. The context does not specify the number of Java developers available.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.4992399215698242,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 14,
+      "question": "Give me all rpfs titles ?",
+      "category": "listing",
+      "ground_truth": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
+      "graphrag": {
+        "answer": "The RFP titles are as follows:\n\n1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
+        "cypher_query": "",
+        "execution_time": 3.9232568740844727,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.7777777777777778,
+          "quality_score": 0.7777777777777778
+        }
+      },
+      "naive_rag": {
+        "answer": "The titles of the RFPs are as follows:\n\n1. Data Analytics Platform Development\n2. E-commerce Modernization Development\n3. API Integration Platform Development",
+        "chunks_retrieved": 3,
+        "execution_time": 1.8213400840759277,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.7777777777777778,
+          "quality_score": 0.7777777777777778
+        }
+      }
+    },
+    {
+      "question_index": 15,
+      "question": "Number of years of experience for python developers",
+      "category": "aggregation",
+      "ground_truth": "The average number of years of experience for Python developers is approximately 5.67 years.",
+      "graphrag": {
+        "answer": "The average number of years of experience for Python developers is approximately 5.67 years.",
+        "cypher_query": "",
+        "execution_time": 4.458526134490967,
+        "success": true,
+        "evaluation": {
+          "exact_match": true,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.2857379913330078,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 16,
+      "question": "List all developers in Pacific timezone",
+      "category": "filtering",
+      "ground_truth": "I'm sorry, but I couldn't find any information about developers in the Pacific timezone.",
+      "graphrag": {
+        "answer": "I couldn't find specific information about developers in the Pacific timezone. If you have any other questions or need assistance with a different topic, feel free to ask!",
+        "cypher_query": "",
+        "execution_time": 4.754987955093384,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.6666666666666666,
+          "quality_score": 0.6666666666666666
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 0.986616849899292,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.3333333333333333,
+          "quality_score": 0.3333333333333333
+        }
+      }
+    },
+    {
+      "question_index": 17,
+      "question": "List all skils only name of a skill",
+      "category": "listing",
+      "ground_truth": "Javascript; React; Angular; Microservices; Git; Docker; Fastapi; C++; Jenkins; Python.",
+      "graphrag": {
+        "answer": "The skills available are:\n\n- Javascript\n- React\n- Angular\n- Microservices\n- Git\n- Docker\n- Fastapi\n- C++\n- Jenkins\n- Python",
+        "cypher_query": "",
+        "execution_time": 6.056714057922363,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      },
+      "naive_rag": {
+        "answer": "1. Java\n2. TypeScript\n3. Django\n4. Angular\n5. Docker\n6. DevOps\n7. Node.js\n8. MongoDB\n9. Machine Learning\n10. Kubernetes\n11. React\n12. PostgreSQL\n13. JavaScript\n14. Microservices\n15. AWS",
+        "chunks_retrieved": 3,
+        "execution_time": 2.559823751449585,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 18,
+      "question": "How many people with docker skill we have ?",
+      "category": "counting",
+      "ground_truth": "We have 5 people with Docker skills.",
+      "graphrag": {
+        "answer": "There are 5 developers with Docker skill.",
+        "cypher_query": "",
+        "execution_time": 3.3383309841156006,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": true,
+          "completeness_score": 0.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "The context does not specify the number of people with Docker skills available. Therefore, I don't know how many people with Docker skills we have.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.7067368030548096,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 19,
+      "question": "List me one person with python and docker skill",
+      "category": "listing",
+      "ground_truth": "One person with Python and Docker skills is Mary Hines. She has 5 years of experience and is located in Combsburgh. You can reach her at her email: brian16@example.com.",
+      "graphrag": {
+        "answer": "Here are some developers with Python and Docker skills:\n\n1. **Mary Hines**\n2. **Mark Carroll**\n3. **Darius Villa**\n\nIf you need more information about any specific developer, feel free to ask!",
+        "cypher_query": "",
+        "execution_time": 6.852926015853882,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 0.25,
+          "quality_score": 0.25
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.3303947448730469,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    },
+    {
+      "question_index": 20,
+      "question": "Give me university for Mark Carroll",
+      "category": "listing",
+      "ground_truth": "Mark Carroll attended the University of Adamsbury.",
+      "graphrag": {
+        "answer": "Mark Carroll attended the University of Adamsbury.",
+        "cypher_query": "",
+        "execution_time": 4.079219818115234,
+        "success": true,
+        "evaluation": {
+          "exact_match": true,
+          "contains_key_info": true,
+          "numerical_accuracy": null,
+          "completeness_score": 1.0,
+          "quality_score": 1.0
+        }
+      },
+      "naive_rag": {
+        "answer": "I don't know.",
+        "chunks_retrieved": 3,
+        "execution_time": 1.1535842418670654,
+        "success": true,
+        "evaluation": {
+          "exact_match": false,
+          "contains_key_info": false,
+          "numerical_accuracy": null,
+          "completeness_score": 0.0,
+          "quality_score": 0.0
+        }
+      }
+    }
+  ],
+  "summary": {
+    "overall_performance": {
+      "graphrag_wins": 15,
+      "naive_rag_wins": 0,
+      "ties": 5,
+      "graphrag_win_rate": 0.75,
+      "naive_rag_win_rate": 0.0
+    },
+    "quality_scores": {
+      "graphrag_avg": 0.6493253968253968,
+      "naive_rag_avg": 0.09444444444444444,
+      "graphrag_median": 0.7777777777777778,
+      "naive_rag_median": 0.0
+    },
+    "category_breakdown": {
+      "listing": {
+        "total": 9,
+        "graph_wins": 5,
+        "naive_wins": 0,
+        "ties": 4
+      },
+      "counting": {
+        "total": 6,
+        "graph_wins": 5,
+        "naive_wins": 0,
+        "ties": 1
+      },
+      "filtering": {
+        "total": 2,
+        "graph_wins": 2,
+        "naive_wins": 0,
+        "ties": 0
+      },
+      "aggregation": {
+        "total": 3,
+        "graph_wins": 3,
+        "naive_wins": 0,
+        "ties": 0
+      }
+    }
+  }
+}

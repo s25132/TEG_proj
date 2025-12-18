@@ -1,0 +1,150 @@
+1.List developers with their project counts and university rankings.
+Here are the developers along with their project counts and university rankings:
+
+Darius Villa:
+
+Project Count: 4
+University Ranking: Not specified
+Victor Cook:
+
+Project Count: 5
+University Ranking: Not specified (University of New Justinville)
+Ryan Hopkins:
+
+Project Count: 5
+University Ranking: Not specified (University of South Brianna)
+Mary Hines:
+
+Project Count: 4
+University Ranking: Not specified
+Mark Carroll:
+
+Project Count: 3
+University Ranking: N/A (University of Adamsbury)
+If you need more details or have any other questions, feel free to ask!
+
+
+2.Give me best developers based on project counts and university rankings.
+Victor Cook
+
+Projects: 5
+University: University of New Justinville
+Years of Experience: 5
+Ryan Hopkins
+
+Projects: 5
+University: University of South Brianna
+Years of Experience: 5
+Darius Villa
+
+Projects: 4
+University: Not specified
+Years of Experience: 7
+Mary Hines
+
+Projects: 4
+University: Not specified
+Years of Experience: 5
+Mark Carroll
+
+Projects: 3
+University: University of Adamsbury
+Years of Experience: 5
+These developers are ranked based on their project counts and university rankings, showcasing their experience and contributions.
+
+
+3. How many Python developers we have ?
+We have 3 Python developers.
+
+
+4. Find senior developers with React AND Node.js experience
+I'm unable to find specific information about senior developers with React and Node.js experience at the moment. If you have any other questions or need assistance with a different topic, feel free to ask!
+
+5. How many Python developers available Q2?
+There are 3 Python developers available in Q2.
+
+
+6. Number of years of experience for developers
+The average number of years of experience for developers is approximately 5.25 years.
+
+7. Total capacity available for Q4 projects
+The total capacity available for Q4 projects is 52 full-time equivalents (FTE)
+
+8.Developers from same university
+
+There are no developers from the same university; each of the six developers is affiliated with a unique university. Here’s the list:
+Jessica Erickson - Calhounhaven University
+Mark Carroll - University of Adamsbury
+Victor Cook - University of New Justinville
+Jeffrey Fisher - University of Pennsylvania
+Ryan Hopkins - University of South Brianna
+Lauren Flowers - University of Tiffanymouth
+
+9. Give me one python developer
+One Python developer is Mary Hines, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com.
+
+
+10. Give me titles of all Rfps
+
+The titles of all RFPs are as follows:
+
+Data Analytics Platform Development
+API Integration Platform Development
+E-commerce Modernization Development
+
+
+11. count available people with that ptyhon skill for today
+
+There are 3 available people with Python skills today.
+
+
+12. How many rpfs we have ?
+
+We have a total of 3 RFPs.
+
+13. How many Java developers we have ?
+
+We have 1 Java developer.
+
+14. Give me all rpfs titles ?
+
+The RFP titles are as follows:
+
+Data Analytics Platform Development
+API Integration Platform Development
+E-commerce Modernization Development
+
+
+15. Number of years of experience for python developers
+
+The average number of years of experience for Python developers is approximately 5.67 years.
+
+16. List all developers in Pacific timezone
+
+I'm sorry, but I couldn't find any information about developers in the Pacific timezone.
+
+17. List all skils only name of a skill
+The skills are as follows:
+
+Javascript
+React
+Angular
+Microservices
+Git
+Docker
+Fastapi
+C++
+Jenkins
+Python
+
+18. How many people with docker skill we have ?
+
+We have 5 people with Docker skills.
+
+19. List me one person with python and docker skill
+
+One person with Python and Docker skills is Mary Hines. She has 5 years of experience and is located in Combsburgh. You can reach her at her email: brian16@example.com.
+
+20. Give me university for Mark Carroll
+
+Mark Carroll attended the University of Adamsbury.
