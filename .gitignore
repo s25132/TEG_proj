@@ -216,3 +216,5 @@ data/chroma
 data/db
 data/logs
 data/plugins
+.DS_Store
+data/.DS_Store
