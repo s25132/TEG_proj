@@ -1,10 +1,21 @@
 from langchain_community.graphs import Neo4jGraph
 from langchain.agents import create_openai_tools_agent, AgentExecutor
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
 from app.tools.tools_ranking import make_rank_tool
 from app.tools.tools_matching import make_simple_match_tool
 from app.tools.tools_graph import make_graph_qa_tool
 from app.tools.tools_whatif import make_whatif_match_tool, make_compare_whatif_tool
+
+
+# Prosty “store” historii w pamięci procesu (RAM)
+_SESSION_STORE: dict[str, ChatMessageHistory] = {}
+
+def get_history(session_id: str) -> ChatMessageHistory:
+    if session_id not in _SESSION_STORE:
+        _SESSION_STORE[session_id] = ChatMessageHistory()
+    return _SESSION_STORE[session_id]
 
 def setup_agent(model, graph: Neo4jGraph, qa_chain):
     graph_qa_tool = make_graph_qa_tool(qa_chain)
@@ -74,10 +85,25 @@ def setup_agent(model, graph: Neo4jGraph, qa_chain):
  "\n"
  "6) Respond with a human-friendly final answer.\n"
 ),
+MessagesPlaceholder(variable_name="chat_history"),
 ("human", "{input}"),
 MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
 
     agent = create_openai_tools_agent(llm=model, tools=tools, prompt=prompt)
-    return AgentExecutor(agent=agent, tools=tools, verbose=True, return_intermediate_steps=True)
+    executor = AgentExecutor(
+        agent=agent,
+        tools=tools,
+        verbose=True,
+        return_intermediate_steps=True
+    )
+
+    executor_with_history = RunnableWithMessageHistory(
+        executor,
+        get_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+    )
+
+    return executor_with_history

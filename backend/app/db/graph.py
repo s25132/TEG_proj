@@ -566,7 +566,9 @@ def invoke_agent(agent: AgentExecutor, question: str) -> Dict[str, Any]:
     try:
         print(f"Executing query: {question}")
 
-        result = agent.invoke({"input": question})
+        result = agent.invoke({"input": question},
+          config={"configurable": {"session_id": "user_session"}}
+        )
         answer = result.get("output", "No answer generated") if isinstance(result, dict) else str(result)
 
         steps = result.get("intermediate_steps", []) if isinstance(result, dict) else []
