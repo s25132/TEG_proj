@@ -2,6 +2,38 @@ from typing import Any, Dict, List
 from langchain_core.tools import tool
 from langchain_community.graphs import Neo4jGraph
 from app.utilities.rank_utility import _rank_rows
+from datetime import date, datetime, timezone
+
+def parse_deadline(value):
+    if value is None:
+        return None
+
+    # neo4j Date/DateTime często ma .to_native() albo jest już date/datetime
+    if hasattr(value, "to_native"):
+        value = value.to_native()
+
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, date):
+        # zamień date -> datetime (opcjonalnie)
+        return datetime(value.year, value.month, value.day, tzinfo=timezone.utc)
+
+    if isinstance(value, str):
+        v = value.strip()
+        # ISO datetime
+        try:
+            return datetime.fromisoformat(v.replace("Z", "+00:00"))
+        except Exception:
+            pass
+        # ISO date
+        try:
+            d = date.fromisoformat(v)
+            return datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
+        except Exception:
+            return None
+
+    return None
+
 
 def make_simple_match_tool(graph: Neo4jGraph):
 
@@ -19,9 +51,12 @@ def make_simple_match_tool(graph: Neo4jGraph):
         title = rfpTitle.strip()
 
         needs_q = """
-        MATCH (r:Rfp)-[n:NEEDS]->(s)
-        WHERE toLower(r.title) = toLower($title)
-        RETURN s.id AS skillId, n.required_count AS required_count
+            MATCH (r:Rfp)-[n:NEEDS]->(s)
+                WHERE toLower(r.title) = toLower($title)
+            RETURN 
+                s.id AS skillId,
+                n.required_count AS required_count,
+                r.deadline AS deadline
         ORDER BY skillId
         """
         needs = graph.query(needs_q, {"title": title}) or []
@@ -31,6 +66,8 @@ def make_simple_match_tool(graph: Neo4jGraph):
         used = set()
         assignments: List[Dict[str, Any]] = []
         unfilled: List[Dict[str, Any]] = []
+
+        rfp_deadline = parse_deadline(needs[0].get("deadline"))
 
         for need in needs:
             skill = need.get("skillId")
