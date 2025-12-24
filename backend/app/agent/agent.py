@@ -87,7 +87,7 @@ def setup_agent(model, graph: Neo4jGraph, qa_chain):
 ),
 MessagesPlaceholder(variable_name="chat_history"),
 ("human", "{input}"),
-MessagesPlaceholder(variable_name="agent_scratchpad"),
+MessagesPlaceholder(variable_name="agent_scratchpad"),  
 ])
 
 
