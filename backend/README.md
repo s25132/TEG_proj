@@ -20,13 +20,14 @@ wymaganych umiejętności oraz punktowej oceny kandydata.
 ### Jak działa
 1. Odczytuje wymagane umiejętności z grafu Neo4j (`Rfp → NEEDS → Skill`)
 2. Dla każdej umiejętności wyszukuje pasujących developerów (`Person → HAS_SKILL → Skill`)
-3. Oblicza score developera na podstawie:
+3. Filtruje developerów pod kątem dostępności na dzień startu RFP: odrzuca osoby, które mają przypisanie ASSIGNED_TO nachodzące na Rfp.start_date (tj. a.start_date ≤ start_date i a.end_date jest puste lub a.end_date ≥ start_date)
+4. Oblicza score developera na podstawie:
    - lat doświadczenia
    - liczby zrealizowanych projektów
    - rankingu uczelni
-4. Sortuje kandydatów według score i wybiera najlepszych
-5. Zapobiega przypisaniu jednego developera do wielu umiejętności
-6. Zwraca przypisania oraz listę nieobsadzonych wymagań
+5. Sortuje kandydatów według score i wybiera najlepszych
+6. Zapobiega przypisaniu jednego developera do wielu umiejętności
+7. Zwraca przypisania oraz listę nieobsadzonych wymagań
 
 
 Pytanie: Match devs for API Integration Platform Development  
@@ -136,6 +137,8 @@ pobiera wymaganą liczbę developerów (required_count)
 Wyszukuje kandydatów z grafu Neo4j:
 
 developerów posiadających daną umiejętność (HAS_SKILL)
+
+filtruje developerów pod kątem dostępności na dzień startu RFP: odrzuca osoby, które mają przypisanie ASSIGNED_TO nachodzące na Rfp.start_date (tj. a.start_date ≤ start_date i a.end_date jest puste lub a.end_date ≥ start_date)
 
 zlicza liczbę projektów (WORKED_ON → Project)
 

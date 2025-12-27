@@ -119,7 +119,7 @@ If a question cannot be answered using this schema, return an empty Cypher query
   description,
   requirements,
   budget,
-  deadline,
+  start_date,
   document_type
 }})
 
@@ -672,7 +672,7 @@ If title is missing, do NOT create any RFP node.
   description,
   requirements,
   budget,
-  deadline,
+  start_date,
   document_type
 }})
 

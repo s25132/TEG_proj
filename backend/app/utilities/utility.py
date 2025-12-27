@@ -2,6 +2,7 @@ import time
 from pypdf import PdfReader
 from langchain_community.graphs import Neo4jGraph
 from io import BytesIO
+from datetime import date, datetime, timezone
 
 def extract_text_from_pdf_bytes(pdf_bytes: bytes, doc_type: str) -> str:
     reader = PdfReader(BytesIO(pdf_bytes))
@@ -47,3 +48,33 @@ def wait_for_neo4j(uri: str, user: str, password: str,
 
             print(f"Neo4j jeszcze niegotowy ({e}), czekam {interval}s...")
             time.sleep(interval)
+
+def parse_start_date(value):
+    if value is None:
+        return None
+
+    # neo4j Date/DateTime często ma .to_native() albo jest już date/datetime
+    if hasattr(value, "to_native"):
+        value = value.to_native()
+
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, date):
+        # zamień date -> datetime (opcjonalnie)
+        return datetime(value.year, value.month, value.day, tzinfo=timezone.utc)
+
+    if isinstance(value, str):
+        v = value.strip()
+        # ISO datetime
+        try:
+            return datetime.fromisoformat(v.replace("Z", "+00:00"))
+        except Exception:
+            pass
+        # ISO date
+        try:
+            d = date.fromisoformat(v)
+            return datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
+        except Exception:
+            return None
+
+    return None

@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Tuple
 from langchain_core.tools import tool
 from langchain_community.graphs import Neo4jGraph
 from app.utilities.rank_utility import _rank_rows
+from app.utilities.utility import parse_start_date
 
 
 def make_whatif_match_tool(graph: Neo4jGraph):
@@ -60,7 +61,7 @@ def make_whatif_match_tool(graph: Neo4jGraph):
         needs_q = """
         MATCH (r:Rfp)-[n:NEEDS]->(s)
         WHERE toLower(r.title) = toLower($title)
-        RETURN s.id AS skillId, n.required_count AS required_count
+        RETURN s.id AS skillId, n.required_count AS required_count, r.start_date AS start_date
         ORDER BY skillId
         """
         needs = graph.query(needs_q, {"title": title}) or []
@@ -70,6 +71,8 @@ def make_whatif_match_tool(graph: Neo4jGraph):
         used = set()
         assignments: List[Dict[str, Any]] = []
         unfilled: List[Dict[str, Any]] = []
+
+        rfp_start_date = parse_start_date(needs[0].get("start_date"))
 
         for need in needs:
             skill = need.get("skillId")
@@ -89,7 +92,13 @@ def make_whatif_match_tool(graph: Neo4jGraph):
             cand_q = """
             MATCH (p:Person)-[:HAS_SKILL]->(s)
             WHERE toLower(s.id) = toLower($skill)
-                OR toLower(s.id) = toLower($normSkill)
+                OR toLower(s.id) = toLower($normSkill)          
+            AND NOT EXISTS {
+                MATCH (p)-[a:ASSIGNED_TO]->(:Project)
+                WHERE date(a.start_date) <= date($rfpStart)
+                AND (a.end_date IS NULL OR date(a.end_date) >= date($rfpStart))
+            }
+            
 
             OPTIONAL MATCH (p)-[:WORKED_ON]->(pr:Project)
             WITH p, count(DISTINCT pr) AS projectCount
@@ -106,7 +115,7 @@ def make_whatif_match_tool(graph: Neo4jGraph):
             """
             graph_cands = graph.query(
                 cand_q,
-                {"skill": skill, "normSkill": normSkill, "limit": int(per_skill_candidate_limit)},
+                {"skill": skill, "normSkill": normSkill, "limit": int(per_skill_candidate_limit), "rfpStart": rfp_start_date.date().isoformat()},
             ) or []
 
             # ---- candidates from extra_devs (what-if)
