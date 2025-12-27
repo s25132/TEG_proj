@@ -2,38 +2,7 @@ from typing import Any, Dict, List
 from langchain_core.tools import tool
 from langchain_community.graphs import Neo4jGraph
 from app.utilities.rank_utility import _rank_rows
-from datetime import date, datetime, timezone
-
-def parse_deadline(value):
-    if value is None:
-        return None
-
-    # neo4j Date/DateTime często ma .to_native() albo jest już date/datetime
-    if hasattr(value, "to_native"):
-        value = value.to_native()
-
-    if isinstance(value, datetime):
-        return value
-    if isinstance(value, date):
-        # zamień date -> datetime (opcjonalnie)
-        return datetime(value.year, value.month, value.day, tzinfo=timezone.utc)
-
-    if isinstance(value, str):
-        v = value.strip()
-        # ISO datetime
-        try:
-            return datetime.fromisoformat(v.replace("Z", "+00:00"))
-        except Exception:
-            pass
-        # ISO date
-        try:
-            d = date.fromisoformat(v)
-            return datetime(d.year, d.month, d.day, tzinfo=timezone.utc)
-        except Exception:
-            return None
-
-    return None
-
+from app.utilities.utility import parse_start_date
 
 def make_simple_match_tool(graph: Neo4jGraph):
 
@@ -56,7 +25,7 @@ def make_simple_match_tool(graph: Neo4jGraph):
             RETURN 
                 s.id AS skillId,
                 n.required_count AS required_count,
-                r.deadline AS deadline
+                r.start_date AS start_date
         ORDER BY skillId
         """
         needs = graph.query(needs_q, {"title": title}) or []
@@ -67,7 +36,7 @@ def make_simple_match_tool(graph: Neo4jGraph):
         assignments: List[Dict[str, Any]] = []
         unfilled: List[Dict[str, Any]] = []
 
-        rfp_deadline = parse_deadline(needs[0].get("deadline"))
+        rfp_start_date = parse_start_date(needs[0].get("start_date"))
 
         for need in needs:
             skill = need.get("skillId")
@@ -86,8 +55,13 @@ def make_simple_match_tool(graph: Neo4jGraph):
             # pobierz kandydatów + atrybuty do scoringu
             cand_q = """
             MATCH (p:Person)-[:HAS_SKILL]->(s)
-            WHERE toLower(s.id) = toLower($skill)
-                OR toLower(s.id) = toLower($normSkill)
+            WHERE toLower(s.id) = toLower($skill) OR toLower(s.id) = toLower($normSkill)
+            AND NOT EXISTS {
+                MATCH (p)-[a:ASSIGNED_TO]->(:Project)
+                WHERE date(a.start_date) <= date($rfpStart)
+                AND (a.end_date IS NULL OR date(a.end_date) >= date($rfpStart))
+        }
+            
 
             OPTIONAL MATCH (p)-[:WORKED_ON]->(pr:Project)
             WITH p, count(DISTINCT pr) AS projectCount
@@ -104,7 +78,7 @@ def make_simple_match_tool(graph: Neo4jGraph):
             """
             cands = graph.query(
                 cand_q,
-                {"skill": skill, "normSkill": normSkill, "limit": int(per_skill_candidate_limit)},
+                {"skill": skill, "normSkill": normSkill, "limit": int(per_skill_candidate_limit),  "rfpStart": rfp_start_date.date().isoformat()},
             ) or []
 
             # filtr "used" zanim zrobisz ranking, żeby nie marnować topów

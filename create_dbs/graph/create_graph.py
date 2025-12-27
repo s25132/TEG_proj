@@ -208,7 +208,7 @@ DO NOT create any nodes, relationships, or properties outside this schema.
   description,
   requirements,
   budget,
-  deadline,
+  start_date,
   document_type
 }})
 
