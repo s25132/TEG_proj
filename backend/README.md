@@ -20,7 +20,7 @@ wymaganych umiejętności oraz punktowej oceny kandydata.
 ### Jak działa
 1. Odczytuje wymagane umiejętności z grafu Neo4j (`Rfp → NEEDS → Skill`)
 2. Dla każdej umiejętności wyszukuje pasujących developerów (`Person → HAS_SKILL → Skill`)
-3. Filtruje developerów pod kątem dostępności na dzień startu RFP: odrzuca osoby, które mają przypisanie ASSIGNED_TO nachodzące na Rfp.start_date (tj. a.start_date ≤ start_date i a.end_date jest puste lub a.end_date ≥ start_date)
+3. Filtruje developerów którzy mają jakikolwiek projekt przypisany (ASSIGNED_TO), który nie skończył się przed rfpStart
 4. Oblicza score developera na podstawie:
    - lat doświadczenia
    - liczby zrealizowanych projektów
@@ -138,7 +138,7 @@ Wyszukuje kandydatów z grafu Neo4j:
 
 developerów posiadających daną umiejętność (HAS_SKILL)
 
-filtruje developerów pod kątem dostępności na dzień startu RFP: odrzuca osoby, które mają przypisanie ASSIGNED_TO nachodzące na Rfp.start_date (tj. a.start_date ≤ start_date i a.end_date jest puste lub a.end_date ≥ start_date)
+filtruje developerów którzy mają jakikolwiek projekt przypisany (ASSIGNED_TO), który nie skończył się przed rfpStart
 
 zlicza liczbę projektów (WORKED_ON → Project)
 
