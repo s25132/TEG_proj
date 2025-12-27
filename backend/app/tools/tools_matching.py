@@ -58,9 +58,8 @@ def make_simple_match_tool(graph: Neo4jGraph):
             WHERE toLower(s.id) = toLower($skill) OR toLower(s.id) = toLower($normSkill)
             AND NOT EXISTS {
                 MATCH (p)-[a:ASSIGNED_TO]->(:Project)
-                WHERE date(a.start_date) <= date($rfpStart)
-                AND (a.end_date IS NULL OR date(a.end_date) >= date($rfpStart))
-        }
+                WHERE (a.end_date IS NULL OR date(a.end_date) >= date($rfpStart))
+            }
             
 
             OPTIONAL MATCH (p)-[:WORKED_ON]->(pr:Project)
