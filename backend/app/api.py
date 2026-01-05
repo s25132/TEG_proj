@@ -6,7 +6,7 @@ from chromadb import PersistentClient
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from dotenv import load_dotenv
 from app.schema.schemas import RagRequest, RagResponse , GraphRagRequest, GraphRagResponse
-from app.db.chroma import build_context_from_chroma, call_llm_with_rag, load_rfps_into_collection
+from app.db.chroma import build_context_from_chroma, call_llm_with_rag_and_memory, load_rfps_into_collection
 from app.utilities.utility import wait_for_neo4j
 from app.db.graph import convert_to_graph, get_llm_transformer, store_single_graph_document, setup_qa_chain, invoke_agent
 from app.agent.agent import setup_agent
@@ -60,7 +60,7 @@ def chat_rag(request: RagRequest):
 
     # 2. Call LLM z kontekstem
     try:
-        answer = call_llm_with_rag(llm, request.question, docs, metas)
+        answer = call_llm_with_rag_and_memory(llm, request.question, docs, metas, "user_session")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"LLM error: {e}")
 
