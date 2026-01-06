@@ -71,8 +71,11 @@ będąc w katalogu głownym:
 
 docker compose -f talent_ai_docker.yml build 
 
-docker compose -f talent_ai_docker.yml up
+docker compose -f talent_ai_docker.yml up\
 
+http://localhost:8501/
+
+![GUI](gui.png)
 
 ## Ewaluacja
 
@@ -89,11 +92,6 @@ będąc w katalogu głownym:
 docker compose -f evaluation_docker.yml build 
 
 docker compose -f evaluation_docker.yml up
-
-
-http://localhost:8501/
-
-![GUI](gui.png)
 
 ## Architektura rozwiązania  
 
