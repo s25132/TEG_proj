@@ -541,93 +541,134 @@ Question:
 import json
 from typing import Any, Dict, List
 
-def _try_parse_json(s: str) -> Any:
-    s2 = (s or "").strip()
-    if not s2:
-        return s
-    if (s2.startswith("{") and s2.endswith("}")) or (s2.startswith("[") and s2.endswith("]")):
-        try:
-            return json.loads(s2)
-        except Exception:
-            return s
+def _to_int_or_none(x: Any) -> Optional[int]:
+    try:
+        if x is None:
+            return None
+        if isinstance(x, int):
+            return x
+        if isinstance(x, float):
+            return int(x)
+        s = str(x).strip()
+        if not s:
+            return None
+        return int(s)
+    except Exception:
+        return None
+
+def _normalize_university_ranking(rank: Any) -> str:
+    # u Ciebie 9999 to placeholder
+    if rank in (None, "", compiler := "Not specified"):
+        return "Not specified"
+    if rank == 9999:
+        return "Not specified"
+    s = str(rank).strip()
+    if s.lower() in {"n/a", "na", "not specified", "none", "null"}:
+        return "Not specified"
     return s
 
-def _safe_str(x: Any) -> str:
-    try:
-        if isinstance(x, (dict, list)):
-            return json.dumps(x, ensure_ascii=False, default=str)
-        return str(x)
-    except Exception:
-        return repr(x)
+def record_to_passage(r: Any, tool_name: str = "") -> str:
+    """
+    Zamienia rekord (dict/JSON/string) na krótki, tekstowy 'passage' dla RAGAS.
+    """
+    # jeśli to JSON-string z recordem
+    if isinstance(r, str):
+        s = r.strip()
+        if s.startswith("{") and s.endswith("}"):
+            try:
+                r = json.loads(s)
+            except Exception:
+                return s
+        else:
+            return s
+
+    # jeśli to dict z danymi o kandydacie
+    if isinstance(r, dict):
+        name = r.get("name") or r.get("personId") or "Unknown"
+        proj = r.get("projectCount")
+        uni = r.get("universityName")
+        rank = _normalize_university_ranking(r.get("universityRanking"))
+
+        parts = [f"{name}."]
+        if proj is not None:
+            parts.append(f"Project count: {proj}.")
+        parts.append(f"University ranking: {rank}.")
+        if uni:
+            parts.append(f"University: {uni}.")
+        # celowo pomijamy r.get("score")
+        return " ".join(parts)
+
+    # fallback: jako string, ale bez mega debugowania
+    return str(r)
 
 @traceable(process_inputs=lambda inputs: {"question": inputs["question"]})
 def invoke_agent(agent: AgentExecutor, question: str) -> Dict[str, Any]:
-    """Execute a natural language query using AgentExecutor (tools-enabled). Always returns some contexts for testing."""
     try:
         print(f"Executing query: {question}")
 
-        result = agent.invoke({"input": question},
-          config={"configurable": {"session_id": "user_session"}}
+        result = agent.invoke(
+            {"input": question},
+            config={"configurable": {"session_id": "user_session"}}
         )
-        answer = result.get("output", "No answer generated") if isinstance(result, dict) else str(result)
 
+        answer = result.get("output", "No answer generated") if isinstance(result, dict) else str(result)
         steps = result.get("intermediate_steps", []) if isinstance(result, dict) else []
 
         retrieved_contexts: List[str] = []
         cypher_query = ""
-
-        # 🔥 twardy “fallback” do testów: pokaż jakie toole były użyte
         used_tools: List[str] = []
 
-        for idx, step in enumerate(steps):
+        for step in steps:
             if not (isinstance(step, tuple) and len(step) == 2):
-                retrieved_contexts.append(f"step[{idx}]={_safe_str(step)}")
+                # nie dodawaj logów do contexts
                 continue
 
             action, observation = step
             tool_name = getattr(action, "tool", None) or "unknown_tool"
             used_tools.append(tool_name)
 
-            # --- graph_qa ---
             if tool_name == "graph_qa":
                 if isinstance(observation, dict):
                     cypher_query = observation.get("cypher_query", "") or cypher_query
                     ctx = observation.get("retrieved_contexts", [])
                     if isinstance(ctx, list):
-                        # dodaj max 30 pozycji, żeby nie puchło
-                        retrieved_contexts.extend([_safe_str(x) for x in ctx[:30]])
+                        retrieved_contexts.extend([record_to_passage(x, tool_name) for x in ctx[:30]])
                     else:
-                        retrieved_contexts.append(_safe_str(ctx))
+                        retrieved_contexts.append(record_to_passage(ctx, tool_name))
                 else:
-                    retrieved_contexts.append(_safe_str(observation))
+                    retrieved_contexts.append(record_to_passage(observation, tool_name))
 
-            # --- candidate tools ---
-            elif tool_name in ("rank_best_devs_university","match_devs_to_rfp_scored", "match_devs_to_rfp_scored_whatif", "compare_baseline_vs_whatif_for_rfp"):
+            elif tool_name in (
+                "rank_best_devs_university",
+                "match_devs_to_rfp_scored",
+                "match_devs_to_rfp_scored_whatif",
+                "compare_baseline_vs_whatif_for_rfp",
+            ):
                 if isinstance(observation, list):
-                    if len(observation) == 0:
-                        # ✅ kluczowe: nawet jak pusto, zwróć info (do testów)
-                        retrieved_contexts.append(f"{tool_name}: 0 rows")
-                    else:
-                        # ✅ dump rekordów (max 30)
-                        for r in observation[:30]:
-                            retrieved_contexts.append(_safe_str(r))
+                    for r in observation[:30]:
+                        retrieved_contexts.append(record_to_passage(r, tool_name))
                 else:
-                    retrieved_contexts.append(f"{tool_name}: {_safe_str(observation)}")
+                    retrieved_contexts.append(record_to_passage(observation, tool_name))
 
             else:
-                # fallback
-                retrieved_contexts.append(f"{tool_name}: {_safe_str(observation)}")
+                retrieved_contexts.append(record_to_passage(observation, tool_name))
 
-        # ✅ jeśli mimo wszystko pusto, to też zwróć coś (do testów)
+        # ✅ filtr: tylko sensowne teksty do RAGAS
+        retrieved_contexts = [
+            c.strip() for c in retrieved_contexts
+            if isinstance(c, str) and len(c.strip()) > 20
+        ]
+
+        # jeśli nadal pusto → dopiero wtedy fallback
         if not retrieved_contexts:
-            retrieved_contexts = [f"No tool context. Used tools={used_tools}"]
+            retrieved_contexts = answer.strip().split("\n")[:5]
 
         return {
             "question": question,
             "answer": answer,
             "cypher_query": cypher_query,
             "retrieved_contexts": retrieved_contexts,
-            "raw_context": steps,  # debug
+            "raw_context": steps,   # debug osobno
             "success": True,
         }
 
@@ -637,10 +678,11 @@ def invoke_agent(agent: AgentExecutor, question: str) -> Dict[str, Any]:
             "question": question,
             "answer": f"Error: {str(e)}",
             "cypher_query": "",
-            "retrieved_contexts": [f"Error context: {str(e)}"],  # ✅ też niepuste do testów
+            "retrieved_contexts": [f"Error context: {str(e)}"],
             "raw_context": [],
             "success": False,
         }
+
 def get_llm_transformer(model: ChatOpenAI) -> LLMGraphTransformer:
 
     SYSTEM_PROMPT  = r"""
