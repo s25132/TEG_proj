@@ -73,6 +73,24 @@ docker compose -f talent_ai_docker.yml build
 
 docker compose -f talent_ai_docker.yml up
 
+
+## Ewaluacja
+
+Metryki ragas ContextPrecision, Faithfulness, AnswerRelevancy, ContextRecall, FactualCorrectness.
+
+Uruchomienie:  
+
+evaluation_docker_example.yml zmień na evaluation_docker.yml 
+
+uzupełnij OPENAI_API_KEY w evaluation_docker.yml 
+
+będąc w katalogu głownym:
+
+docker compose -f evaluation_docker.yml build 
+
+docker compose -f evaluation_docker.yml up
+
+
 http://localhost:8501/
 
 ![GUI](gui.png)
