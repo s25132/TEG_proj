@@ -191,6 +191,10 @@ If a question cannot be answered using this schema, return an empty Cypher query
 Return ONLY a valid Cypher query.
 
 Examples:
+
+# How many rpfs we have ?
+MATCH (r:Rfp) return count(DISTINCT r)
+
 # How many Python developers are available next month?
 WITH
   date() + duration({{months: 1}}) AS startNextMonth,

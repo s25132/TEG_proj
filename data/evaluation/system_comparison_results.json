@@ -14,8 +14,8 @@
       "category": "listing",
       "ground_truth": "Darius Villa: Project Count: 4; University Ranking: Not specified. Victor Cook: Project Count: 5; University Ranking: Not specified (University of New Justinville). Ryan Hopkins: Project Count: 5; University Ranking: Not specified (University of South Brianna). Mary Hines: Project Count: 4; University Ranking: Not specified. Mark Carroll: Project Count: 3; University Ranking: N/A (University of Adamsbury).",
       "graphrag": {
-        "answer": "Here are the developers along with their project counts and university rankings:\n\n1. **Darius Villa**\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n\n2. **Victor Cook**\n   - Project Count: 5\n   - University Ranking: Not specified\n   - University: University of New Justinville\n\n3. **Ryan Hopkins**\n   - Project Count: 5\n   - University Ranking: Not specified\n   - University: University of South Brianna\n\n4. **Mary Hines**\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n\n5. **Mark Carroll**\n   - Project Count: 3\n   - University Ranking: N/A\n   - University: University of Adamsbury\n\nIf you need more information or further assistance, feel free to ask!",
-        "execution_time": 6.6070029735565186,
+        "answer": "Here are some developers along with their project counts and university rankings:\n\n1. **Darius Villa**\n   - Project Count: 4\n   - University Ranking: 9999\n\n2. **Victor Cook**\n   - Project Count: 5\n   - University Ranking: Not specified (University of New Justinville)\n\n3. **Ryan Hopkins**\n   - Project Count: 5\n   - University Ranking: Not specified (University of South Brianna)\n\n4. **Mary Hines**\n   - Project Count: 4\n   - University Ranking: 9999\n\n5. **Mark Carroll**\n   - Project Count: 3\n   - University Ranking: N/A (University of Adamsbury)\n\nIf you need more information or additional developers, feel free to ask!",
+        "execution_time": 4.349913835525513,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -27,18 +27,18 @@
             "Mary Hines. Project count: 4. University ranking: Not specified.",
             "Mark Carroll. Project count: 3. University ranking: Not specified. University: University of Adamsbury."
           ],
-          "response": "Here are the developers along with their project counts and university rankings:\n\n1. **Darius Villa**\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n\n2. **Victor Cook**\n   - Project Count: 5\n   - University Ranking: Not specified\n   - University: University of New Justinville\n\n3. **Ryan Hopkins**\n   - Project Count: 5\n   - University Ranking: Not specified\n   - University: University of South Brianna\n\n4. **Mary Hines**\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n\n5. **Mark Carroll**\n   - Project Count: 3\n   - University Ranking: N/A\n   - University: University of Adamsbury\n\nIf you need more information or further assistance, feel free to ask!",
+          "response": "Here are some developers along with their project counts and university rankings:\n\n1. **Darius Villa**\n   - Project Count: 4\n   - University Ranking: 9999\n\n2. **Victor Cook**\n   - Project Count: 5\n   - University Ranking: Not specified (University of New Justinville)\n\n3. **Ryan Hopkins**\n   - Project Count: 5\n   - University Ranking: Not specified (University of South Brianna)\n\n4. **Mary Hines**\n   - Project Count: 4\n   - University Ranking: 9999\n\n5. **Mark Carroll**\n   - Project Count: 3\n   - University Ranking: N/A (University of Adamsbury)\n\nIf you need more information or additional developers, feel free to ask!",
           "reference": "Darius Villa: Project Count: 4; University Ranking: Not specified. Victor Cook: Project Count: 5; University Ranking: Not specified (University of New Justinville). Ryan Hopkins: Project Count: 5; University Ranking: Not specified (University of South Brianna). Mary Hines: Project Count: 4; University Ranking: Not specified. Mark Carroll: Project Count: 3; University Ranking: N/A (University of Adamsbury).",
-          "context_precision": NaN,
-          "faithfulness": NaN,
-          "answer_relevancy": NaN,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_precision": 0.9999999999,
+          "faithfulness": 0.8,
+          "answer_relevancy": 0.8781204414880616,
+          "context_recall": 0.8,
+          "factual_correctness": 0.75
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 5.671045541763306,
+        "execution_time": 4.052323579788208,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -51,10 +51,10 @@
           "response": "I don't know.",
           "reference": "Darius Villa: Project Count: 4; University Ranking: Not specified. Victor Cook: Project Count: 5; University Ranking: Not specified (University of New Justinville). Ryan Hopkins: Project Count: 5; University Ranking: Not specified (University of South Brianna). Mary Hines: Project Count: 4; University Ranking: Not specified. Mark Carroll: Project Count: 3; University Ranking: N/A (University of Adamsbury).",
           "context_precision": 0.0,
-          "faithfulness": 1.0,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -64,8 +64,8 @@
       "category": "listing",
       "ground_truth": "Victor Cook (Projects: 5; University: University of New Justinville; Years of Experience: 5). Ryan Hopkins (Projects: 5; University: University of South Brianna; Years of Experience: 5). Darius Villa (Projects: 4; University: Not specified; Years of Experience: 7). Mary Hines (Projects: 4; University: Not specified; Years of Experience: 5). Mark Carroll (Projects: 3; University: University of Adamsbury; Years of Experience: 5).",
       "graphrag": {
-        "answer": "Here are the best developers based on project counts and university rankings:\n\n1. **Darius Villa**\n   - Years of Experience: 7\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n   - Score: 0.5628\n\n2. **Victor Cook**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University: University of New Justinville\n   - University Ranking: Not specified\n   - Score: 0.5095\n\n3. **Ryan Hopkins**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University: University of South Brianna\n   - University Ranking: Not specified\n   - Score: 0.5095\n\n4. **Mary Hines**\n   - Years of Experience: 5\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n   - Score: 0.4728\n\n5. **Mark Carroll**\n   - Years of Experience: 5\n   - Project Count: 3\n   - University: University of Adamsbury\n   - University Ranking: N/A\n   - Score: 0.428\n\nIf you need any more details or further assistance, feel free to ask!",
-        "execution_time": 7.555086851119995,
+        "answer": "Here are the best developers based on their project counts and university rankings:\n\n1. **Darius Villa**\n   - Years of Experience: 7\n   - Project Count: 4\n   - University Ranking: 9999\n\n2. **Victor Cook**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University Ranking: Not specified (University of New Justinville)\n\n3. **Ryan Hopkins**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University Ranking: Not specified (University of South Brianna)\n\n4. **Mary Hines**\n   - Years of Experience: 5\n   - Project Count: 4\n   - University Ranking: 9999\n\n5. **Mark Carroll**\n   - Years of Experience: 5\n   - Project Count: 3\n   - University Ranking: N/A (University of Adamsbury)\n\nIf you need further details or additional information, let me know!",
+        "execution_time": 5.069861888885498,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -77,18 +77,18 @@
             "Mary Hines. Project count: 4. University ranking: Not specified.",
             "Mark Carroll. Project count: 3. University ranking: Not specified. University: University of Adamsbury."
           ],
-          "response": "Here are the best developers based on project counts and university rankings:\n\n1. **Darius Villa**\n   - Years of Experience: 7\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n   - Score: 0.5628\n\n2. **Victor Cook**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University: University of New Justinville\n   - University Ranking: Not specified\n   - Score: 0.5095\n\n3. **Ryan Hopkins**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University: University of South Brianna\n   - University Ranking: Not specified\n   - Score: 0.5095\n\n4. **Mary Hines**\n   - Years of Experience: 5\n   - Project Count: 4\n   - University Ranking: 9999 (not specified)\n   - Score: 0.4728\n\n5. **Mark Carroll**\n   - Years of Experience: 5\n   - Project Count: 3\n   - University: University of Adamsbury\n   - University Ranking: N/A\n   - Score: 0.428\n\nIf you need any more details or further assistance, feel free to ask!",
+          "response": "Here are the best developers based on their project counts and university rankings:\n\n1. **Darius Villa**\n   - Years of Experience: 7\n   - Project Count: 4\n   - University Ranking: 9999\n\n2. **Victor Cook**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University Ranking: Not specified (University of New Justinville)\n\n3. **Ryan Hopkins**\n   - Years of Experience: 5\n   - Project Count: 5\n   - University Ranking: Not specified (University of South Brianna)\n\n4. **Mary Hines**\n   - Years of Experience: 5\n   - Project Count: 4\n   - University Ranking: 9999\n\n5. **Mark Carroll**\n   - Years of Experience: 5\n   - Project Count: 3\n   - University Ranking: N/A (University of Adamsbury)\n\nIf you need further details or additional information, let me know!",
           "reference": "Victor Cook (Projects: 5; University: University of New Justinville; Years of Experience: 5). Ryan Hopkins (Projects: 5; University: University of South Brianna; Years of Experience: 5). Darius Villa (Projects: 4; University: Not specified; Years of Experience: 7). Mary Hines (Projects: 4; University: Not specified; Years of Experience: 5). Mark Carroll (Projects: 3; University: University of Adamsbury; Years of Experience: 5).",
-          "context_precision": NaN,
-          "faithfulness": NaN,
-          "answer_relevancy": NaN,
-          "context_recall": 0.0,
-          "factual_correctness": NaN
+          "context_precision": 0.0,
+          "faithfulness": 0.4117647058823529,
+          "answer_relevancy": 0.8891525499790823,
+          "context_recall": 1.0,
+          "factual_correctness": 0.74
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.1894237995147705,
+        "execution_time": 1.9383633136749268,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -103,8 +103,8 @@
           "context_precision": 0.0,
           "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -114,8 +114,8 @@
       "category": "counting",
       "ground_truth": "We have 3 Python developers.",
       "graphrag": {
-        "answer": "We have 3 Python developers. If you need more information or have any other questions, feel free to ask!",
-        "execution_time": 4.778048515319824,
+        "answer": "We have 3 Python developers. If you need more information about them or any other details, feel free to ask!",
+        "execution_time": 3.9744632244110107,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -123,18 +123,18 @@
           "retrieved_contexts": [
             "pythonDevelopersCount=3"
           ],
-          "response": "We have 3 Python developers. If you need more information or have any other questions, feel free to ask!",
+          "response": "We have 3 Python developers. If you need more information about them or any other details, feel free to ask!",
           "reference": "We have 3 Python developers.",
           "context_precision": 0.9999999999,
-          "faithfulness": NaN,
-          "answer_relevancy": NaN,
+          "faithfulness": 0.5,
+          "answer_relevancy": 0.9192493774304519,
           "context_recall": 1.0,
-          "factual_correctness": NaN
+          "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.295628547668457,
+        "execution_time": 1.3583223819732666,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -147,10 +147,10 @@
           "response": "I don't know.",
           "reference": "We have 3 Python developers.",
           "context_precision": 0.0,
-          "faithfulness": 1.0,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -160,27 +160,27 @@
       "category": "filtering",
       "ground_truth": "I'm unable to find specific information about senior developers with React and Node.js experience at the moment.",
       "graphrag": {
-        "answer": "I couldn't find specific information about senior developers with React and Node.js experience. If you have any other questions or need assistance with something else, feel free to ask!",
-        "execution_time": 7.4964210987091064,
+        "answer": "I'm unable to retrieve the specific information about senior developers with React and Node.js experience at the moment. If you have any other questions or need assistance with something else, feel free to ask!",
+        "execution_time": 6.477621555328369,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "Find senior developers with React AND Node.js experience",
           "retrieved_contexts": [
-            "I couldn't find specific information about senior developers with React and Node.js experience. If you have any other questions or need assistance with something else, feel free to ask!"
+            "I'm unable to retrieve the specific information about senior developers with React and Node.js experience at the moment. If you have any other questions or need assistance with something else, feel free to ask!"
           ],
-          "response": "I couldn't find specific information about senior developers with React and Node.js experience. If you have any other questions or need assistance with something else, feel free to ask!",
+          "response": "I'm unable to retrieve the specific information about senior developers with React and Node.js experience at the moment. If you have any other questions or need assistance with something else, feel free to ask!",
           "reference": "I'm unable to find specific information about senior developers with React and Node.js experience at the moment.",
-          "context_precision": NaN,
+          "context_precision": 0.9999999999,
           "faithfulness": 1.0,
           "answer_relevancy": 0.0,
           "context_recall": 1.0,
-          "factual_correctness": 1.0
+          "factual_correctness": 0.5
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 2.1602466106414795,
+        "execution_time": 1.3886356353759766,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -193,10 +193,10 @@
           "response": "I don't know.",
           "reference": "I'm unable to find specific information about senior developers with React and Node.js experience at the moment.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -207,7 +207,7 @@
       "ground_truth": "There are 3 Python developers available in Q2.",
       "graphrag": {
         "answer": "There are 3 Python developers available in Q2. If you have any more questions or need further assistance, feel free to ask!",
-        "execution_time": 7.184886693954468,
+        "execution_time": 7.6979193687438965,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -218,15 +218,15 @@
           "response": "There are 3 Python developers available in Q2. If you have any more questions or need further assistance, feel free to ask!",
           "reference": "There are 3 Python developers available in Q2.",
           "context_precision": 0.9999999999,
-          "faithfulness": 1.0,
-          "answer_relevancy": 0.9893238463393854,
+          "faithfulness": 0.5,
+          "answer_relevancy": 0.9893249643565661,
           "context_recall": 1.0,
           "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.1179773807525635,
+        "execution_time": 1.676037311553955,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -239,10 +239,10 @@
           "response": "I don't know.",
           "reference": "There are 3 Python developers available in Q2.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -252,8 +252,8 @@
       "category": "aggregation",
       "ground_truth": "The average number of years of experience for developers is approximately 5.25 years.",
       "graphrag": {
-        "answer": "The average number of years of experience for developers is approximately 5.25 years. If you have any more questions or need further information, feel free to ask!",
-        "execution_time": 4.174069166183472,
+        "answer": "The average number of years of experience for developers is approximately 5.25 years. If you need more specific details or have other questions, feel free to ask!",
+        "execution_time": 3.6881368160247803,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -261,18 +261,18 @@
           "retrieved_contexts": [
             "avgYearsExperience=5.250000000000001"
           ],
-          "response": "The average number of years of experience for developers is approximately 5.25 years. If you have any more questions or need further information, feel free to ask!",
+          "response": "The average number of years of experience for developers is approximately 5.25 years. If you need more specific details or have other questions, feel free to ask!",
           "reference": "The average number of years of experience for developers is approximately 5.25 years.",
           "context_precision": 0.9999999999,
-          "faithfulness": 0.5,
-          "answer_relevancy": 0.8803683539618392,
+          "faithfulness": 0.3333333333333333,
+          "answer_relevancy": 0.8804066621434393,
           "context_recall": 1.0,
           "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.2095661163330078,
+        "execution_time": 1.1225931644439697,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -285,10 +285,10 @@
           "response": "I don't know.",
           "reference": "The average number of years of experience for developers is approximately 5.25 years.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -298,8 +298,8 @@
       "category": "aggregation",
       "ground_truth": "The total capacity available for Q4 projects is 52 full-time equivalents (FTE).",
       "graphrag": {
-        "answer": "The total capacity available for Q4 projects is 52.0 Full-Time Equivalents (FTE), which represents 5200% of the total available capacity. If you have any more questions or need further assistance, feel free to ask!",
-        "execution_time": 8.080403089523315,
+        "answer": "The total capacity available for Q4 projects is 52.0 full-time equivalents (FTE), which represents 5200% of the total available capacity. If you have any more questions or need further assistance, feel free to ask!",
+        "execution_time": 7.052055358886719,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -307,18 +307,18 @@
           "retrieved_contexts": [
             "totalAvailablePct=5200, totalAvailableFTE=52.0"
           ],
-          "response": "The total capacity available for Q4 projects is 52.0 Full-Time Equivalents (FTE), which represents 5200% of the total available capacity. If you have any more questions or need further assistance, feel free to ask!",
+          "response": "The total capacity available for Q4 projects is 52.0 full-time equivalents (FTE), which represents 5200% of the total available capacity. If you have any more questions or need further assistance, feel free to ask!",
           "reference": "The total capacity available for Q4 projects is 52 full-time equivalents (FTE).",
           "context_precision": 0.9999999999,
-          "faithfulness": 0.6666666666666666,
-          "answer_relevancy": 0.7649374781124315,
+          "faithfulness": 1.0,
+          "answer_relevancy": 0.9445391127168886,
           "context_recall": 1.0,
-          "factual_correctness": 1.0
+          "factual_correctness": 0.67
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 2.348351240158081,
+        "execution_time": 3.2339699268341064,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -333,8 +333,8 @@
           "context_precision": 0.0,
           "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -344,27 +344,32 @@
       "category": "listing",
       "ground_truth": "There are no developers from the same university; each of the six developers is affiliated with a unique university: Jessica Erickson - Calhounhaven University; Mark Carroll - University of Adamsbury; Victor Cook - University of New Justinville; Jeffrey Fisher - University of Pennsylvania; Ryan Hopkins - University of South Brianna; Lauren Flowers - University of Tiffanymouth.",
       "graphrag": {
-        "answer": "I couldn't retrieve specific information about developers from the same university. If you have any other questions or need assistance with something else, feel free to ask!",
-        "execution_time": 4.681766510009766,
+        "answer": "Here are the developers grouped by their respective universities:\n\n1. **Calhounhaven University**\n   - Jessica Erickson\n\n2. **University of Adamsbury**\n   - Mark Carroll\n\n3. **University of New Justinville**\n   - Victor Cook\n\n4. **University of Pennsylvania**\n   - Jeffrey Fisher\n\n5. **University of South Brianna**\n   - Ryan Hopkins\n\n6. **University of Tiffanymouth**\n   - Lauren Flowers\n\nIf you need more information or have any other questions, feel free to ask!",
+        "execution_time": 8.195579051971436,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "Developers from same university",
           "retrieved_contexts": [
-            "I couldn't retrieve specific information about developers from the same university. If you have any other questions or need assistance with something else, feel free to ask!"
+            "university=Calhounhaven University, developerIds=['Jessica Erickson']",
+            "university=University of Adamsbury, developerIds=['Mark Carroll']",
+            "university=University of New Justinville, developerIds=['Victor Cook']",
+            "university=University of Pennsylvania, developerIds=['Jeffrey Fisher']",
+            "university=University of South Brianna, developerIds=['Ryan Hopkins']",
+            "university=University of Tiffanymouth, developerIds=['Lauren Flowers']"
           ],
-          "response": "I couldn't retrieve specific information about developers from the same university. If you have any other questions or need assistance with something else, feel free to ask!",
+          "response": "Here are the developers grouped by their respective universities:\n\n1. **Calhounhaven University**\n   - Jessica Erickson\n\n2. **University of Adamsbury**\n   - Mark Carroll\n\n3. **University of New Justinville**\n   - Victor Cook\n\n4. **University of Pennsylvania**\n   - Jeffrey Fisher\n\n5. **University of South Brianna**\n   - Ryan Hopkins\n\n6. **University of Tiffanymouth**\n   - Lauren Flowers\n\nIf you need more information or have any other questions, feel free to ask!",
           "reference": "There are no developers from the same university; each of the six developers is affiliated with a unique university: Jessica Erickson - Calhounhaven University; Mark Carroll - University of Adamsbury; Victor Cook - University of New Justinville; Jeffrey Fisher - University of Pennsylvania; Ryan Hopkins - University of South Brianna; Lauren Flowers - University of Tiffanymouth.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
-          "answer_relevancy": NaN,
-          "context_recall": 0.0,
-          "factual_correctness": 0.0
+          "faithfulness": 0.7777777777777778,
+          "answer_relevancy": 0.7298862831534493,
+          "context_recall": 1.0,
+          "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.285482406616211,
+        "execution_time": 1.8846580982208252,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -377,10 +382,10 @@
           "response": "I don't know.",
           "reference": "There are no developers from the same university; each of the six developers is affiliated with a unique university: Jessica Erickson - Calhounhaven University; Mark Carroll - University of Adamsbury; Victor Cook - University of New Justinville; Jeffrey Fisher - University of Pennsylvania; Ryan Hopkins - University of South Brianna; Lauren Flowers - University of Tiffanymouth.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -390,8 +395,8 @@
       "category": "listing",
       "ground_truth": "One Python developer is Mary Hines, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com.",
       "graphrag": {
-        "answer": "One Python developer is **Mary Hines**, who has 5 years of experience. She is located in Combsburgh and can be reached at her email: brian16@example.com. If you need more information or assistance, feel free to ask!",
-        "execution_time": 4.632577180862427,
+        "answer": "One Python developer is **Mary Hines**, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com. If you need more information or have any other questions, feel free to ask!",
+        "execution_time": 5.196580410003662,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -399,18 +404,18 @@
           "retrieved_contexts": [
             "p={'years_experience': '5', 'name': 'Mary Hines', 'location': 'Combsburgh', 'id': 'Mary Hines', 'email': 'brian16@example.com'}"
           ],
-          "response": "One Python developer is **Mary Hines**, who has 5 years of experience. She is located in Combsburgh and can be reached at her email: brian16@example.com. If you need more information or assistance, feel free to ask!",
+          "response": "One Python developer is **Mary Hines**, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com. If you need more information or have any other questions, feel free to ask!",
           "reference": "One Python developer is Mary Hines, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com.",
           "context_precision": 0.9999999999,
           "faithfulness": 0.6,
-          "answer_relevancy": 0.6651058292822113,
+          "answer_relevancy": 0.6970161793463264,
           "context_recall": 1.0,
           "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.9719982147216797,
+        "execution_time": 1.772810459136963,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -423,10 +428,10 @@
           "response": "I don't know.",
           "reference": "One Python developer is Mary Hines, who has 5 years of experience. She is located in Combsburgh and can be reached at her email address: brian16@example.com.",
           "context_precision": 0.0,
-          "faithfulness": 1.0,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -436,29 +441,29 @@
       "category": "listing",
       "ground_truth": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
       "graphrag": {
-        "answer": "The titles of all RFPs are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or assistance, feel free to ask!",
-        "execution_time": 5.967809677124023,
+        "answer": "The titles of all RFPs are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or have any other questions, feel free to ask!",
+        "execution_time": 5.241443395614624,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "Give me titles of all Rfps",
           "retrieved_contexts": [
-            "rfpTitle=API Integration Platform Development",
-            "rfpTitle=Data Analytics Platform Development",
-            "rfpTitle=E-commerce Modernization Development"
+            "title=API Integration Platform Development",
+            "title=Data Analytics Platform Development",
+            "title=E-commerce Modernization Development"
           ],
-          "response": "The titles of all RFPs are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or assistance, feel free to ask!",
+          "response": "The titles of all RFPs are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or have any other questions, feel free to ask!",
           "reference": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
-          "context_precision": NaN,
-          "faithfulness": 0.75,
-          "answer_relevancy": 0.5993646299704037,
+          "context_precision": 0.0,
+          "faithfulness": 0.0,
+          "answer_relevancy": 0.550773872162729,
           "context_recall": 1.0,
-          "factual_correctness": 1.0
+          "factual_correctness": 0.0
         }
       },
       "naive_rag": {
-        "answer": "The titles of all RFPs are as follows:\n\n1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
-        "execution_time": 2.325122594833374,
+        "answer": "1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
+        "execution_time": 2.396670341491699,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -468,12 +473,12 @@
             "Request for Proposal (RFP)\nExecutive Summary\nThe Education Network is seeking proposals from experienced\ndevelopment teams for the creation of an API Integration Platform to\nmodernize our e-commerce capabilities. This project aims to enhance user\nexperience, streamline operations, and expand our service offerings. We\nare looking for a dedicated team to deliver this solution over a duration of\n22 months, with a starting date of November 28, 2025.\nProject Overview\nProject Title:  API Integration Platform Development\nClient:  Education Network\nProject Type:  Mobile App Development\nLocation:  South Gregoryview (Remote work allowed)\nDuration:  22 months\nTeam Size:  11 people\nBudget Range:  $100K - $250K\nBusiness Context and Objectives\nThe Education Network has recognized the need to modernize its e-\ncommerce platform to better serve our users and meet the growing\ndemands of the market. The objectives of this project include: -\nDeveloping a robust API Integration Platform that supports various e-\ncommerce functionalities. - Ensuring a seamless user experience across\nmobile and web applications. - Implementing best practices in cloud\nservices and container management for scalability and reliability.• \n• \n• \n• \n• \n• \n• \nTechnical Requirements\nThe following technical skills and experience are required for the\ndevelopment team:\nJava:  Intermediate level (Preferred certifications: Certified\nKubernetes Administrator, AWS Certified Solutions Architect)\nTypeScript:  Advanced level (Required certifications: Google Cloud\nProfessional)\nDjango:  Intermediate level\nAngular:  Advanced level (Preferred certifications: Certified\nKubernetes Administrator, AWS Certified Solutions Architect)\nDocker:  Expert level\nExpected Team Profile\nWe are looking for a diverse team of professionals with the following\nprofiles:\nBackend Developers (2)\nStrong experience in Java and Django.\nFamiliarity with API development and integration.\nFrontend Developers (3)\nProficiency in Angular and TypeScript.\nExperience in creating responsive and user-friendly interfaces.\nDevOps Engineer (1)\nExpertise in Docker and cloud technologies.\nExperience with CI/CD pipelines and infrastructure as code.\nQA Engineers (2)\nStrong background in automated and manual testing.\nFamiliarity with testing APIs and e-commerce systems.• \n• \n• \n• \n• \n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. \n9. \n10. \n11. \n12. \nProject Manager (1)\nProven track record in managing similar projects.\nExcellent communication and leadership skills.\nBusiness Analyst (1)\nExperience in gathering requirements and stakeholder management.\nAbility to translate business needs into technical specifications.\nTimeline\nRFP Release Date:  [Insert Date]\nProposal Submission Deadline:  [Insert Date]\nProposal Evaluation Period:  [Insert Date]\nContract Award Date:  [Insert Date]\nProject Kickoff:  November 28, 2025\nExpected Completion Date:  [Insert Date]\nBudget\nThe budget for this project is set between $100K and $250K . Proposals\nshould include a detailed cost breakdown, including personnel,\ntechnology, and overhead costs.\nProposal Guidelines\nInterested parties should submit their proposals by [Insert Submission\nDeadline] to the following email address: [contact@example.com].\nProposals must include:\nCompany overview and relevant experience\nDetailed project plan and timeline\nT eam profiles and qualifications\nCost estimates and payment terms\nReferences from similar projects13. \n14. \n15. \n16. \n17. \n18. \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \nAcceptance Criteria\nProposals will be evaluated based on the following criteria: - T echnical\nexpertise and experience - Proposed methodology and timeline - Cost-\neffectiveness - T eam qualifications and certifications - Previous client\nreferences and case studies\nEvaluation Process\nThe evaluation team will review all submitted proposals and shortlist\ncandidates for interviews. The final selection will be based on a\ncombination of technical fit, team capability, and budget alignment.\nContact Information\nFor any questions regarding this RFP, please contact: - Name:  [Your\nName] - Email:  [contact@example.com] - Phone:  [Your Phone Number]\nThank you for considering this opportunity to partner with the Education\nNetwork in transforming our e-commerce platform. We look forward to\nyour proposals.\n\n\n[METADATA]\ndocument_type: RFP",
             "Request for Proposal (RFP)\nProject:  E-commerce Modernization Development\nClient:  MedT ech Industries\nProject Type:  Mobile App Development \nExecutive Summary\nMedT ech Industries is seeking a highly skilled and experienced\ndevelopment team to undertake the modernization of its e-commerce\nplatform. This project aims to enhance the current web application,\nfocusing on improving user experience, increasing operational efficiency,\nand integrating advanced technological solutions. The project is expected\nto span over 12 months, starting on November 28, 2025, with an\nestimated budget range of $500K - $1M. Remote work is allowed,\nproviding flexibility to the development team.\nProject Overview\nThe objective of this project is to develop a robust enterprise-level e-\ncommerce web application that meets the evolving needs of our users and\naligns with the strategic goals of MedT ech Industries. The application\nshould be scalable, secure, and maintainable, leveraging modern\ntechnologies and frameworks. \nSpecific Deliverables:\nA fully functional e-commerce web application \nIntegration with existing systems and third-party services \nDocumentation for the codebase and user manuals \nDeployment of the application to a cloud environment \nOngoing support and maintenance for the duration of the contract • \n• \n• \n• \n• \nMilestones:\nMilestone 1:  Project Kick-off and Requirement Gathering –\nDecember 2025 \nMilestone 2:  Completion of Design Phase – February 2026 \nMilestone 3:  Development Phase Completion – August 2026 \nMilestone 4:  T esting Phase Completion – October 2026 \nMilestone 5:  Project Go-Live – November 2026 \nTechnical Requirements\nWe require the following technical expertise from the development team: \nREQUIRED:\nReact:  Expert level \nPostgreSQL:  Expert level \nDocker:  Advanced level (Preferred certifications: Certified\nKubernetes Administrator) \nJavaScript:  Expert level (Preferred certifications: Google Cloud\nProfessional) \nMicroservices:  Advanced level (Preferred certifications: AWS\nCertified Solutions Architect) \nKubernetes:  Advanced level (Preferred certifications: Certified\nKubernetes Administrator) \nDjango:  Intermediate level \nPREFERRED:\nDevOps:  Intermediate level (Preferred certifications: AWS Certified\nSolutions Architect) \nAWS:  Intermediate level (Preferred certifications: Google Cloud\nProfessional, Certified Kubernetes Administrator) \nNode.js:  Intermediate level (Preferred certifications: Google Cloud\nProfessional, Certified Kubernetes Administrator) • \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \nExpected Team Profile\nWe anticipate the following roles within the development team: \nFrontend Developer (1 position):\nExpertise in React and JavaScript \nExperience in building responsive and user-friendly interfaces \nStrong understanding of RESTful APIs and integration \nBackend Developer (1 position):\nProficient in PostgreSQL and Django \nExperience in microservices architecture \nStrong knowledge of Docker and Kubernetes \nDevOps Engineer (1 position):\nExperience with cloud services (AWS preferred) \nFamiliarity with CI/CD processes and tools \nKnowledge of container orchestration and management \nTimeline\nThe project is expected to commence on November 28, 2025 , and\nconclude within 12 months. \nBudget\nThe estimated budget for this project ranges from $500K to $1M . \nProposal Guidelines\nInterested parties should submit their proposals by [insert deadline for\nproposals] . Proposals must include:\n- Company background and relevant experience\n- Profiles of the proposed team members1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. \n9. \n10. \n11. \n12. \n- Project approach and methodology\n- Detailed timeline with milestones\n- Cost breakdown \nAcceptance Criteria and Evaluation Process\nProposals will be evaluated based on the following criteria:\n- Relevant experience and expertise\n- Quality of the proposed approach and methodology\n- Cost-effectiveness\n- T eam qualifications and certifications \nThe evaluation process will involve reviewing submitted proposals,\nfollowed by potential interviews with shortlisted candidates to discuss\ntheir approach in more detail.\nContact Information\nFor inquiries regarding this RFP, please contact:\nName:  [Contact Person Name]\nEmail:  [Contact Person Email]\nPhone:  [Contact Person Phone Number] \nWe look forward to receiving your proposals and partnering with a talented\nteam to achieve our e-commerce modernization goals.\n\n\n[METADATA]\ndocument_type: RFP"
           ],
-          "response": "The titles of all RFPs are as follows:\n\n1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
+          "response": "1. Data Analytics Platform Development\n2. API Integration Platform Development\n3. E-commerce Modernization Development",
           "reference": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
-          "answer_relevancy": 0.6014792534547758,
-          "context_recall": NaN,
+          "faithfulness": 0.0,
+          "answer_relevancy": 0.17987171897938325,
+          "context_recall": 1.0,
           "factual_correctness": 1.0
         }
       }
@@ -485,7 +490,7 @@
       "ground_truth": "There are 3 available people with Python skills today.",
       "graphrag": {
         "answer": "There are 3 available developers with Python skills for today. If you have any more questions or need further assistance, feel free to ask!",
-        "execution_time": 5.225876092910767,
+        "execution_time": 5.757115125656128,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -499,12 +504,12 @@
           "faithfulness": 0.5,
           "answer_relevancy": 0.4872883484459069,
           "context_recall": 1.0,
-          "factual_correctness": 0.0
+          "factual_correctness": 0.67
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 4.741677284240723,
+        "execution_time": 2.191380500793457,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -516,11 +521,11 @@
           ],
           "response": "I don't know.",
           "reference": "There are 3 available people with Python skills today.",
-          "context_precision": NaN,
-          "faithfulness": NaN,
+          "context_precision": 0.0,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": NaN,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.0
         }
       }
     },
@@ -530,27 +535,27 @@
       "category": "counting",
       "ground_truth": "We have a total of 3 RFPs.",
       "graphrag": {
-        "answer": "There are a total of 3 RFPs available. If you have any more questions or need further assistance, feel free to ask!",
-        "execution_time": 1.2056238651275635,
+        "answer": "We have a total of 3 distinct RFPs. If you need more information or have any other questions, feel free to ask!",
+        "execution_time": 3.865199565887451,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "How many rpfs we have ?",
           "retrieved_contexts": [
-            "There are a total of 3 RFPs available. If you have any more questions or need further assistance, feel free to ask!"
+            "We have a total of 3 distinct RFPs. If you need more information or have any other questions, feel free to ask!"
           ],
-          "response": "There are a total of 3 RFPs available. If you have any more questions or need further assistance, feel free to ask!",
+          "response": "We have a total of 3 distinct RFPs. If you need more information or have any other questions, feel free to ask!",
           "reference": "We have a total of 3 RFPs.",
           "context_precision": 0.9999999999,
           "faithfulness": 1.0,
-          "answer_relevancy": 0.5885977596966119,
+          "answer_relevancy": 0.6018073170589795,
           "context_recall": 1.0,
-          "factual_correctness": 1.0
+          "factual_correctness": 0.5
         }
       },
       "naive_rag": {
         "answer": "There are a total of 3 RFPs.",
-        "execution_time": 1.3202476501464844,
+        "execution_time": 2.249058723449707,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -563,9 +568,9 @@
           "response": "There are a total of 3 RFPs.",
           "reference": "We have a total of 3 RFPs.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
-          "answer_relevancy": 0.5964945201628931,
-          "context_recall": NaN,
+          "faithfulness": 0.0,
+          "answer_relevancy": 0.6015545447599798,
+          "context_recall": 0.0,
           "factual_correctness": 1.0
         }
       }
@@ -576,27 +581,27 @@
       "category": "counting",
       "ground_truth": "We have 1 Java developer.",
       "graphrag": {
-        "answer": "We have 4 Java developers. If you need more information or have any other questions, feel free to ask!",
-        "execution_time": 1.0503785610198975,
+        "answer": "We have 4 Java developers available. If you need more information about them or any other details, feel free to ask!",
+        "execution_time": 0.9660401344299316,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "How many Java developers we have ?",
           "retrieved_contexts": [
-            "We have 4 Java developers. If you need more information or have any other questions, feel free to ask!"
+            "We have 4 Java developers available. If you need more information about them or any other details, feel free to ask!"
           ],
-          "response": "We have 4 Java developers. If you need more information or have any other questions, feel free to ask!",
+          "response": "We have 4 Java developers available. If you need more information about them or any other details, feel free to ask!",
           "reference": "We have 1 Java developer.",
           "context_precision": 0.0,
           "faithfulness": 1.0,
-          "answer_relevancy": 0.9028260585846969,
+          "answer_relevancy": 0.8527881305754637,
           "context_recall": 0.0,
           "factual_correctness": 0.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.0047125816345215,
+        "execution_time": 1.2602169513702393,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -609,10 +614,10 @@
           "response": "I don't know.",
           "reference": "We have 1 Java developer.",
           "context_precision": 0.0,
-          "faithfulness": 1.0,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -622,29 +627,29 @@
       "category": "listing",
       "ground_truth": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
       "graphrag": {
-        "answer": "The RFP titles are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or assistance, feel free to ask!",
-        "execution_time": 4.272145509719849,
+        "answer": "The RFP titles are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or have any other questions, feel free to ask!",
+        "execution_time": 4.563492298126221,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "Give me all rpfs titles ?",
           "retrieved_contexts": [
-            "rfpTitle=API Integration Platform Development",
-            "rfpTitle=Data Analytics Platform Development",
-            "rfpTitle=E-commerce Modernization Development"
+            "title=API Integration Platform Development",
+            "title=Data Analytics Platform Development",
+            "title=E-commerce Modernization Development"
           ],
-          "response": "The RFP titles are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or assistance, feel free to ask!",
+          "response": "The RFP titles are as follows:\n\n1. API Integration Platform Development\n2. Data Analytics Platform Development\n3. E-commerce Modernization Development\n\nIf you need more information or have any other questions, feel free to ask!",
           "reference": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
           "context_precision": 0.0,
-          "faithfulness": 1.0,
-          "answer_relevancy": 0.5837433801156054,
+          "faithfulness": 0.75,
+          "answer_relevancy": 0.5837157333989208,
           "context_recall": 1.0,
-          "factual_correctness": 1.0
+          "factual_correctness": 0.86
         }
       },
       "naive_rag": {
-        "answer": "The titles of all RFPs are as follows:\n\n1. Data Analytics Platform Development\n2. E-commerce Modernization Development\n3. API Integration Platform Development",
-        "execution_time": 1.6658384799957275,
+        "answer": "The titles of all RFPs are:\n\n1. Data Analytics Platform Development\n2. E-commerce Modernization Development\n3. API Integration Platform Development",
+        "execution_time": 1.9898123741149902,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -654,13 +659,13 @@
             "Request for Proposal (RFP)\nProject:  E-commerce Modernization Development\nClient:  MedT ech Industries\nProject Type:  Mobile App Development \nExecutive Summary\nMedT ech Industries is seeking a highly skilled and experienced\ndevelopment team to undertake the modernization of its e-commerce\nplatform. This project aims to enhance the current web application,\nfocusing on improving user experience, increasing operational efficiency,\nand integrating advanced technological solutions. The project is expected\nto span over 12 months, starting on November 28, 2025, with an\nestimated budget range of $500K - $1M. Remote work is allowed,\nproviding flexibility to the development team.\nProject Overview\nThe objective of this project is to develop a robust enterprise-level e-\ncommerce web application that meets the evolving needs of our users and\naligns with the strategic goals of MedT ech Industries. The application\nshould be scalable, secure, and maintainable, leveraging modern\ntechnologies and frameworks. \nSpecific Deliverables:\nA fully functional e-commerce web application \nIntegration with existing systems and third-party services \nDocumentation for the codebase and user manuals \nDeployment of the application to a cloud environment \nOngoing support and maintenance for the duration of the contract • \n• \n• \n• \n• \nMilestones:\nMilestone 1:  Project Kick-off and Requirement Gathering –\nDecember 2025 \nMilestone 2:  Completion of Design Phase – February 2026 \nMilestone 3:  Development Phase Completion – August 2026 \nMilestone 4:  T esting Phase Completion – October 2026 \nMilestone 5:  Project Go-Live – November 2026 \nTechnical Requirements\nWe require the following technical expertise from the development team: \nREQUIRED:\nReact:  Expert level \nPostgreSQL:  Expert level \nDocker:  Advanced level (Preferred certifications: Certified\nKubernetes Administrator) \nJavaScript:  Expert level (Preferred certifications: Google Cloud\nProfessional) \nMicroservices:  Advanced level (Preferred certifications: AWS\nCertified Solutions Architect) \nKubernetes:  Advanced level (Preferred certifications: Certified\nKubernetes Administrator) \nDjango:  Intermediate level \nPREFERRED:\nDevOps:  Intermediate level (Preferred certifications: AWS Certified\nSolutions Architect) \nAWS:  Intermediate level (Preferred certifications: Google Cloud\nProfessional, Certified Kubernetes Administrator) \nNode.js:  Intermediate level (Preferred certifications: Google Cloud\nProfessional, Certified Kubernetes Administrator) • \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \nExpected Team Profile\nWe anticipate the following roles within the development team: \nFrontend Developer (1 position):\nExpertise in React and JavaScript \nExperience in building responsive and user-friendly interfaces \nStrong understanding of RESTful APIs and integration \nBackend Developer (1 position):\nProficient in PostgreSQL and Django \nExperience in microservices architecture \nStrong knowledge of Docker and Kubernetes \nDevOps Engineer (1 position):\nExperience with cloud services (AWS preferred) \nFamiliarity with CI/CD processes and tools \nKnowledge of container orchestration and management \nTimeline\nThe project is expected to commence on November 28, 2025 , and\nconclude within 12 months. \nBudget\nThe estimated budget for this project ranges from $500K to $1M . \nProposal Guidelines\nInterested parties should submit their proposals by [insert deadline for\nproposals] . Proposals must include:\n- Company background and relevant experience\n- Profiles of the proposed team members1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. \n9. \n10. \n11. \n12. \n- Project approach and methodology\n- Detailed timeline with milestones\n- Cost breakdown \nAcceptance Criteria and Evaluation Process\nProposals will be evaluated based on the following criteria:\n- Relevant experience and expertise\n- Quality of the proposed approach and methodology\n- Cost-effectiveness\n- T eam qualifications and certifications \nThe evaluation process will involve reviewing submitted proposals,\nfollowed by potential interviews with shortlisted candidates to discuss\ntheir approach in more detail.\nContact Information\nFor inquiries regarding this RFP, please contact:\nName:  [Contact Person Name]\nEmail:  [Contact Person Email]\nPhone:  [Contact Person Phone Number] \nWe look forward to receiving your proposals and partnering with a talented\nteam to achieve our e-commerce modernization goals.\n\n\n[METADATA]\ndocument_type: RFP",
             "Request for Proposal (RFP)\nExecutive Summary\nThe Education Network is seeking proposals from experienced\ndevelopment teams for the creation of an API Integration Platform to\nmodernize our e-commerce capabilities. This project aims to enhance user\nexperience, streamline operations, and expand our service offerings. We\nare looking for a dedicated team to deliver this solution over a duration of\n22 months, with a starting date of November 28, 2025.\nProject Overview\nProject Title:  API Integration Platform Development\nClient:  Education Network\nProject Type:  Mobile App Development\nLocation:  South Gregoryview (Remote work allowed)\nDuration:  22 months\nTeam Size:  11 people\nBudget Range:  $100K - $250K\nBusiness Context and Objectives\nThe Education Network has recognized the need to modernize its e-\ncommerce platform to better serve our users and meet the growing\ndemands of the market. The objectives of this project include: -\nDeveloping a robust API Integration Platform that supports various e-\ncommerce functionalities. - Ensuring a seamless user experience across\nmobile and web applications. - Implementing best practices in cloud\nservices and container management for scalability and reliability.• \n• \n• \n• \n• \n• \n• \nTechnical Requirements\nThe following technical skills and experience are required for the\ndevelopment team:\nJava:  Intermediate level (Preferred certifications: Certified\nKubernetes Administrator, AWS Certified Solutions Architect)\nTypeScript:  Advanced level (Required certifications: Google Cloud\nProfessional)\nDjango:  Intermediate level\nAngular:  Advanced level (Preferred certifications: Certified\nKubernetes Administrator, AWS Certified Solutions Architect)\nDocker:  Expert level\nExpected Team Profile\nWe are looking for a diverse team of professionals with the following\nprofiles:\nBackend Developers (2)\nStrong experience in Java and Django.\nFamiliarity with API development and integration.\nFrontend Developers (3)\nProficiency in Angular and TypeScript.\nExperience in creating responsive and user-friendly interfaces.\nDevOps Engineer (1)\nExpertise in Docker and cloud technologies.\nExperience with CI/CD pipelines and infrastructure as code.\nQA Engineers (2)\nStrong background in automated and manual testing.\nFamiliarity with testing APIs and e-commerce systems.• \n• \n• \n• \n• \n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. \n9. \n10. \n11. \n12. \nProject Manager (1)\nProven track record in managing similar projects.\nExcellent communication and leadership skills.\nBusiness Analyst (1)\nExperience in gathering requirements and stakeholder management.\nAbility to translate business needs into technical specifications.\nTimeline\nRFP Release Date:  [Insert Date]\nProposal Submission Deadline:  [Insert Date]\nProposal Evaluation Period:  [Insert Date]\nContract Award Date:  [Insert Date]\nProject Kickoff:  November 28, 2025\nExpected Completion Date:  [Insert Date]\nBudget\nThe budget for this project is set between $100K and $250K . Proposals\nshould include a detailed cost breakdown, including personnel,\ntechnology, and overhead costs.\nProposal Guidelines\nInterested parties should submit their proposals by [Insert Submission\nDeadline] to the following email address: [contact@example.com].\nProposals must include:\nCompany overview and relevant experience\nDetailed project plan and timeline\nT eam profiles and qualifications\nCost estimates and payment terms\nReferences from similar projects13. \n14. \n15. \n16. \n17. \n18. \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \nAcceptance Criteria\nProposals will be evaluated based on the following criteria: - T echnical\nexpertise and experience - Proposed methodology and timeline - Cost-\neffectiveness - T eam qualifications and certifications - Previous client\nreferences and case studies\nEvaluation Process\nThe evaluation team will review all submitted proposals and shortlist\ncandidates for interviews. The final selection will be based on a\ncombination of technical fit, team capability, and budget alignment.\nContact Information\nFor any questions regarding this RFP, please contact: - Name:  [Your\nName] - Email:  [contact@example.com] - Phone:  [Your Phone Number]\nThank you for considering this opportunity to partner with the Education\nNetwork in transforming our e-commerce platform. We look forward to\nyour proposals.\n\n\n[METADATA]\ndocument_type: RFP"
           ],
-          "response": "The titles of all RFPs are as follows:\n\n1. Data Analytics Platform Development\n2. E-commerce Modernization Development\n3. API Integration Platform Development",
+          "response": "The titles of all RFPs are:\n\n1. Data Analytics Platform Development\n2. E-commerce Modernization Development\n3. API Integration Platform Development",
           "reference": "Data Analytics Platform Development; API Integration Platform Development; E-commerce Modernization Development.",
-          "context_precision": 0.0,
-          "faithfulness": 1.0,
-          "answer_relevancy": 0.6231691723864586,
+          "context_precision": 0.49999999995,
+          "faithfulness": 0.0,
+          "answer_relevancy": 0.5838032770089551,
           "context_recall": 1.0,
-          "factual_correctness": 1.0
+          "factual_correctness": 0.5
         }
       }
     },
@@ -671,7 +676,7 @@
       "ground_truth": "The average number of years of experience for Python developers is approximately 5.67 years.",
       "graphrag": {
         "answer": "The average number of years of experience for Python developers is approximately 5.67 years. If you have any more questions or need further assistance, feel free to ask!",
-        "execution_time": 5.1176557540893555,
+        "execution_time": 4.494253873825073,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -683,14 +688,14 @@
           "reference": "The average number of years of experience for Python developers is approximately 5.67 years.",
           "context_precision": 0.9999999999,
           "faithfulness": 0.5,
-          "answer_relevancy": 0.8941831488585699,
+          "answer_relevancy": 0.8941416612888498,
           "context_recall": 1.0,
           "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.0487730503082275,
+        "execution_time": 2.6016786098480225,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -703,10 +708,10 @@
           "response": "I don't know.",
           "reference": "The average number of years of experience for Python developers is approximately 5.67 years.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
+          "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -716,27 +721,27 @@
       "category": "filtering",
       "ground_truth": "I'm sorry, but I couldn't find any information about developers in the Pacific timezone.",
       "graphrag": {
-        "answer": "I couldn't retrieve specific information about developers in the Pacific timezone. If you have any other questions or need assistance with something else, feel free to ask!",
-        "execution_time": 3.8658010959625244,
+        "answer": "I'm currently unable to retrieve the specific list of developers in the Pacific timezone. If you have any other questions or need assistance with something else, feel free to ask!",
+        "execution_time": 3.6183106899261475,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "List all developers in Pacific timezone",
           "retrieved_contexts": [
-            "I couldn't retrieve specific information about developers in the Pacific timezone. If you have any other questions or need assistance with something else, feel free to ask!"
+            "I'm currently unable to retrieve the specific list of developers in the Pacific timezone. If you have any other questions or need assistance with something else, feel free to ask!"
           ],
-          "response": "I couldn't retrieve specific information about developers in the Pacific timezone. If you have any other questions or need assistance with something else, feel free to ask!",
+          "response": "I'm currently unable to retrieve the specific list of developers in the Pacific timezone. If you have any other questions or need assistance with something else, feel free to ask!",
           "reference": "I'm sorry, but I couldn't find any information about developers in the Pacific timezone.",
           "context_precision": 0.9999999999,
           "faithfulness": 1.0,
           "answer_relevancy": 0.0,
           "context_recall": 1.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.67
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 17.384767293930054,
+        "execution_time": 1.3133525848388672,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -751,8 +756,8 @@
           "context_precision": 0.0,
           "faithfulness": 0.0,
           "answer_relevancy": 0.0,
-          "context_recall": 1.0,
-          "factual_correctness": NaN
+          "context_recall": 0.0,
+          "factual_correctness": 0.67
         }
       }
     },
@@ -762,27 +767,36 @@
       "category": "listing",
       "ground_truth": "Javascript; React; Angular; Microservices; Git; Docker; Fastapi; C++; Jenkins; Python.",
       "graphrag": {
-        "answer": "The available skills are:\n\n1. Javascript\n2. React\n3. Angular\n4. Microservices\n5. Git\n6. Docker\n7. Fastapi\n8. C++\n9. Jenkins\n10. Python\n\nIf you need more information or assistance, feel free to ask!",
-        "execution_time": 4.8056018352508545,
+        "answer": "Here are the skills available:\n\n1. Javascript\n2. React\n3. Angular\n4. Microservices\n5. Git\n6. Docker\n7. Fastapi\n8. C++\n9. Jenkins\n10. Python\n\nIf you need more information or have any other questions, feel free to ask!",
+        "execution_time": 7.676634311676025,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "List all skils only name of a skill",
           "retrieved_contexts": [
-            "skillId=Microservices"
+            "skillId=Javascript, skillCategory=Programming Language, skillSubcategory=Frontend Development",
+            "skillId=React, skillCategory=Programming, skillSubcategory=Frontend",
+            "skillId=Angular, skillCategory=Programming Languages & Frameworks, skillSubcategory=Angular",
+            "skillId=Microservices, skillCategory=Architecture, skillSubcategory=Software Development",
+            "skillId=Git, skillCategory=Version Control, skillSubcategory=Collaboration",
+            "skillId=Docker, skillCategory=Containerization, skillSubcategory=Deployment",
+            "skillId=Fastapi, skillCategory=Web Frameworks, skillSubcategory=FastAPI",
+            "skillId=C++, skillCategory=Programming, skillSubcategory=Backend",
+            "skillId=Jenkins, skillCategory=DevOps, skillSubcategory=CI/CD",
+            "skillId=Python, skillCategory=Programming Language, skillSubcategory=Backend Development"
           ],
-          "response": "The available skills are:\n\n1. Javascript\n2. React\n3. Angular\n4. Microservices\n5. Git\n6. Docker\n7. Fastapi\n8. C++\n9. Jenkins\n10. Python\n\nIf you need more information or assistance, feel free to ask!",
+          "response": "Here are the skills available:\n\n1. Javascript\n2. React\n3. Angular\n4. Microservices\n5. Git\n6. Docker\n7. Fastapi\n8. C++\n9. Jenkins\n10. Python\n\nIf you need more information or have any other questions, feel free to ask!",
           "reference": "Javascript; React; Angular; Microservices; Git; Docker; Fastapi; C++; Jenkins; Python.",
           "context_precision": 0.0,
-          "faithfulness": 0.1,
-          "answer_relevancy": 0.584446310092445,
-          "context_recall": 0.1,
-          "factual_correctness": 0.67
+          "faithfulness": 1.0,
+          "answer_relevancy": 0.5196481765184787,
+          "context_recall": 1.0,
+          "factual_correctness": 1.0
         }
       },
       "naive_rag": {
         "answer": "The skills mentioned in the context are:\n\n1. Java\n2. TypeScript\n3. Django\n4. Angular\n5. Docker\n6. DevOps\n7. Node.js\n8. MongoDB\n9. Machine Learning\n10. Kubernetes\n11. React\n12. PostgreSQL\n13. JavaScript\n14. Microservices\n15. AWS",
-        "execution_time": 1.9883902072906494,
+        "execution_time": 2.883380889892578,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -796,9 +810,9 @@
           "reference": "Javascript; React; Angular; Microservices; Git; Docker; Fastapi; C++; Jenkins; Python.",
           "context_precision": 0.0,
           "faithfulness": 1.0,
-          "answer_relevancy": 0.44042871086877705,
+          "answer_relevancy": 0.44047743992730704,
           "context_recall": 0.5,
-          "factual_correctness": 0.33
+          "factual_correctness": 0.38
         }
       }
     },
@@ -809,7 +823,7 @@
       "ground_truth": "We have 5 people with Docker skills.",
       "graphrag": {
         "answer": "We have 5 developers with Docker skills. If you need more information or have any other questions, feel free to ask!",
-        "execution_time": 0.9970180988311768,
+        "execution_time": 0.8991074562072754,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -821,14 +835,14 @@
           "reference": "We have 5 people with Docker skills.",
           "context_precision": 0.9999999999,
           "faithfulness": 1.0,
-          "answer_relevancy": 0.8268148343980971,
+          "answer_relevancy": 0.8248754265402697,
           "context_recall": 1.0,
           "factual_correctness": 0.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.0581352710723877,
+        "execution_time": 1.628631353378296,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -841,10 +855,10 @@
           "response": "I don't know.",
           "reference": "We have 5 people with Docker skills.",
           "context_precision": 0.0,
-          "faithfulness": NaN,
-          "answer_relevancy": NaN,
+          "faithfulness": 0.0,
+          "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -854,27 +868,27 @@
       "category": "listing",
       "ground_truth": "One person with Python and Docker skills is Mary Hines. She has 5 years of experience and is located in Combsburgh. You can reach her at her email: brian16@example.com.",
       "graphrag": {
-        "answer": "One person with both Python and Docker skills is **Ryan Hopkins**. If you need more information or assistance, feel free to ask!",
-        "execution_time": 0.8673698902130127,
+        "answer": "One person with both Python and Docker skills is **Ryan Hopkins**. If you need more information or have any other questions, feel free to ask!",
+        "execution_time": 0.9032206535339355,
         "cypher_query": "",
         "success": true,
         "evaluation": {
           "user_input": "List me one person with python and docker skill",
           "retrieved_contexts": [
-            "One person with both Python and Docker skills is **Ryan Hopkins**. If you need more information or assistance, feel free to ask!"
+            "One person with both Python and Docker skills is **Ryan Hopkins**. If you need more information or have any other questions, feel free to ask!"
           ],
-          "response": "One person with both Python and Docker skills is **Ryan Hopkins**. If you need more information or assistance, feel free to ask!",
+          "response": "One person with both Python and Docker skills is **Ryan Hopkins**. If you need more information or have any other questions, feel free to ask!",
           "reference": "One person with Python and Docker skills is Mary Hines. She has 5 years of experience and is located in Combsburgh. You can reach her at her email: brian16@example.com.",
           "context_precision": 0.0,
           "faithfulness": 1.0,
-          "answer_relevancy": 0.8384914293630142,
+          "answer_relevancy": 0.8319887629097407,
           "context_recall": 0.0,
           "factual_correctness": 0.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.24239182472229,
+        "execution_time": 1.866905927658081,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -890,7 +904,7 @@
           "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     },
@@ -901,7 +915,7 @@
       "ground_truth": "Mark Carroll attended the University of Adamsbury.",
       "graphrag": {
         "answer": "Mark Carroll graduated from the University of Adamsbury. If you have any more questions or need further assistance, feel free to ask!",
-        "execution_time": 0.8815348148345947,
+        "execution_time": 1.141765832901001,
         "cypher_query": "",
         "success": true,
         "evaluation": {
@@ -912,15 +926,15 @@
           "response": "Mark Carroll graduated from the University of Adamsbury. If you have any more questions or need further assistance, feel free to ask!",
           "reference": "Mark Carroll attended the University of Adamsbury.",
           "context_precision": 0.9999999999,
-          "faithfulness": NaN,
-          "answer_relevancy": 0.7617883717196513,
+          "faithfulness": 1.0,
+          "answer_relevancy": 0.7617432653133429,
           "context_recall": 1.0,
           "factual_correctness": 0.0
         }
       },
       "naive_rag": {
         "answer": "I don't know.",
-        "execution_time": 1.1430695056915283,
+        "execution_time": 1.0630865097045898,
         "chunks_count": 3,
         "success": true,
         "evaluation": {
@@ -936,65 +950,65 @@
           "faithfulness": 0.0,
           "answer_relevancy": 0.0,
           "context_recall": 0.0,
-          "factual_correctness": NaN
+          "factual_correctness": 0.0
         }
       }
     }
   ],
   "summary": {
     "overall_performance": {
-      "graphrag_wins": 0,
+      "graphrag_wins": 19,
       "naive_rag_wins": 1,
-      "ties": 19,
-      "graphrag_win_rate": 0.0,
+      "ties": 0,
+      "graphrag_win_rate": 0.95,
       "naive_rag_win_rate": 0.05
     },
     "quality_scores": {
-      "graphrag_avg": NaN,
-      "naive_rag_avg": NaN,
-      "graphrag_median": 0.8091920663480308,
-      "naive_rag_median": NaN
+      "graphrag_avg": 0.7166934208052042,
+      "naive_rag_avg": 0.09355706980625625,
+      "graphrag_median": 0.7431743265113343,
+      "naive_rag_median": 0.0
     },
     "category_breakdown": {
       "listing": {
         "total": 9,
-        "graph_wins": 0,
+        "graph_wins": 8,
         "naive_wins": 1,
-        "ties": 8
+        "ties": 0
       },
       "counting": {
         "total": 6,
-        "graph_wins": 0,
+        "graph_wins": 6,
         "naive_wins": 0,
-        "ties": 6
+        "ties": 0
       },
       "filtering": {
         "total": 2,
-        "graph_wins": 0,
+        "graph_wins": 2,
         "naive_wins": 0,
-        "ties": 2
+        "ties": 0
       },
       "aggregation": {
         "total": 3,
-        "graph_wins": 0,
+        "graph_wins": 3,
         "naive_wins": 0,
-        "ties": 3
+        "ties": 0
       }
     },
     "ragas_averages": {
       "graphrag_avg": {
-        "context_precision": 0.68749999993125,
-        "faithfulness": 0.7744444444444444,
-        "answer_relevancy": 0.6479549861838043,
-        "context_recall": 0.7421052631578947,
-        "factual_correctness": 0.604375
+        "context_precision": 0.649999999935,
+        "faithfulness": 0.7336437908496732,
+        "answer_relevancy": 0.6918233132413473,
+        "context_recall": 0.89,
+        "factual_correctness": 0.618
       },
       "naive_avg": {
-        "context_precision": 0.0,
-        "faithfulness": 0.5454545454545454,
-        "answer_relevancy": 0.11903008720383708,
-        "context_recall": 0.22727272727272727,
-        "factual_correctness": 0.8325
+        "context_precision": 0.0249999999975,
+        "faithfulness": 0.05,
+        "answer_relevancy": 0.09028534903378126,
+        "context_recall": 0.125,
+        "factual_correctness": 0.1775
       }
     }
   }

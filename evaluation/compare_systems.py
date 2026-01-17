@@ -56,7 +56,7 @@ class SystemComparator:
         logger.info("Initializing OpenAI models for evaluation...")
         
         self.eval_llm = ChatOpenAI(
-            model="gpt-4o",  # or gpt-4-turbo
+            model="gpt-4o-mini",  # or gpt-4-turbo
             temperature=0,
             api_key=self.api_key
         )
@@ -237,9 +237,24 @@ class SystemComparator:
             embeddings=self.eval_embeddings
         )
 
+        graph_scores_df = graph_scores.to_pandas().fillna(0.0)
+        naive_scores_df = naive_scores.to_pandas().fillna(0.0)
+
         # Merging results
-        graph_scores_list = graph_scores.to_pandas().to_dict(orient="records")
-        naive_scores_list = naive_scores.to_pandas().to_dict(orient="records")
+        graph_scores_list = graph_scores_df.to_dict(orient="records")
+        naive_scores_list = naive_scores_df.to_dict(orient="records")
+        
+        print("\n===== GRAPH RAG SCORES =====")
+        for i, row in enumerate(graph_scores_list, start=1):
+            print(f"\n[Q{i}]")
+            for k, v in row.items():
+                print(f"  {k}: {v}")
+
+        print("\n===== NAIVE RAG SCORES =====")
+        for i, row in enumerate(naive_scores_list, start=1):
+            print(f"\n[Q{i}]")
+            for k, v in row.items():
+                print(f"  {k}: {v}")
 
         final_results = []
         
@@ -271,8 +286,8 @@ class SystemComparator:
 
         # Build a proper summary using `generate_summary` and include ragas numeric averages
         ragas_avg = {
-            "graphrag_avg": graph_scores.to_pandas().mean(numeric_only=True).to_dict(),
-            "naive_avg": naive_scores.to_pandas().mean(numeric_only=True).to_dict()
+            "graphrag_avg": graph_scores_df.mean(numeric_only=True).to_dict(),
+            "naive_avg": naive_scores_df.mean(numeric_only=True).to_dict()
         }
 
         summary = self.generate_summary(final_results)
